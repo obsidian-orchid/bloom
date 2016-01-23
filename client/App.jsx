@@ -1,16 +1,3 @@
-Services = new Mongo.Collection('services');
-
-if (Meteor.isClient) {
-  // This code is executed on the client only
-
-  Meteor.startup(function () {
-    // Use Meteor.startup to render the component after the page is ready
-    //using ReactDOM here instead of just React.render() due to console error log
-    ReactDOM.render(<App />, document.getElementById("render-target"));
-  });
-}
-
-
 App = React.createClass({
 
   //allows us to use getMeteorData() by just saying this.data
@@ -19,7 +6,8 @@ App = React.createClass({
   getMeteorData(){
     return {
       //returning alphabetically sorted services
-      services: Services.find({}, {sort: {name}}).fetch()
+      services: Services.find({}, {sort: {name}}).fetch(),
+      currentUser: Meteor.user()
     };
   },
 
@@ -40,7 +28,8 @@ App = React.createClass({
   render(){
     return (
       <div className="container">
-        <form className="new-service" onSubmit={this.submitNewService}>
+        <AccountsUIWrapper />
+        <form className="new-service" onSubmit={this.addService}>
           <input type="text" ref="nameInput" placeholder="Enter new service here"/>
         </form>
         <ul>
@@ -50,7 +39,7 @@ App = React.createClass({
     );
   },
 
-  submitNewService(event){
+  addService(event){
 
     //stops page reloading
     event.preventDefault();
@@ -59,9 +48,7 @@ App = React.createClass({
     //trimming to remove whitespace surrounding text
     var newName = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
 
-    Services.insert({
-      name: newName
-    });
+    Meteor.call('addService', newName);
 
     //removing content from form must be done as page doesn't reload
     ReactDOM.findDOMNode(this.refs.nameInput).value = '';
