@@ -1,3 +1,7 @@
+### INTELLIJ ###
+.idea/
+*.iml
+
 # Logs
 logs
 *.log
