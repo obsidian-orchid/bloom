@@ -1,4 +1,5 @@
 //explanation: https://github.com/kadirahq/meteor-react-layout
+ReactLayout.setRoot
 
 FlowRouter.route("/", {
   subscriptions: function() {},

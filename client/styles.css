@@ -1,0 +1,21 @@
+
+.page-content {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  padding-top: 0!important;
+}
+
+
