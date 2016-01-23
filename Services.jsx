@@ -6,9 +6,17 @@ Service = React.createClass({
     service: React.PropTypes.object.isRequired
   },
 
+  deleteService(event){
+    event.preventDefault();
+    Services.remove(this.props.service._id);
+  },
+
   render(){
     return (
-      <li>{this.props.service.name}</li>
+      <li>
+        <span>{this.props.service.name}</span>
+        <a href="" className="delete" onClick={this.deleteService}> &times;</a>
+      </li>
     );
   }
-})
+});
