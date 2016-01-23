@@ -1,4 +1,4 @@
-App = React.createClass({
+ServicesList = React.createClass({
 
   //allows us to use getMeteorData() by just saying this.data
   mixins: [ReactMeteorData],
@@ -11,14 +11,6 @@ App = React.createClass({
     };
   },
 
-  getServices(){
-    return [
-      {_id: 1, name: "Flickr"},
-      {_id: 2, name: "Tumblr"},
-      {_id: 3, name: "Facebook"}
-    ];
-  },
-
   renderServices(){
     return this.data.services.map((service) => {
       return <Service key={service._id} service={service} />
@@ -27,10 +19,11 @@ App = React.createClass({
 
   render(){
     return (
-      <div className="container">
-        <AccountsUIWrapper />
+      <div>
         <form className="new-service" onSubmit={this.addService}>
-          <input type="text" ref="nameInput" placeholder="Enter new service here"/>
+          <input type="text" ref="nameInput" placeholder="Enter the name"/>
+          <input type="text" ref="urlInput" placeholder="Enter the url"/>
+          <input className="btn" type="submit"></input>
         </form>
         <ul>
           {this.renderServices()}
@@ -47,10 +40,31 @@ App = React.createClass({
     //retrieving text from React ref tag
     //trimming to remove whitespace surrounding text
     var newName = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
+    var urlInput = ReactDOM.findDOMNode(this.refs.urlInput).value.trim();
 
-    Meteor.call('addService', newName);
+    Meteor.call('addService', newName,urlInput );
 
     //removing content from form must be done as page doesn't reload
     ReactDOM.findDOMNode(this.refs.nameInput).value = '';
+  }
+});
+
+Service = React.createClass({
+  propTypes: {
+    service: React.PropTypes.object.isRequired
+  },
+
+  deleteService(event){
+    event.preventDefault();
+    Meteor.call('deleteService', this.props.service._id);
+  },
+
+  render(){
+    return (
+      <li>
+        <span>{this.props.service.name}</span>
+        <a href="" className="delete" onClick={this.deleteService}> &times;</a>
+      </li>
+    );
   }
 });
