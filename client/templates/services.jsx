@@ -1,4 +1,4 @@
-App = React.createClass({
+ServicesList = React.createClass({
 
   //allows us to use getMeteorData() by just saying this.data
   mixins: [ReactMeteorData],
@@ -19,8 +19,7 @@ App = React.createClass({
 
   render(){
     return (
-      <div className="container">
-        <AccountsUIWrapper />
+      <div>
         <form className="new-service" onSubmit={this.addService}>
           <input type="text" ref="nameInput" placeholder="Enter the name"/>
           <input type="text" ref="urlInput" placeholder="Enter the url"/>
@@ -47,5 +46,25 @@ App = React.createClass({
 
     //removing content from form must be done as page doesn't reload
     ReactDOM.findDOMNode(this.refs.nameInput).value = '';
+  }
+});
+
+Service = React.createClass({
+  propTypes: {
+    service: React.PropTypes.object.isRequired
+  },
+
+  deleteService(event){
+    event.preventDefault();
+    Meteor.call('deleteService', this.props.service._id);
+  },
+
+  render(){
+    return (
+      <li>
+        <span>{this.props.service.name}</span>
+        <a href="" className="delete" onClick={this.deleteService}> &times;</a>
+      </li>
+    );
   }
 });

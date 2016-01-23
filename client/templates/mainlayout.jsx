@@ -1,3 +1,22 @@
+MainLayout = React.createClass({
+  render() {
+    return (
+      <div>
+        <header>
+          This is our header
+          <AccountsUIWrapper />
+        </header>
+        <main className="container">
+          {this.props.content}
+        </main>
+        <footer>
+          This is our footer
+        </footer>
+      </div>
+    )
+  }
+});
+
 //following tutorial here(https://www.meteor.com/tutorials/react/adding-user-accounts)
 //to set up wrapped accounts-ui
 //will add accounts-ui-unstyled later
