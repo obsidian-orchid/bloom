@@ -1,6 +1,7 @@
 /**
  * Created by siobhan on 2016/01/22.
  */
+
 Service = React.createClass({
   propTypes: {
     service: React.PropTypes.object.isRequired
@@ -8,7 +9,7 @@ Service = React.createClass({
 
   deleteService(event){
     event.preventDefault();
-    Services.remove(this.props.service._id);
+    Meteor.call('deleteService', this.props.service._id);
   },
 
   render(){
