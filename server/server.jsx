@@ -27,11 +27,12 @@ Slingshot.createDirective("myFileUploads", Slingshot.S3Storage, {
 	}
 }); 
 
- Meteor.publish('services', function(){
+Meteor.publish('services', function(){
     return Services.find();
  });
 
 Meteor.publish('images', function(){
+  //console.log(Images.find());
   return Images.find();
 });
 

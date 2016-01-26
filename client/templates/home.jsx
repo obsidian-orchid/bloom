@@ -11,6 +11,16 @@ Home = React.createClass({
       currentUser: Meteor.user()
     };
   },
+
+	renderImages(){
+		console.log(this.data.images);
+
+		return this.data.images.map((image) => {
+			console.log(image);
+			return <Image key={image._id} image={image} />
+		});
+	},
+
 	uploadImage(event) {
 		event.preventDefault();
     console.log('test: ', document.getElementById('input').files);
@@ -52,12 +62,30 @@ Home = React.createClass({
 			</p>
 			</form>
       <strong>IMAGES UPLOADED</strong>
+			<ul>
+				{this.renderImages()}
+			</ul>
     </div>
 	);
 	}
 
 });
 
+Image = React.createClass({
+
+	propTypes: {
+		image: React.PropTypes.object.isRequired
+	},
+
+	render(){
+		return (
+			<li>
+				<img src={this.props.image.url}/>
+			</li>
+		);
+	}
+
+});
 
 
 
