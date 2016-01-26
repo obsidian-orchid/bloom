@@ -2,6 +2,8 @@
 Hack Reactor final project
 
 ## Dev Setup
+Running in browser
+- Run `meteor --settings settings.json`
 
 Running on an IOS simulator (Mac Only)
 - Follow [this](https://github.com/meteor/meteor/wiki/Mobile-Development-Install:-iOS-on-Mac) setup tutorial

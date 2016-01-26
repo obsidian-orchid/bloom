@@ -17,8 +17,6 @@ es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 react
-materialize:materialize
-accounts-ui
 accounts-password
 aldeed:simple-schema
 aldeed:collection2
@@ -28,3 +26,4 @@ accounts-ui-unstyled
 email
 edgee:slingshot
 fortawesome:fontawesome
+markoshust:material-ui

@@ -11,9 +11,9 @@ Signin = React.createClass({
     };
   },
 
-  renderServices(){
-      return<AccountsUIWrapper />
-  },
+  //renderServices(){
+  //    return<AccountsUIWrapper />
+  //},
 
   render(){
     return (
@@ -23,11 +23,9 @@ Signin = React.createClass({
           <input type="password" ref="password" placeholder="Password"/>
           <input className="btn" type="submit" value="Sign In"></input>
         </form>
-        <a href="/register">Register</a>
-        <a href="/reset-password">Forgot Password?</a>
-        <ul>
-          {this.renderServices()}
-        </ul>
+        <hr/>
+        <a className="left" href="/register">Register</a>
+        <a className="right" href="/reset-password">Forgot Password?</a>
       </div>
 
     );
@@ -79,6 +77,7 @@ Register = React.createClass({
           <input type="password" ref="cpassword" placeholder="Confirm password"/>
           <input className="btn" type="submit" value="Register"></input>
         </form>
+        <hr/>
         <a href="/signin">Sign In</a>
         <ul>
         </ul>
@@ -136,9 +135,8 @@ ResetPassword = React.createClass({
           <input type="email" ref="email" placeholder="Email"/>
           <input className="btn" type="submit" value="Send Password Reset"></input>
         </form>
+        <hr/>
         <a href="/signin">Sign In</a>
-        <ul>
-        </ul>
       </div>
 
     );
@@ -188,8 +186,6 @@ ConfirmReset = React.createClass({
           <input className="btn" type="submit" value="Send Password Reset"></input>
         </form>
         <a href="/signin">Sign In</a>
-        <ul>
-        </ul>
       </div>
 
     );
@@ -216,26 +212,5 @@ ConfirmReset = React.createClass({
         }
       });
     return false;
-  }
-});
-
-
-//following tutorial here(https://www.meteor.com/tutorials/react/adding-user-accounts)
-//to set up wrapped accounts-ui
-//will add accounts-ui-unstyled later
-
-AccountsUIWrapper = React.createClass({
-  componentDidMount() {
-    // Use Meteor Blaze to render login buttons
-    this.view = Blaze.render(Template.loginButtons,
-      ReactDOM.findDOMNode(this.refs.container));
-  },
-  componentWillUnmount() {
-    // Clean up Blaze view
-    Blaze.remove(this.view);
-  },
-  render() {
-    // Just render a placeholder container that will be filled in
-    return <span ref="container" />;
   }
 });
