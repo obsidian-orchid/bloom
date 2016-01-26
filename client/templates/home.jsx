@@ -5,39 +5,45 @@ Home = React.createClass({
 	uploadImage(event) {
 		event.preventDefault();
 		
-		 console.log('test: ', document.getElementById('input').files[0]);
-		var fileUpload = document.getElementById('input').files[0];
+    console.log('test: ', document.getElementById('input').files);
+		var fileUpload = document.getElementById('input').files;
 
-		uploader.send(fileUpload, function (error, downloadUrl) {
-		  if (error) {
-		    // Log service detailed response.
-		    console.error('Error uploading', uploader.xhr.response);
-		    alert (error);
-		  }
-		  else {
-		  	console.log('sucessful upload!', downloadUrl);
-		    Meteor.users.update(Meteor.userId(), {$push: {"profile.files": downloadUrl}});
-		  }
-		});
+		//uploader.send(fileUpload, function (error, downloadUrl) {
+		//  if (error) {
+		//    // Log service detailed response.
+		//    console.error('Error uploading', uploader.xhr.response);
+		//    alert (error);
+		//  }
+		//  else {
+		//  	console.log('sucessful upload!', downloadUrl);
+		//    Meteor.users.update(Meteor.userId(), {$push: {"profile.files": downloadUrl}});
+		//  }
+		//});
 
-		//var inputs = document.getElementsByTagName('input');
-		//var urls = [];
-		//for (var i = 0; i < inputs.length; i++) {
-		//	if (inputs[i].files == null) { continue; }
-		//	uploader.send(inputs[i].files[0], function (error, downloadUrl) {
-		//		if (error) {
-		//			console.error('Error uploading', uploader.xhr.response);
-		//		} else {
-		//			urls.push(downloadUrl);
-		//			if (urls.length > inputs.length - 1)
-		//				allFilesUploaded();
-		//		}
-		//	});
-		//}
-		//function allFilesUploaded () {
-		//	Meteor.users.update(Meteor.userId(), {$push: {"profile.files": urls}});
-		//	console.log('All done!');
-		//}
+		var urls = [];
+		for (var i = 0; i < fileUpload.length; i++) {
+			if (fileUpload[i] == null)
+      {
+        continue;
+      }
+			uploader.send(fileUpload[i], function (error, downloadUrl) {
+				if (error)
+        {
+					console.error('Error uploading', uploader.xhr.response);
+				}
+        else
+        {
+					urls.push(downloadUrl);
+					if (urls.length > fileUpload.length - 1) {
+            allFilesUploaded();
+          }
+				}
+			});
+		}
+		function allFilesUploaded () {
+			Meteor.users.update(Meteor.userId(), {$push: {"profile.files": urls}});
+			console.log('All done!');
+		}
 	},
 	render(){
 	return (
