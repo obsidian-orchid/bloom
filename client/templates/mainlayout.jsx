@@ -1,9 +1,25 @@
 MainLayout = React.createClass({
 
+  mixins: [ReactMeteorData],
+
+  getMeteorData(){
+    return {
+      //returning alphabetically sorted services
+      currentUser: Meteor.user()
+    };
+  },
+
   componentDidMount() {
     $(".button-collapse").sideNav();
   },
   render() {
+    var authBtn;
+    if(!Meteor.user()){
+      authBtn = <li><a href="/signin">Sign In</a></li>
+    }
+    else{
+      authBtn = <li><a onClick={this.signOut}>Sign Out</a></li>
+    }
     return (
       <div className="page-content">
         <header>
@@ -13,11 +29,11 @@ MainLayout = React.createClass({
             <a href="" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
             <ul className="right hide-on-med-and-down">
               <li><a href="">Random</a></li>
-              <li><AccountsUIWrapper /></li>
+              {authBtn}
             </ul>
             <ul className="side-nav" id="mobile-demo">
               <li><a href="">Random</a></li>
-              <li><AccountsUIWrapper /></li>
+              {authBtn}
             </ul>
           </div>
         </nav>
@@ -44,26 +60,12 @@ MainLayout = React.createClass({
       </div>
     )
 
+  },
+
+  signOut(event){
+    event.preventDefault();
+    Meteor.logout();
+    FlowRouter.go('/signin');
   }
 
-});
-
-//following tutorial here(https://www.meteor.com/tutorials/react/adding-user-accounts)
-//to set up wrapped accounts-ui
-//will add accounts-ui-unstyled later
-
-AccountsUIWrapper = React.createClass({
-  componentDidMount() {
-    // Use Meteor Blaze to render login buttons
-    this.view = Blaze.render(Template.loginButtons,
-      ReactDOM.findDOMNode(this.refs.container));
-  },
-  componentWillUnmount() {
-    // Clean up Blaze view
-    Blaze.remove(this.view);
-  },
-  render() {
-    // Just render a placeholder container that will be filled in
-    return <span ref="container" />;
-  }
 });
