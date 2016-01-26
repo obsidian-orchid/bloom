@@ -1,6 +1,16 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 
 Home = React.createClass({
+
+  mixins: [ReactMeteorData],
+
+  getMeteorData(){
+    return {
+      //returning alphabetically sorted services
+      images: Images.find({}, {sort: {url}}).fetch(),
+      currentUser: Meteor.user()
+    };
+  },
 	uploadImage(event) {
 		event.preventDefault();
     console.log('test: ', document.getElementById('input').files);
