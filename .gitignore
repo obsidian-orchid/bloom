@@ -1,3 +1,6 @@
+### SECURITY ###
+server/smtp.js
+
 ### INTELLIJ ###
 .idea/
 *.iml
