@@ -1,3 +1,9 @@
+const { AppBar, IconButton, IconMenu, LeftNav, FlatButton } = mui;
+const { MenuItem } = mui.Menus;
+const { NavigationMoreVert } = mui.SvgIcons;
+const Styles = mui.Styles;
+const Colors = Styles.Colors;
+
 MainLayout = React.createClass({
 
   mixins: [ReactMeteorData],
@@ -9,9 +15,9 @@ MainLayout = React.createClass({
     };
   },
 
-  componentDidMount() {
-    $(".button-collapse").sideNav();
-  },
+  //componentDidMount() {
+  //  $(".button-collapse").sideNav();
+  //},
   render() {
     var authBtn;
     if(!Meteor.user()){
@@ -23,6 +29,10 @@ MainLayout = React.createClass({
     return (
       <div className="page-content">
         <header>
+          <AppBar
+            title="Title"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+          />
           <nav>
           <div className="nav-wrapper container">
             <a href="/" className="brand-logo">BLOOM</a>
