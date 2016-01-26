@@ -1,27 +1,13 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 
 Home = React.createClass({
-
 	uploadImage(event) {
 		event.preventDefault();
-		
     console.log('test: ', document.getElementById('input').files);
 		var fileUpload = document.getElementById('input').files;
-
-		//uploader.send(fileUpload, function (error, downloadUrl) {
-		//  if (error) {
-		//    // Log service detailed response.
-		//    console.error('Error uploading', uploader.xhr.response);
-		//    alert (error);
-		//  }
-		//  else {
-		//  	console.log('sucessful upload!', downloadUrl);
-		//    Meteor.users.update(Meteor.userId(), {$push: {"profile.files": downloadUrl}});
-		//  }
-		//});
-
 		var urls = [];
 		for (var i = 0; i < fileUpload.length; i++) {
+      console.log(fileUpload[i].name);
 			if (fileUpload[i] == null)
       {
         continue;
@@ -55,7 +41,8 @@ Home = React.createClass({
 				<input type="Submit" />
 			</p>
 			</form>
-		</div>				
+      <strong>IMAGES UPLOADED</strong>
+    </div>
 	);
 	}
 
