@@ -31,6 +31,10 @@ Slingshot.createDirective("myFileUploads", Slingshot.S3Storage, {
     return Services.find();
  });
 
+Meteor.publish('images', function(){
+  return Images.find();
+});
+
 //sending the correct user data to the client depending on who is logged in
 Meteor.publish('userData', function() {
      var currentUser;
