@@ -1,5 +1,5 @@
 ### SECURITY ###
-server/smtp.js
+server/mail.js
 
 ### INTELLIJ ###
 .idea/
