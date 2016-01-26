@@ -7,17 +7,21 @@ Home = React.createClass({
   getMeteorData(){
     return {
       //returning alphabetically sorted services
-      images: Images.find({}, {sort: {url}}).fetch(),
+      images: Images.find({}, {sort: {createdAt: -1}}).fetch(),
       currentUser: Meteor.user()
     };
   },
+
+  //renderServices(){
+  //  return this.data.services.map((service) => {
+  //    return <Service key={service._id} service={service} />
+  //  });
+  //},
+
 	uploadImage(event) {
 		event.preventDefault();
-    console.log('test: ', document.getElementById('input').files);
-		var fileUpload = document.getElementById('input').files;
 		var urls = [];
 		for (var i = 0; i < fileUpload.length; i++) {
-      console.log(fileUpload[i].name);
 			if (fileUpload[i] == null)
       {
         continue;
