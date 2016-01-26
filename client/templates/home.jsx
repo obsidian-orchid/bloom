@@ -7,7 +7,7 @@ Home = React.createClass({
   getMeteorData(){
     return {
       //returning alphabetically sorted services
-      images: Images.find({}, {sort: {url}}).fetch(),
+      images: Images.find({}, {sort: {createdAt: -1}}).fetch(),
       currentUser: Meteor.user()
     };
   },
