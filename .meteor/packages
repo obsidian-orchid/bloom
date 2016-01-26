@@ -24,5 +24,7 @@ aldeed:simple-schema
 aldeed:collection2
 kadira:flow-router
 kadira:react-layout
+accounts-ui-unstyled
+email
 edgee:slingshot
 fortawesome:fontawesome

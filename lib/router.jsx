@@ -10,6 +10,33 @@ FlowRouter.route("/", {
   }
 });
 
+FlowRouter.route("/signin", {
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <Signin />
+    });
+  }
+});
+
+FlowRouter.route("/register", {
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <Register />
+    });
+  }
+});
+
+FlowRouter.route("/reset-password", {
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <ResetPassword />
+    });
+  }
+});
+
 FlowRouter.route("/services", {
   subscriptions: function() {
     //var selector = {category: {$ne: "private"}};
