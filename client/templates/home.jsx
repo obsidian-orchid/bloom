@@ -20,7 +20,6 @@ Home = React.createClass({
 			return <Image key={image._id} image={image} />
 		});
 	},
-
 	uploadImage(event) {
 		event.preventDefault();
     console.log('test: ', document.getElementById('input').files);

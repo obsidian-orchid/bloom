@@ -32,7 +32,6 @@ Meteor.publish('services', function(){
  });
 
 Meteor.publish('images', function(){
-  //console.log(Images.find());
   return Images.find();
 });
 
