@@ -41,7 +41,7 @@ MainLayout = React.createClass({
         <main>
           <div className="container">
             <div className="row">
-              <div className="col s12 m9 l10">
+              <div className="col s12 m12 l12">
                 <div className="section">
                   {this.props.content}
                 </div>
