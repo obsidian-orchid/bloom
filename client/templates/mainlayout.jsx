@@ -1,11 +1,3 @@
-const { AppBar, IconButton, IconMenu, LeftNav, FlatButton } = mui;
-const { MenuItem } = mui.Menus;
-const { NavigationMoreVert } = mui.SvgIcons;
-const Styles = mui.Styles;
-const Colors = Styles.Colors;
-
-imageDetails = new Mongo.Collection('imageDetails');
-
 MainLayout = React.createClass({
 
   mixins: [ReactMeteorData],
@@ -17,9 +9,9 @@ MainLayout = React.createClass({
     };
   },
 
-  //componentDidMount() {
-  //  $(".button-collapse").sideNav();
-  //},
+  componentDidMount() {
+    $(".button-collapse").sideNav();
+  },
   render() {
     var authBtn;
     if(!Meteor.user()){
@@ -31,20 +23,19 @@ MainLayout = React.createClass({
     return (
       <div className="page-content">
         <header>
-          <AppBar
-            title="Title"
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-          />
           <nav>
           <div className="nav-wrapper container">
-            <a href="/" className="brand-logo">BLOOM</a>
+            <a href="/" className="brand-logo">
+            <img className="logo-img" src="orchid.png"/>
+              BLOOM
+            </a>
             <a href="" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
             <ul className="right hide-on-med-and-down">
-              <li><a href="">Random</a></li>
+              <li><a href="/services">Services</a></li>
               {authBtn}
             </ul>
             <ul className="side-nav" id="mobile-demo">
-              <li><a href="">Random</a></li>
+              <li><a href="/services">Services</a></li>
               {authBtn}
             </ul>
           </div>
