@@ -26,4 +26,5 @@ accounts-ui-unstyled
 email
 edgee:slingshot
 fortawesome:fontawesome
-markoshust:material-ui
+semantic:ui
+flemay:less-autoprefixer

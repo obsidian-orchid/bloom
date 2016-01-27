@@ -1,3 +1,14 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.app-container {
+  margin-left: 15px;
+  margin-right: 15px;
+
+}
 
 .page-content {
   display: flex;
