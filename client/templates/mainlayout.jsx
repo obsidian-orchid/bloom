@@ -4,6 +4,8 @@ const { NavigationMoreVert } = mui.SvgIcons;
 const Styles = mui.Styles;
 const Colors = Styles.Colors;
 
+imageDetails = new Mongo.Collection('imageDetails');
+
 MainLayout = React.createClass({
 
   mixins: [ReactMeteorData],
