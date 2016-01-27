@@ -1,5 +1,7 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 
+imageDetails = new Mongo.Collection('imageDetails');
+
 Home = React.createClass({
 
 	mixins: [ReactMeteorData],

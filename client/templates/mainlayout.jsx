@@ -1,4 +1,3 @@
-imageDetails = new Mongo.Collection('imageDetails');
 
 MainLayout = React.createClass({
 
