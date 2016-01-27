@@ -13,19 +13,25 @@ Home = React.createClass({
 	},
 
 	renderImages(){
-		console.log(this.data.images);
+		//console.log(this.data.images);
 		return this.data.images.map((image) => {
-			console.log(image);
+			//console.log(image);
 			return <Image key={image._id} image={image} />
 		});
 	},
 	uploadImage(event) {
 		event.preventDefault();
-		console.log('test: ', document.getElementById('input').files);
+		//console.log('test: ', document.getElementById('input').files);
 		var fileUpload = document.getElementById('input').files;
 		var urls = [];
 		for (var i = 0; i < fileUpload.length; i++) {
-			console.log(fileUpload[i].name);
+			//https://bloom-photos.s3-us-west-1.amazonaws.com/DTEBgjvDQNLhZDvZx/792244_4741609493032_199570021_o.jpg
+			var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
+			console.log(imageLocal);
+			imageDetails._collection.insert({
+				imageurl: imageLocal,
+				time: new Date()
+			});
 			if (fileUpload[i] == null)
 			{
 				continue;
@@ -39,10 +45,6 @@ Home = React.createClass({
 				{
 					urls.push(downloadUrl);
 					if (urls.length > fileUpload.length - 1) {
-						imageDetails._collection.insert({
-							imageurl: downloadUrl,
-							time: new Date()
-						});
 						allFilesUploaded();
 					}
 				}
