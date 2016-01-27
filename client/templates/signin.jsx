@@ -17,17 +17,38 @@ Signin = React.createClass({
 
   render(){
     return (
-      <div className="col s12 m8 offset-m2 l6 offset-l3">
-        <form onSubmit={this.signIn}>
-          <input type="email" ref="email" placeholder="Email"/>
-          <input type="password" ref="password" placeholder="Password"/>
-          <input className="btn" type="submit" value="Sign In"></input>
+      <div className="row">
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.signIn}>
+          <div className="card">
+            <div className="card-content">
+              <div className="valign-wrapper">
+                <h3 className="left">Welcome</h3>
+                <a href="/register" className="title-btn waves-effect waves-teal btn-flat right">Sign up</a>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-content-mail prefix"></i>
+                  <input id="email" type="email" ref="email" className="validate"/>
+                  <label htmlFor="email">Email</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-action-lock prefix"></i>
+                  <input id="password" type="password" ref="password" className="validate"/>
+                  <label htmlFor="password">Password</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12 right-align">
+                  <a href="/reset-password" className="waves-effect waves-teal btn-flat">Forgot password?</a>
+                  <input className="btn waves-effect waves-light" type="submit" value="Sign In"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-        <hr/>
-        <a className="left" href="/register">Register</a>
-        <a className="right" href="/reset-password">Forgot Password?</a>
       </div>
-
     );
   },
 
@@ -68,19 +89,47 @@ Register = React.createClass({
 
   render(){
     return (
-      <div className="col s12 m8 offset-m2 l6 offset-l3">
-        <form onSubmit={this.register}>
-          <input type="text" ref="fname" placeholder="First name"/>
-          <input type="text" ref="lname" placeholder="Last name"/>
-          <input type="email" ref="email" placeholder="Email"/>
-          <input type="password" ref="password" placeholder="Password"/>
-          <input type="password" ref="cpassword" placeholder="Confirm password"/>
-          <input className="btn" type="submit" value="Register"></input>
+      <div className="row">
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.register}>
+          <div className="card">
+            <div className="card-content">
+              <div className="valign-wrapper">
+                <h3 className="left">Join us</h3>
+                <a href="/signin" className="title-btn waves-effect waves-teal btn-flat right">Sign in</a>
+              </div>
+              <div className="row">
+                <div className="input-field col s6">
+                  <i className="mdi-action-account-box prefix"></i>
+                  <input id="fname" type="text" ref="fname" className="validate"/>
+                  <label htmlFor="fname">First name</label>
+                </div>
+                <div className="input-field col s6">
+                  <input id="lname" type="text" ref="lname" className="validate"/>
+                  <label htmlFor="lname">Last name</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-content-mail prefix"></i>
+                  <input id="email" type="email" ref="email" className="validate"/>
+                  <label htmlFor="email">Email</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-action-lock prefix"></i>
+                  <input id="password" type="password" ref="password" className="validate"/>
+                  <label htmlFor="password">Password</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12 right-align">
+                  <input className="btn waves-effect waves-light" type="submit" value="Sign Up"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-        <hr/>
-        <a href="/signin">Sign In</a>
-        <ul>
-        </ul>
       </div>
 
     );
@@ -97,7 +146,7 @@ Register = React.createClass({
     var lname = ReactDOM.findDOMNode(this.refs.lname).value.trim();
     var email = ReactDOM.findDOMNode(this.refs.email).value.trim();
     var password = ReactDOM.findDOMNode(this.refs.password).value.trim();
-    var cpassword = ReactDOM.findDOMNode(this.refs.cpassword).value.trim();
+    //var cpassword = ReactDOM.findDOMNode(this.refs.cpassword).value.trim();
 
     Accounts.createUser({
       email: email,
@@ -130,13 +179,29 @@ ResetPassword = React.createClass({
 
   render(){
     return (
-      <div className="col s12 m8 offset-m2 l6 offset-l3">
-        <form onSubmit={this.register}>
-          <input type="email" ref="email" placeholder="Email"/>
-          <input className="btn" type="submit" value="Send Password Reset"></input>
+      <div className="row">
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.signIn}>
+          <div className="card">
+            <div className="card-content">
+              <div className="valign-wrapper">
+                <h3 className="left">Reset Password</h3>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-content-mail prefix"></i>
+                  <input id="email" type="email" ref="email" className="validate"/>
+                  <label htmlFor="email">Email</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12 right-align">
+                  <a href="/signin" className="waves-effect waves-teal btn-flat">Nevermind</a>
+                  <input className="btn waves-effect waves-light" type="submit" value="Continue"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
-        <hr/>
-        <a href="/signin">Sign In</a>
       </div>
 
     );
@@ -183,7 +248,7 @@ ConfirmReset = React.createClass({
       <div className="col s12 m8 offset-m2 l6 offset-l3">
         <form onSubmit={this.register}>
           <input type="email" ref="email" placeholder="Email"/>
-          <input className="btn" type="submit" value="Send Password Reset"></input>
+          <input className="ui primary button" type="submit" value="Send Password Reset"></input>
         </form>
         <a href="/signin">Sign In</a>
       </div>
