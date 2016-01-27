@@ -1,8 +1,3 @@
-const { AppBar, IconButton, IconMenu, LeftNav, FlatButton } = mui;
-const { MenuItem } = mui.Menus;
-const { NavigationMoreVert } = mui.SvgIcons;
-const Styles = mui.Styles;
-const Colors = Styles.Colors;
 
 imageDetails = new Mongo.Collection('imageDetails');
 
@@ -16,42 +11,34 @@ MainLayout = React.createClass({
       currentUser: Meteor.user()
     };
   },
-
-  //componentDidMount() {
-  //  $(".button-collapse").sideNav();
-  //},
   render() {
     var authBtn;
     if(!Meteor.user()){
-      authBtn = <li><a href="/signin">Sign In</a></li>
+      authBtn = <a href="/signin" className="item">Sign In</a>
     }
     else{
-      authBtn = <li><a onClick={this.signOut}>Sign Out</a></li>
+      authBtn = <a href="/signout" className="item">Sign Out</a>
+
     }
     return (
       <div className="page-content">
         <header>
-          <AppBar
-            title="Title"
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-          />
-          <nav>
-          <div className="nav-wrapper container">
-            <a href="/" className="brand-logo">BLOOM</a>
-            <a href="" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
-            <ul className="right hide-on-med-and-down">
-              <li><a href="">Random</a></li>
-              {authBtn}
-            </ul>
-            <ul className="side-nav" id="mobile-demo">
-              <li><a href="">Random</a></li>
-              {authBtn}
-            </ul>
+          <div className="ui borderless main menu">
+            <div className="ui text container">
+              <a href="/" className="header item">
+                <img className="logo" src="orchid.png" data-pin-nopin="true"/>
+                BLOOM
+              </a>
+              <div className="right menu">
+                <a href="/services" className="item">Services</a>
+                {authBtn}
+              </div>
+            </div>
           </div>
-        </nav>
+
         </header>
         <main>
-          <div className="container">
+          <div className="ui container">
             <div className="row">
               <div className="col s12 m12 l12">
                 <div className="section">
@@ -81,3 +68,19 @@ MainLayout = React.createClass({
   }
 
 });
+
+//<LeftNav docked={false} open={this.state.open} onRequestChange={open => this.setState({open})}>
+//            <MenuItem linkButton={true} href="/" primaryText="Home" index={1} onTouchTap={this.handleToggle}/>
+//            <MenuItem linkButton={true} href="/" primaryText="Feature" index={2} onTouchTap={this.handleToggle}/>
+//            <MenuItem linkButton={true} href="/" primaryText="Contact" index={3} onTouchTap={this.handleToggle}/>
+//          </LeftNav>
+//          <AppBar title="BLOOM"
+//            onLeftIconButtonTouchTap={this.handleToggle}
+//            style={{backgroundColor: Colors.deepOrange300}}
+//            iconElementRight={
+//              <IconMenu iconButtonElement={<IconButton><NavigationMoreVert /></IconButton>}>
+//                <MenuItem primaryText="Help" index={1} />
+//                {authBtn}
+//              </IconMenu>
+//            }
+//          />
