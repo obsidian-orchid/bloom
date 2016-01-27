@@ -2,7 +2,9 @@
 ReactLayout.setRoot
 
 FlowRouter.route("/", {
-  subscriptions: function() {},
+  subscriptions: function() {
+    this.register('images', Meteor.subscribe('images'));
+  },
   action: function() {
     ReactLayout.render(MainLayout, {
       content: <Home />
