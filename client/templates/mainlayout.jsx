@@ -1,3 +1,4 @@
+
 MainLayout = React.createClass({
 
   mixins: [ReactMeteorData],
