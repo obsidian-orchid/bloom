@@ -2,12 +2,12 @@
 var insecure = FlowRouter.group({});
 
 var authenticated = FlowRouter.group({
-  triggersEnter: [function(){
-    if(!Meteor.loggingIn() && !Meteor.userId()){
-      Session.set('redirectAfterLogin', FlowRouter.current().path);
-      FlowRouter.go('signin');
-    }
-  }]
+  //triggersEnter: [function(){
+  //  if(!Meteor.loggingIn() && !Meteor.userId()){
+  //    Session.set('redirectAfterLogin', FlowRouter.current().path);
+  //    FlowRouter.go('signin');
+  //  }
+  //}]
 });
 
 authenticated.route("/", {
@@ -32,20 +32,31 @@ insecure.route("/signin", {
   }
 });
 
-insecure.route("/register", {
-  name: 'register',
+insecure.route("/signup", {
+  name: 'signup',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
-      content: <Register />
+      content: <Signup />
     });
   }
 });
 
-insecure.route("/reset-password", {
+insecure.route("/recover-password", {
+  name: 'recover-password',
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <RecoverPassword />
+    });
+  }
+});
+
+insecure.route("/reset-password/:token", {
   name: 'reset-password',
   subscriptions: function() {},
   action: function() {
+    console.log('wut');
     ReactLayout.render(MainLayout, {
       content: <ResetPassword />
     });
