@@ -39,6 +39,15 @@ FlowRouter.route("/reset-password", {
   }
 });
 
+FlowRouter.route("/api", {
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <API />
+    });
+  }
+});
+
 FlowRouter.route("/services", {
   subscriptions: function() {
     //var selector = {category: {$ne: "private"}};
