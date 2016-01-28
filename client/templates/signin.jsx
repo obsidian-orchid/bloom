@@ -68,7 +68,14 @@ Signin = React.createClass({
           // Returning a sweetAlert
           console.log('error occurred');
          } else {
-           FlowRouter.go('/');
+           var redirect = Session.get('redirectAfterLogin');
+           if(redirect !== '/signin'){
+             FlowRouter.go(redirect);
+           }
+           else{
+             FlowRouter.go('/');
+           }
+
          }
      });
      return false;

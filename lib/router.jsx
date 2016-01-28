@@ -1,7 +1,17 @@
 //explanation: https://github.com/kadirahq/meteor-react-layout
-ReactLayout.setRoot
+var insecure = FlowRouter.group({});
 
-FlowRouter.route("/", {
+var authenticated = FlowRouter.group({
+  triggersEnter: [function(){
+    if(!Meteor.loggingIn() && !Meteor.userId()){
+      Session.set('redirectAfterLogin', FlowRouter.current().path);
+      FlowRouter.go('signin');
+    }
+  }]
+});
+
+authenticated.route("/", {
+  name: 'home',
   subscriptions: function() {
     this.register('images', Meteor.subscribe('images'));
   },
@@ -12,7 +22,8 @@ FlowRouter.route("/", {
   }
 });
 
-FlowRouter.route("/signin", {
+insecure.route("/signin", {
+  name: 'signin',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
@@ -21,7 +32,8 @@ FlowRouter.route("/signin", {
   }
 });
 
-FlowRouter.route("/register", {
+insecure.route("/register", {
+  name: 'register',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
@@ -30,7 +42,8 @@ FlowRouter.route("/register", {
   }
 });
 
-FlowRouter.route("/reset-password", {
+insecure.route("/reset-password", {
+  name: 'reset-password',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
@@ -48,7 +61,8 @@ FlowRouter.route("/api", {
   }
 });
 
-FlowRouter.route("/services", {
+authenticated.route("/services", {
+  name: 'services',
   subscriptions: function() {
     //var selector = {category: {$ne: "private"}};
     this.register('services', Meteor.subscribe('services'));
