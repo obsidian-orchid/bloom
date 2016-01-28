@@ -60,15 +60,16 @@ Home = React.createClass({
 	},
 	render(){
 		return (
-			<div className="upload-area">
-				<form id="upload" onSubmit={this.uploadImage}>
-					<p className="alert alert-success text-center">
-						<span>Click or Drag a File Here to Upload</span>
+			<div className="row">
+				<form id="upload" className="col s12" onSubmit={this.uploadImage}>
+					<div className="row">
+						<p className="flow-text">CLICK HERE TO UPLOAD</p>
 						<input id="input" type="file" multiple/>
-						<input type="Submit" />
-					</p>
+						<button className="btn waves-effect waves-light" type="submit" name="action">POST
+							<i className="mdi-content-send right"></i>
+						</button>
+					</div>
 				</form>
-				<strong>IMAGES UPLOADED</strong>
 				<ul>
 					{this.renderImages()}
 				</ul>
