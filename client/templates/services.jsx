@@ -19,6 +19,41 @@ ServicesList = React.createClass({
     });
   },
 
+  login(e){
+    Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
+      if (error) {
+        console.log('error', error);
+      }
+      // mergedUserId is set if a merge occured
+      if (mergedUserId) {
+        console.log(mergedUserId, 'merged with', Meteor.userId());
+
+    // The source account (mergedUserId) has now been deleted, so now is
+    // your chance to deal with you application specific DB items to avoid
+    // ending up with orphans. You'd typically want to change owner on the
+    // items belonging to the deleted user, or simply delete them
+        Meteor.call ('mergeItems', mergedUserId, function (error, result) {
+          if (error) {
+            console.log('error', error);
+          }
+          if (result) {
+            console.log('result', result);
+          }
+        });
+      }
+    });
+    e.preventDefault();
+  },
+
+  logout: function(event) {
+    Meteor.logout(function(err) {
+      if (err) {
+        throw new Meteor.Error("Logout failed");
+      }
+      console.log('Google_logout: ', event);
+    })
+  },
+
   render(){
     return (
       <div>
@@ -27,6 +62,13 @@ ServicesList = React.createClass({
           <input type="text" ref="urlInput" placeholder="Enter the url"/>
           <input className="btn" type="submit"></input>
         </form>
+        <br></br>
+        <div>
+          <button className="btn" id="google-login" onClick={ this.login }>Add Google</button>
+          <button className="btn" id="logout" onClick={ this.logout }>Remove Google</button>
+          <p className="flow-text">Test Photo Post</p>
+          <button className="btn" id="post-photo">Post photos</button>
+        </div>
         <ul>
           {this.renderServices()}
         </ul>
@@ -70,3 +112,4 @@ Service = React.createClass({
     );
   }
 });
+
