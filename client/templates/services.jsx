@@ -1,3 +1,5 @@
+const LoginButtons = BlazeToReact('loginButtons');
+
 ServicesList = React.createClass({
 
   //allows us to use getMeteorData() by just saying this.data

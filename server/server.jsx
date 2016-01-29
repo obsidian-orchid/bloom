@@ -78,9 +78,6 @@ Accounts.onCreateUser(function(options, user){
   //Accounts.sendVerificationEmail(user._id);
   return user;
 });
-
 Accounts.config({
   sendVerificationEmail: true
 });
-
-
