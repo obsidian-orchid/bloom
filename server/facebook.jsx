@@ -29,13 +29,12 @@ Facebook.prototype.getUserData = function() {
 
 Meteor.methods({
     postFBPhoto: function() {
-        console.log('here');
-        // var fb = new Facebook(Meteor.user().services.facebook.accessToken);
+        console.log('here: ', Meteor.user()._id);
         FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
         var fbUserId = Meteor.user().services.facebook.id;
 
         var wallPost = {
-          url: 'http://mediad.publicbroadcasting.net/p/kwmu/files/201508/tacos.jpg'
+          url: 'http://www.virginmedia.com/images/pixar-walle-431x300.jpg'
         };
 
         FBGraph.post(fbUserId + "/photos", wallPost, function(err, res) {
@@ -46,35 +45,9 @@ Meteor.methods({
                 console.log('res: ', res); // { id: xxxxx}
             }
         });
+    },
+    removeMergedCollection: function (mergedUserId) {
+        console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
+        Meteor.users.remove(mergedUserId);
     }
 });
-
-// Meteor.methods({
-//     getUserData: function() {
-//         console.log('this far!');
-//         var fb = new Facebook(Meteor.user().services.facebook.accessToken);
-//         var data = fb.getUserData();
-//         console.log('data: ', data);
-//         return data;
-//     }
-// });
-
-// Facebook.prototype.getPhotos = function() {
-//     return this.query('/me/photos?fields=picture');
-// }
-
-// Meteor.methods({
-//     getUserData: function() {
-//         var fb = new Facebook(Meteor.user().services.facebook.accessToken);
-//         var data = fb.getPhotos();
-//         return data;
-//      }
-// });
-
-// Meteor.methods({
-//     getPhotos: function() {   
-//     var fb = new Facebook(Meteor.user().services.facebook.accessToken);
-//     var photos = fb.getPhotos;
-//     return photos;
-// }
-// });
