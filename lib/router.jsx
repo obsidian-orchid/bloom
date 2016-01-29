@@ -32,23 +32,49 @@ insecure.route("/signin", {
   }
 });
 
-insecure.route("/register", {
-  name: 'register',
+insecure.route("/signup", {
+  name: 'signup',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
-      content: <Register />
+      content: <Signup />
     });
   }
 });
 
-insecure.route("/reset-password", {
+insecure.route("/recover-password", {
+  name: 'recover-password',
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <RecoverPassword />
+    });
+  }
+});
+
+insecure.route("/reset-password/:token", {
   name: 'reset-password',
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
       content: <ResetPassword />
     });
+  }
+});
+
+insecure.route("/verify-email/:token", {
+  name: 'verify-email',
+  subscriptions: function() {},
+  action: function() {
+    var token = FlowRouter.getParam("token");
+    Accounts.onEmailVerificationLink(function (token) {
+      Accounts.verifyEmail(token, function (error) {
+        if (!error) {
+          //Do stuff
+        }
+      });
+    });
+    FlowRouter.go('/');
   }
 });
 

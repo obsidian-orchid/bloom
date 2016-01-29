@@ -24,11 +24,10 @@ MainLayout = React.createClass({
     return (
       <div className="page-content">
         <header>
-          <nav>
+          <nav className="cyan darken-3">
           <div className="nav-wrapper container">
             <a href="/" className="brand-logo">
-            <img className="logo-img" src="orchid.png"/>
-              BLOOM
+              <i className="mdi-image-camera left"></i>BLOOM
             </a>
             <a href="" data-activates="mobile-demo" className="button-collapse"><i className="mdi-navigation-menu"></i></a>
             <ul className="right hide-on-med-and-down">
@@ -53,7 +52,7 @@ MainLayout = React.createClass({
             </div>
           </div>
         </main>
-        <footer className="page-footer">
+        <footer className="page-footer cyan darken-3">
           <div className="footer-copyright">
             <div className="container">
             © 2016 Obsidian Orchid
@@ -71,5 +70,4 @@ MainLayout = React.createClass({
     Meteor.logout();
     FlowRouter.go('/signin');
   }
-
 });
