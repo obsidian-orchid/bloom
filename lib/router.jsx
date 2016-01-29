@@ -32,8 +32,13 @@ insecure.route("/signin", {
   }
 });
 
+<<<<<<< 2626f133a8a1fc6ddd63512ce3b10b4c624c38ed
 insecure.route("/signup", {
   name: 'signup',
+=======
+insecure.route("/register", {
+  name: 'register',
+>>>>>>> merge router
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
@@ -42,6 +47,7 @@ insecure.route("/signup", {
   }
 });
 
+<<<<<<< 2626f133a8a1fc6ddd63512ce3b10b4c624c38ed
 insecure.route("/recover-password", {
   name: 'recover-password',
   subscriptions: function() {},
@@ -53,6 +59,9 @@ insecure.route("/recover-password", {
 });
 
 insecure.route("/reset-password/:token", {
+=======
+insecure.route("/reset-password", {
+>>>>>>> merge router
   name: 'reset-password',
   subscriptions: function() {},
   action: function() {
