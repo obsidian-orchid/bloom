@@ -12,33 +12,50 @@ ResetPassword = React.createClass({
 
   render(){
     return (
-      <div className="col s12 m8 offset-m2 l6 offset-l3">
-        wweriowperiwepori
+      <div className="row">
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.recover}>
+          <div className="card">
+            <div className="card-content">
+              <div className="valign-wrapper">
+                <h3 className="left">New Password</h3>
+              </div>
+              <div className="row">
+                <div className="input-field col s12">
+                   <i className="mdi-action-lock prefix"></i>
+                  <input id="password" type="password" ref="password" className="validate"/>
+                  <label htmlFor="password">Password</label>
+                </div>
+              </div>
+              <div className="row">
+                <div className="input-field col s12 right-align">
+                  <input className="btn waves-effect waves-light orange" type="submit" value="Submit"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
-
     );
   },
 
-  register(event){
+  recover(event){
 
     //stops page reloading
     event.preventDefault();
 
     //retrieving text from React ref tag
     //trimming to remove whitespace surrounding text
-    var email = ReactDOM.findDOMNode(this.refs.email).value.trim();
+    var password = ReactDOM.findDOMNode(this.refs.password).value.trim();
+    var token = FlowRouter.getParam("token");
+    console.log(token);
 
-     Accounts.forgotPassword({email: email}, function(err) {
+     Accounts.resetPassword(token, password, function(err) {
         if (err) {
-          if (err.message === 'User not found [403]') {
-            console.log('This email does not exist.');
-          } else {
-            console.log('We are sorry but something went wrong.');
-          }
+          console.log(err);
         } else {
-          console.log('Email Sent. Check your mailbox.');
+          console.log('Yay!');
         }
-      });
+     });
     return false;
   }
 });

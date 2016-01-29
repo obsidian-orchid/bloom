@@ -70,5 +70,4 @@ MainLayout = React.createClass({
     Meteor.logout();
     FlowRouter.go('/signin');
   }
-
 });

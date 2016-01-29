@@ -13,7 +13,7 @@ RecoverPassword = React.createClass({
   render(){
     return (
       <div className="row">
-        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.register}>
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.send}>
           <div className="card">
             <div className="card-content">
               <div className="valign-wrapper">
@@ -40,7 +40,7 @@ RecoverPassword = React.createClass({
     );
   },
 
-  register(event){
+  send(event){
 
     //stops page reloading
     event.preventDefault();

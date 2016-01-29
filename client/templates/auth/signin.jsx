@@ -17,7 +17,7 @@ Signin = React.createClass({
   render(){
     return (
       <div className="row">
-        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.signIn}>
+        <form className="col l6 offset-l3 m8 offset-m2 s12" onSubmit={this.signin}>
           <div className="card">
             <div className="card-content">
               <div className="valign-wrapper">
@@ -51,7 +51,7 @@ Signin = React.createClass({
     );
   },
 
-  signIn(event){
+  signin(event){
 
     //stops page reloading
     event.preventDefault();
@@ -68,7 +68,7 @@ Signin = React.createClass({
           console.log('error occurred');
          } else {
            var redirect = Session.get('redirectAfterLogin');
-           if(redirect !== '/signin'){
+           if(redirect !== '/signin' && redirect){
              FlowRouter.go(redirect);
            }
            else{
