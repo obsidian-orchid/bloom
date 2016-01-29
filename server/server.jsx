@@ -64,7 +64,12 @@ Accounts.onCreateUser(function(options, user){
   user.profile.firstName = options.firstName;
   user.profile.lastName = options.lastName;
 
+  //Accounts.sendVerificationEmail(user._id);
   return user;
+});
+
+Accounts.config({
+  sendVerificationEmail: true
 });
 
 

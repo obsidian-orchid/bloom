@@ -62,6 +62,22 @@ insecure.route("/reset-password/:token", {
   }
 });
 
+insecure.route("/verify-email/:token", {
+  name: 'verify-email',
+  subscriptions: function() {},
+  action: function() {
+    var token = FlowRouter.getParam("token");
+    Accounts.onEmailVerificationLink(function (token) {
+      Accounts.verifyEmail(token, function (error) {
+        if (!error) {
+          //Do stuff
+        }
+      });
+    });
+    FlowRouter.go('/');
+  }
+});
+
 FlowRouter.route("/api", {
   subscriptions: function() {},
   action: function() {
