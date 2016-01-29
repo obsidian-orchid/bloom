@@ -32,13 +32,8 @@ insecure.route("/signin", {
   }
 });
 
-<<<<<<< 2626f133a8a1fc6ddd63512ce3b10b4c624c38ed
 insecure.route("/signup", {
   name: 'signup',
-=======
-insecure.route("/register", {
-  name: 'register',
->>>>>>> merge router
   subscriptions: function() {},
   action: function() {
     ReactLayout.render(MainLayout, {
@@ -47,7 +42,6 @@ insecure.route("/register", {
   }
 });
 
-<<<<<<< 2626f133a8a1fc6ddd63512ce3b10b4c624c38ed
 insecure.route("/recover-password", {
   name: 'recover-password',
   subscriptions: function() {},
@@ -59,9 +53,6 @@ insecure.route("/recover-password", {
 });
 
 insecure.route("/reset-password/:token", {
-=======
-insecure.route("/reset-password", {
->>>>>>> merge router
   name: 'reset-password',
   subscriptions: function() {},
   action: function() {
@@ -115,9 +106,4 @@ FlowRouter.notFound = {
       content: <NotFound />
     });
   }
-<<<<<<< 35b193f4211367bf7c1f84ec6ac5cc1109ef53fe
 };
-=======
-};
-Status API Training Shop Blog About Pricing
->>>>>>> merge package and router conflicts
