@@ -51,11 +51,12 @@ ResetPassword = React.createClass({
 
      Accounts.resetPassword(token, password, function(err) {
         if (err) {
-          console.log(err);
+          Materialize.toast('Sorry, something went wrong', 4000);
         } else {
-          console.log('Yay!');
+          Materialize.toast('You have successfully changed your password!', 4000);
         }
      });
+    FlowRouter.go('/');
     return false;
   }
 });

@@ -62,21 +62,20 @@ Signin = React.createClass({
     var password = ReactDOM.findDOMNode(this.refs.password).value.trim();
 
     // Calling the loginWithPassword function on the user
-     Meteor.loginWithPassword(email, password, function(error) {
-         if (error) {
-          // Returning a sweetAlert
-          console.log('error occurred');
-         } else {
-           var redirect = Session.get('redirectAfterLogin');
-           if(redirect !== '/signin' && redirect){
-             FlowRouter.go(redirect);
-           }
-           else{
-             FlowRouter.go('/');
-           }
-
-         }
-     });
-     return false;
+    Meteor.loginWithPassword(email, password, function(error) {
+      if (error) {
+        Materialize.toast('Username and password combination is invalid', 4000);
+      }
+      else{
+        var redirect = Session.get('redirectAfterLogin');
+        if(redirect !== '/signin' && redirect){
+         FlowRouter.go(redirect);
+        }
+        else{
+         FlowRouter.go('/');
+        }
+      }
+    });
+    return false;
   }
 });
