@@ -29,7 +29,6 @@ materialize:materialize
 http
 service-configuration
 accounts-facebook
-accounts-twitter
 stevezhu:fbgraph
 mikael:accounts-merge
 accounts-twitter
