@@ -5,6 +5,12 @@ ServicesList = React.createClass({
   //allows us to use getMeteorData() by just saying this.data
   mixins: [ReactMeteorData],
 
+  getInitialState : function() {
+    return {
+      disabled: false
+    };
+  },
+
   getMeteorData(){
     return {
       //returning alphabetically sorted services
@@ -22,6 +28,7 @@ ServicesList = React.createClass({
   login(e){
     Meteor.signInWithGoogle ({
       requestPermissions: ['https://www.googleapis.com/auth/plus.login',
+        'https://picasaweb.google.com/data/',
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/plus.me',
         'https://www.googleapis.com/auth/plus.media.upload',
@@ -71,7 +78,7 @@ ServicesList = React.createClass({
         </form>
         <br></br>
         <div>
-          <button className="btn" id="google-login" onClick={ this.login }>Add Google</button>
+          <button className="btn" id="google-login" disabled={this.state.disabled} onClick={this.login}>Add Google</button>
           <button className="btn" id="logout" onClick={ this.logout }>Remove Google</button>
           <p className="flow-text">Test Photo Post</p>
           <button className="btn" onClick={this.postPhoto}>Post photos</button>
@@ -86,7 +93,7 @@ ServicesList = React.createClass({
   postPhoto: function(){
     console.log(this.data.currentUser);
     Meteor.call('postPhoto', function(err, result) {
-      console.log('postPhoto res: ', result.data.image.url);
+      console.log('postPhoto res: ', result);
     });
   },
 
