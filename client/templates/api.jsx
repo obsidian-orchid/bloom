@@ -4,7 +4,7 @@ API = React.createClass({
             console.log('postFBPhoto res: ', data)
         });
     },
-    login: function() {
+    loginFacebook: function() {
         Meteor.signInWithFacebook({
             requestPermissions: ['user_photos', , 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
         }, function(err, mergedUserId) {
@@ -17,7 +17,7 @@ API = React.createClass({
                 // Remove merged collection
                 Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
                     if (err) {
-                        console.log('error', error);
+                        console.log('error', err);
                     }
                 });
             }
@@ -31,19 +31,19 @@ API = React.createClass({
         // 	console.log('fb_login: ', event);
         // });
     },
-    logout: function(event) {
+    logoutFacebook: function() {
         Meteor.logout(function(err) {
             if (err) {
-                throw new Meteor.Error("Logout failed");
+                throw new Meteor.Error("Facebook logout failed");
             }
-            console.log('fb_logout: ', event);
+            console.log('fb_logout');
         })
     },
     render() {
         return ( 
             <div>
-                <button id="facebook-login" onClick={ this.login }>Add Facebook</button>
-                <button id="logout" onClick={ this.logout }>Remove Facebook</button>
+                <button id="facebook-login" onClick={ this.loginFacebook }>Add Facebook</button>
+                <button id="logout" onClick={ this.logoutFacebook }>Remove Facebook</button>
                 <p>Test Photo Post</p>
                 <button id="post-photo" onClick={ this.postFBPhoto }>Post a photo</button>
             </div>

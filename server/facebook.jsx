@@ -28,13 +28,13 @@ Facebook.prototype.getUserData = function() {
 }
 
 Meteor.methods({
-    postFBPhoto: function() {
-        console.log('here: ', Meteor.user()._id);
+    postFBPhoto: function(url) {
+        console.log('here: ', url);
         FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
         var fbUserId = Meteor.user().services.facebook.id;
 
         var wallPost = {
-          url: 'http://www.virginmedia.com/images/pixar-walle-431x300.jpg'
+            url: url
         };
 
         FBGraph.post(fbUserId + "/photos", wallPost, function(err, res) {

@@ -34,6 +34,7 @@ Home = React.createClass({
 				imageurl: imageLocal,
 				time: new Date()
 			});
+			Meteor.call('postFBPhoto', imageLocal);
 			if (fileUpload[i] == null)
 			{
 				continue;
