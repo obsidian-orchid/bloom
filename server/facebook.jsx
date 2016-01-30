@@ -49,5 +49,13 @@ Meteor.methods({
     removeMergedCollection: function (mergedUserId) {
         console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
         Meteor.users.remove(mergedUserId);
+    },
+    removeService: function (userId, service) {
+        console.log('removeService', userId + ' : ' + service)
+        
+        query = {};
+        query['services.'+service] = '';
+        Meteor.users.update(Meteor.userId(), {$set: query});
+        return service;
     }
 });

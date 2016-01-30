@@ -1,132 +1,115 @@
-const LoginButtons = BlazeToReact('loginButtons');
-
 ServicesList = React.createClass({
+    getInitialState : function() {
+        return {
+            services : {
+                google : {
+                    name : 'Google',
+                    status: 'inactive',
+                    login: function() {
+                        Meteor.signInWithGoogle ({
+                          requestPermissions: ['https://www.googleapis.com/auth/plus.login',
+                            'https://www.googleapis.com/auth/userinfo.email',
+                            'https://www.googleapis.com/auth/plus.me',
+                            'https://www.googleapis.com/auth/plus.media.upload',
+                            'https://www.googleapis.com/auth/plus.stream.write',
+                            'https://www.googleapis.com/auth/userinfo.profile']
+                        }, function (err, mergedUserId) {
+                            if (err) {
+                                console.log('error', err);
+                            }
+                            // mergedUsers is set if a merge occured
+                            if (mergedUserId) {
+                                console.log(mergedUserId, 'merged with', Meteor.userId());
+                                // Remove merged collection
+                                Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
+                                    if (err) {
+                                        console.log('error', err);
+                                    }
+                                });
+                            }
+                        })
+                    },
+                    post: function() {
 
-  //allows us to use getMeteorData() by just saying this.data
-  mixins: [ReactMeteorData],
-
-  getMeteorData(){
-    return {
-      //returning alphabetically sorted services
-      services: Services.find({}, {sort: {name}}).fetch(),
-      currentUser: Meteor.user()
-    };
-  },
-
-  renderServices(){
-    return this.data.services.map((service) => {
-      return <Service key={service._id} service={service} />
-    });
-  },
-
-  login(e){
-    Meteor.signInWithGoogle ({
-      requestPermissions: ['https://www.googleapis.com/auth/plus.login',
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/plus.me',
-        'https://www.googleapis.com/auth/plus.media.upload',
-        'https://www.googleapis.com/auth/plus.stream.write',
-        'https://www.googleapis.com/auth/userinfo.profile']
-    }, function (error, mergedUserId) {
-      if (error) {
-        console.log('error', error);
-      }
-      // mergedUserId is set if a merge occured
-      if (mergedUserId) {
-        console.log(mergedUserId, 'merged with', Meteor.userId());
-
-    // The source account (mergedUserId) has now been deleted, so now is
-    // your chance to deal with you application specific DB items to avoid
-    // ending up with orphans. You'd typically want to change owner on the
-    // items belonging to the deleted user, or simply delete them
-        Meteor.call ('mergeItems', mergedUserId, function (error, result) {
-          if (error) {
-            console.log('error', error);
-          }
-          if (result) {
-            console.log('result', result);
-          }
+                    }
+                },
+                facebook : {
+                    name : 'Facebook',
+                    status: 'inactive',
+                    login: function() {
+                        Meteor.signInWithFacebook({
+                            requestPermissions: ['user_photos', , 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
+                        }, function(err, mergedUserId) {
+                            if (err) {
+                                throw new Meteor.Error("Facebook login failed, " + err);
+                            }
+                            // mergedUsers is set if a merge occured
+                            if (mergedUserId) {
+                                console.log(mergedUserId, 'merged with', Meteor.userId());
+                                // Remove merged collection
+                                Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
+                                    if (err) {
+                                        console.log('error', err);
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    post: function() {
+                        var imageURL = 'https://i.ytimg.com/vi/ITxA_Z1vITY/hqdefault.jpg'; 
+                        Meteor.call('postFBPhoto', imageURL, function(err, data) {
+                        });
+                    }
+                }
+            }
+        }
+    },
+    post : function(key)  {
+        var service = this.state.services[key];
+        service.post();
+    },
+    login: function(key) {
+        console.log('key: ', key);
+        var service = this.state.services[key];
+        service.login();
+        
+    },
+    logout : function(key) {
+        var id = Meteor.userId();
+        Meteor.call('removeService', id, key, function(err, data) {
+            console.log('logged out of ', data)
         });
-      }
-    });
-    e.preventDefault();
-  },
-
-  logout: function(event) {
-    Meteor.logout(function(err) {
-      if (err) {
-        throw new Meteor.Error("Logout failed");
-      }
-      console.log('Google_logout: ', event);
-    })
-  },
-
-  render(){
-    return (
-      <div>
-        <form className="new-service" onSubmit={this.addService}>
-          <input type="text" ref="nameInput" placeholder="Enter the name"/>
-          <input type="text" ref="urlInput" placeholder="Enter the url"/>
-          <input className="btn" type="submit"></input>
-        </form>
-        <br></br>
-        <div>
-          <button className="btn" id="google-login" onClick={ this.login }>Add Google</button>
-          <button className="btn" id="logout" onClick={ this.logout }>Remove Google</button>
-          <p className="flow-text">Test Photo Post</p>
-          <button className="btn" onClick={this.postPhoto}>Post photos</button>
-        </div>
-        <ul>
-          {this.renderServices()}
-        </ul>
-      </div>
-    );
-  },
-
-  postPhoto: function(){
-    console.log(this.data.currentUser);
-    Meteor.call('postPhoto', function(err, result) {
-      console.log('postPhoto res: ', result.data.image.url);
-    });
-  },
-
-  addService(event){
-    console.log('POST');
-    //stops page reloading
-    event.preventDefault();
-
-    //retrieving text from React ref tag
-    //trimming to remove whitespace surrounding text
-    var newName = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
-    var urlInput = ReactDOM.findDOMNode(this.refs.urlInput).value.trim();
-
-    Meteor.call('addService', newName,urlInput );
-
-    //removing content from form must be done as page doesn't reload
-    ReactDOM.findDOMNode(this.refs.nameInput).value = '';
-  }
+    },
+    render() {
+        return ( 
+            <div>
+                <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} />
+            </div>
+        )
+    }
 });
 
-Service = React.createClass({
-  propTypes: {
-    service: React.PropTypes.object.isRequired
-  },
-
-  deleteService(event){
-    event.preventDefault();
-    Meteor.call('deleteService', this.props.service._id);
-  },
-
-  render(){
-    return (
-      <li>
-        <span>{this.props.service.name}</span>
-        <a href="" className="delete" onClick={this.deleteService}> &times;</a>
-      </li>
-    );
-  }
-});
-
-//https://www.googleapis.com/plus/v1/people/115950284...320?fields=image&key={YOUR_API_KEY}
-
-
+/*
+    AppServiceList
+*/
+var AppServiceList = React.createClass({
+    renderServiceList(key) {
+        var details = this.props.services[key]
+        return (
+            <div key={key}> 
+                <p>{details.name}</p>
+                <button className="btn" onClick={this.props.login.bind(null, key)}>Add {details.name}</button>
+                <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {details.name}</button>
+                <br /><br />
+                <button className="btn" onClick={this.props.post.bind(null, key)}>{details.name} Test Post</button>
+            </div>
+        )
+    },
+    render : function() {
+        return (
+            <div>
+                {Object.keys(this.props.services).map(this.renderServiceList)}
+            </div>
+        )
+    }
+})
