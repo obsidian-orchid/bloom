@@ -13,3 +13,9 @@ ServiceConfiguration.configurations.insert({
     "clientId": "89929469817-njrdulgdgpvtteo9sqqg6as9mo3e07e0.apps.googleusercontent.com",
     "secret": "LZ6oa4TIS81EfXZsVMSkVjHg"
 });
+
+//ServiceConfiguration.configurations.insert({
+//    "service": "google",
+//    "clientId": "89929469817-2ndstqi3uvf7b95eru0js148ntliq28k.apps.googleusercontent.com",
+//    "secret": "KxM_Pk086CxAjt6ZWnCJscJn"
+//});
