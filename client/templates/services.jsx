@@ -1,3 +1,5 @@
+const LoginButtons = BlazeToReact('loginButtons');
+
 ServicesList = React.createClass({
 
   //allows us to use getMeteorData() by just saying this.data
@@ -17,6 +19,48 @@ ServicesList = React.createClass({
     });
   },
 
+  login(e){
+    Meteor.signInWithGoogle ({
+      requestPermissions: ['https://www.googleapis.com/auth/plus.login',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/plus.media.upload',
+        'https://www.googleapis.com/auth/plus.stream.write',
+        'https://www.googleapis.com/auth/userinfo.profile']
+    }, function (error, mergedUserId) {
+      if (error) {
+        console.log('error', error);
+      }
+      // mergedUserId is set if a merge occured
+      if (mergedUserId) {
+        console.log(mergedUserId, 'merged with', Meteor.userId());
+
+    // The source account (mergedUserId) has now been deleted, so now is
+    // your chance to deal with you application specific DB items to avoid
+    // ending up with orphans. You'd typically want to change owner on the
+    // items belonging to the deleted user, or simply delete them
+        Meteor.call ('mergeItems', mergedUserId, function (error, result) {
+          if (error) {
+            console.log('error', error);
+          }
+          if (result) {
+            console.log('result', result);
+          }
+        });
+      }
+    });
+    e.preventDefault();
+  },
+
+  logout: function(event) {
+    Meteor.logout(function(err) {
+      if (err) {
+        throw new Meteor.Error("Logout failed");
+      }
+      console.log('Google_logout: ', event);
+    })
+  },
+
   render(){
     return (
       <div>
@@ -25,6 +69,13 @@ ServicesList = React.createClass({
           <input type="text" ref="urlInput" placeholder="Enter the url"/>
           <input className="btn" type="submit"></input>
         </form>
+        <br></br>
+        <div>
+          <button className="btn" id="google-login" onClick={ this.login }>Add Google</button>
+          <button className="btn" id="logout" onClick={ this.logout }>Remove Google</button>
+          <p className="flow-text">Test Photo Post</p>
+          <button className="btn" onClick={this.postPhoto}>Post photos</button>
+        </div>
         <ul>
           {this.renderServices()}
         </ul>
@@ -32,8 +83,15 @@ ServicesList = React.createClass({
     );
   },
 
-  addService(event){
+  postPhoto: function(){
+    console.log(this.data.currentUser);
+    Meteor.call('postPhoto', function(err, result) {
+      console.log('postPhoto res: ', result.data.image.url);
+    });
+  },
 
+  addService(event){
+    console.log('POST');
     //stops page reloading
     event.preventDefault();
 
@@ -68,3 +126,7 @@ Service = React.createClass({
     );
   }
 });
+
+//https://www.googleapis.com/plus/v1/people/115950284...320?fields=image&key={YOUR_API_KEY}
+
+

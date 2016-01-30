@@ -25,7 +25,18 @@ Slingshot.createDirective("myFileUploads", Slingshot.S3Storage, {
 		var user = Meteor.users.findOne(this.userId);
 		return user._id + "/" + file.name;
 	}
-}); 
+});
+
+ServiceConfiguration.configurations.remove({
+  service: "twitter"
+});
+
+ServiceConfiguration.configurations.insert({
+  service: "twitter",
+  consumerKey: Meteor.settings.consumerKey,
+  loginStyle: "popup",
+  consumerSecret: Meteor.settings.consumerSecret
+});
 
 Meteor.publish('services', function(){
     return Services.find();
@@ -67,9 +78,6 @@ Accounts.onCreateUser(function(options, user){
   //Accounts.sendVerificationEmail(user._id);
   return user;
 });
-
 Accounts.config({
   sendVerificationEmail: true
 });
-
-

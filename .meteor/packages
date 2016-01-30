@@ -29,6 +29,12 @@ materialize:materialize
 http
 service-configuration
 accounts-facebook
-accounts-twitter
 stevezhu:fbgraph
 mikael:accounts-merge
+accounts-twitter
+accounts-ui
+thereactivestack:blazetoreact
+jagi:google-oauth-jwt
+bozhao:link-accounts
+accounts-google
+percolate:google-api
