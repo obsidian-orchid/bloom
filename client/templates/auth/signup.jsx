@@ -78,9 +78,17 @@ Signup = React.createClass({
       password: password
     }, function (error){
       if(error){
-        console.log(error.reason);
+
+        if(error.message = 'Email already exists. [403]'){
+          Materialize.toast('User with this email address already exists', 4000);
+        }
+        else{
+          Materialize.toast('Something has gone wrong!', 4000);
+          console.log(error);
+        }
       }
       else{
+        Materialize.toast('Please check your email to verify your account!', 4000);
         FlowRouter.go('/');
       }
     });

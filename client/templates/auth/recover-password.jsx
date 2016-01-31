@@ -52,12 +52,12 @@ RecoverPassword = React.createClass({
      Accounts.forgotPassword({email: email}, function(err) {
         if (err) {
           if (err.message === 'User not found [403]') {
-            console.log('This email does not exist.');
+            Materialize.toast('This account does not exist!', 4000);
           } else {
-            console.log('We are sorry but something went wrong.');
+            Materialize.toast('Sorry, something went wrong!', 4000);
           }
         } else {
-          console.log('Email Sent. Check your mailbox.');
+          Materialize.toast('Email sent! Please check your inbox', 4000);
         }
       });
     return false;

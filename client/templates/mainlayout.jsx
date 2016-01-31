@@ -68,6 +68,7 @@ MainLayout = React.createClass({
   signOut(event){
     event.preventDefault();
     Meteor.logout();
+    Materialize.toast('You have been signed out!', 4000);
     FlowRouter.go('/signin');
   }
 });
