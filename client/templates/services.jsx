@@ -80,7 +80,12 @@ ServicesList = React.createClass({
         <div>
           <button className="btn" id="google-login" disabled={this.state.disabled} onClick={this.login}>Add Google</button>
           <button className="btn" id="logout" onClick={ this.logout }>Remove Google</button>
-          <p className="flow-text">Test Photo Post</p>
+          <p className="flow-text">Create a new album</p>
+          <form className="new-service" onSubmit={this.createAlbum}>
+            <input type="text" ref="albumTitle" placeholder="Enter the album title"/>
+            <input className="btn" type="submit"></input>
+          </form>
+          <br></br>
           <button className="btn" onClick={this.postPhoto}>Post photos</button>
         </div>
         <ul>
@@ -88,6 +93,14 @@ ServicesList = React.createClass({
         </ul>
       </div>
     );
+  },
+
+  createAlbum(event){
+    event.preventDefault();
+    var albumTitle = ReactDOM.findDOMNode(this.refs.albumTitle).value.trim();
+    Meteor.call('createAlbum', albumTitle);
+    ReactDOM.findDOMNode(this.refs.albumTitle).value = '';
+
   },
 
   postPhoto: function(){
