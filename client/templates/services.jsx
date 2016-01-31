@@ -94,7 +94,7 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   renderServiceList(key) {
-    var details = this.props.services[key];
+    var details = this.props.services[key]
     return (
       <div key={key}>
         <p>{details.name}</p>
