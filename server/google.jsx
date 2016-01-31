@@ -1,4 +1,50 @@
 Meteor.methods({
+
+  createAlbum(title){
+    console.log(title);
+    var xmlData = '<atom:entry xmlns="http://www.w3.org/2005/Atom"'+
+      'xmlns:media="http://search.yahoo.com/mrss/"'+
+      'xmlns:gphoto="http://schemas.google.com/photos/2007">'+
+      '<title type="text">Trip To Italy</title>'+
+      '<summary type="text">This was the recent trip I took to Italy.</summary>'+
+      '<gphoto:location>Italy</gphoto:location>'+
+      '<gphoto:access>public</gphoto:access>'+
+      '<gphoto:timestamp>1152255600000</gphoto:timestamp>'+
+      '<media:group>'+
+      '<media:keywords>italy, vacation</media:keywords>'+
+      '</media:group>'+
+      '<category scheme="http://schemas.google.com/g/2005#kind"'+
+      'term="http://schemas.google.com/photos/2007#album"></category>'+
+      '<atom:/entry>';
+    console.log(xmlData);
+    var googleID = Meteor.user().services.google.id;
+    var url = "https://picasaweb.google.com/data/feed/api/user/"+googleID;
+    //var options = {
+    //  'headers': {
+    //    'Content-Type': 'application/atom+xml',
+    //    'Authorization': 'Bearer ' + Meteor.user().services.google.accessToken,
+    //    'X-JavaScript-User-Agent': "Google APIs Explorer"
+    //  }
+    //};
+    HTTP.call('POST',"https://picasaweb.google.com/data/feed/api/user/"+googleID, {
+      headers:{
+        'Content-Type': 'application/atom+xml',
+        'Authorization': 'Bearer ' + Meteor.user().services.google.accessToken,
+        'X-JavaScript-User-Agent': "Google APIs Explorer"
+      },
+      params: xmlData
+    }, function (err, result) {
+      if (err) {
+        console.log('error occurred..');
+        console.log(err);
+        return;
+      }
+      console.log(result);
+      console.log('----------------------');
+    });
+    //var newAlbum = HTTP.post(url, options);
+    //console.log(newAlbum);
+  },
   //making successful picasa api calls
   postPhoto(){
     var googleID = Meteor.user().services.google.id;
@@ -13,7 +59,21 @@ Meteor.methods({
 
     var albums = HTTP.get(url, options);
     console.log(albums);
-    return albums;
+    //return albums;
+
+    var newUrl = "https://picasaweb.google.com/data/feed/api/user/"+googleID+"/albumid/6245288695535104289";
+    var options = {
+      'headers' : {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  Meteor.user().services.google.accessToken,
+        'X-JavaScript-User-Agent': "Google APIs Explorer",
+        'url': 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'
+      }
+    };
+
+    var searchResult = HTTP.post(newUrl, options);
+    console.log(searchResult);
+    return searchResult;
   }
     //var searchResult = HTTP.get(url, options);
     //console.log(searchResult);
