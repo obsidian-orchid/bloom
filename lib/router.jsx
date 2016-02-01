@@ -94,7 +94,9 @@ authenticated.route("/services", {
     //var selector = {category: {$ne: "private"}};
     this.register('services', Meteor.subscribe('services'));
   },
-  action: function() {
+  action: function(params, queryParams) {
+    console.log(queryParams);
+
     ReactLayout.render(MainLayout, {
       content: <ServicesList />
     });

@@ -38,4 +38,6 @@ jagi:google-oauth-jwt
 bozhao:link-accounts
 accounts-google
 percolate:google-api
+tunguska:accounts-imgur
+reactrouter:react-router
 simple:imgur

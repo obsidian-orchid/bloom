@@ -1,4 +1,5 @@
 ServicesList = React.createClass({
+
   getInitialState : function() {
     return {
       services : {
@@ -60,6 +61,33 @@ ServicesList = React.createClass({
             Meteor.call('postFBPhoto', imageURL, function(err, data) {
             });
           }
+        },
+        pinterest: {
+          name: 'Pinterest',
+          status: 'inactive',
+          login: function() {
+            var url = 'https://api.imgur.com/oauth2/authorize?client_id=91bbbe67ad8b736&response_type=token';
+            HTTP.call('GET', url, function(err, result){
+                if (err) {
+                  console.log('error occurred..');
+                  console.log(err);
+                }
+                console.log(result);
+            }
+            )},
+          post: function(){
+            Imgur.upload({
+              image:'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg',
+              apiKey:'91bbbe67ad8b736'
+            }, function (error, data) {
+                if (error) {
+                  throw error;
+                } else {
+                  console.log(data);
+                }
+              });
+          }
+
         }
       }
     }
@@ -80,10 +108,20 @@ ServicesList = React.createClass({
       console.log('logged out of ', data)
     });
   },
+
   render() {
     return (
       <div>
         <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} />
+        <br></br>
+        Imgur
+        <br></br>
+        <br></br>
+        <a href="https://api.imgur.com/oauth2/authorize?client_id=91bbbe67ad8b736&response_type=token" target="_blank" className="btn" id="google-login">Add Imgur</a>
+        <button className="btn" id="logout">Remove Imgur</button>
+        <br></br>
+        <br></br>
+        <button className="btn">Test Post</button>
       </div>
     )
   }
@@ -112,4 +150,15 @@ var AppServiceList = React.createClass({
       </div>
     )
   }
-})
+});
+
+//var ImgurService = React.createClass({
+//  render(){
+//    return(
+//      <div>
+//        <button className="btn" id="google-login" onClick={this.login}>Add Imgur</button>
+//        <button className="btn" id="logout" onClick={ this.logout }>Remove Imgur</button>
+//      </div>
+//    )
+//  }
+//});
