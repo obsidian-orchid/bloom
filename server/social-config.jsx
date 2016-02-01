@@ -15,6 +15,13 @@ ServiceConfiguration.configurations.insert({
 });
 
 //ServiceConfiguration.configurations.insert({
+//    "service": "imgur",
+//    "clientId": "e808bd261a2d336",
+//    "secret": "29d12ca3d2c67f7fcc46428375ff255d9b7c3e01"
+//});
+
+
+//ServiceConfiguration.configurations.insert({
 //    "service": "google",
 //    "clientId": "89929469817-2ndstqi3uvf7b95eru0js148ntliq28k.apps.googleusercontent.com",
 //    "secret": "KxM_Pk086CxAjt6ZWnCJscJn"
