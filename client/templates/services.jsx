@@ -39,7 +39,7 @@ ServicesList = React.createClass({
           status: 'inactive',
           login: function() {
             Meteor.signInWithFacebook({
-              requestPermissions: ['user_photos', 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
+              requestPermissions: ['user_photos', , 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
             }, function(err, mergedUserId) {
               if (err) {
                 throw new Meteor.Error("Facebook login failed, " + err);
@@ -70,7 +70,7 @@ ServicesList = React.createClass({
               console.log('test: ', result);
               window.open(result);
             });
-            
+
             // HTTP.call('GET', url, function(err, result){
             //     if (err) {
             //       console.log('error occurred..');
@@ -84,12 +84,12 @@ ServicesList = React.createClass({
               image:'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg',
               apiKey:'91bbbe67ad8b736'
             }, function (error, data) {
-                if (error) {
-                  throw error;
-                } else {
-                  console.log(data);
-                }
-              });
+              if (error) {
+                throw error;
+              } else {
+                console.log(data);
+              }
+            });
           }
 
         }
@@ -120,11 +120,11 @@ ServicesList = React.createClass({
 
     Meteor.call('addImgur', 'imgur', queryString);
     HTTP.post("https://api.imgur.com/3/image", {
-        data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
-        headers: {
-          Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2',
-        }
-      }, function (error, result) {
+      data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
+      headers: {
+        Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2',
+      }
+    }, function (error, result) {
       if(error) {
         console.log(error);
       }
