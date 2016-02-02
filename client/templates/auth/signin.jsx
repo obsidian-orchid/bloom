@@ -40,7 +40,7 @@ Signin = React.createClass({
               </div>
               <div className="row">
                 <div className="input-field col s12 right-align">
-                  <a href="/recover-password" className="waves-effect waves-orange btn-flat">Forgot password?</a>
+                  <a href="/recover-password" className="waves-effect waves-orange btn-flat">Forgot password</a>
                   <input className="btn waves-effect waves-light orange" type="submit" value="Sign In"/>
                 </div>
               </div>
