@@ -108,6 +108,25 @@ ServicesList = React.createClass({
       console.log('logged out of ', data)
     });
   },
+  //curl -X POST -H "Authorization: Bearer 950a46d0c2b18a08339814074580381a2acae6d2" -F
+  //"image=https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg" https://api.imgur.com/3/upload
+  imgurPost(){
+    var queryString = location.hash.substring(1);
+    console.log(queryString);
+    HTTP.post("https://api.imgur.com/3/image", {
+        data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
+        headers: {
+          Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2',
+        }
+      }, function (error, result) {
+      if(error) {
+        console.log(error);
+      }
+      else{
+        console.log(result);
+      }
+    })
+  },
 
   render() {
     return (
@@ -117,11 +136,11 @@ ServicesList = React.createClass({
         Imgur
         <br></br>
         <br></br>
-        <a href="https://api.imgur.com/oauth2/authorize?client_id=91bbbe67ad8b736&response_type=token" target="_blank" className="btn" id="google-login">Add Imgur</a>
+        <a href="https://api.imgur.com/oauth2/authorize?client_id=&response_type=token" target="_blank" className="btn" id="google-login">Add Imgur</a>
         <button className="btn" id="logout">Remove Imgur</button>
         <br></br>
         <br></br>
-        <button className="btn">Test Post</button>
+        <button className="btn" onClick={this.imgurPost}>Test Post</button>
       </div>
     )
   }
