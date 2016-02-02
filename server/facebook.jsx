@@ -43,6 +43,22 @@ Meteor.methods({
       console.log('test server: ', test);
       return test;
     },
+    postImgur: function(url) {
+      var access_token = Meteor.user().services.imgur.token;
+      HTTP.post("https://api.imgur.com/3/image", {
+        data: {image: url},
+        headers: {
+          Authorization: "Bearer " + access_token
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else{
+          console.log(result);
+        }
+      })
+    },
     postFBPhoto: function(url) {
         console.log('here: ', url);
         FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);

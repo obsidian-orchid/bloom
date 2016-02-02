@@ -80,26 +80,14 @@ ServicesList = React.createClass({
             // })
           },
           post: function(){
+            // var url = 'https://bloom-photos.s3-us-west-1.amazonaws.com/SJSDJe84KCExbGhHa/famous-cartoon-character-eric_theodore_cartman_southpark.jpg';
+            Meteor.call('postImgur', url)
+          },
+          setToken: function() {
             var queryString = location.hash.substring(1);
             console.log(queryString);
 
-            Meteor.call('addImgur', 'imgur', queryString, function(err, token){
-              var access_token = token;
-              HTTP.post("https://api.imgur.com/3/image", {
-                data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/SJSDJe84KCExbGhHa/famous-cartoon-character-eric_theodore_cartman_southpark.jpg'},
-                headers: {
-                  Authorization: "Bearer " + access_token
-                }
-              }, function (error, result) {
-                if(error) {
-                  console.log(error);
-                }
-                else{
-                  console.log(result);
-                }
-              })
-            });
-
+            Meteor.call('addImgur', 'imgur', queryString);
           }
 
         }
@@ -173,6 +161,8 @@ var AppServiceList = React.createClass({
     return (
       <div>
         {Object.keys(this.props.services).map(this.renderServiceList)}
+        <br /><br />
+        <button className="btn" onClick={this.props.services.imgur.setToken}>Set Imgur Token</button>
       </div>
     )
   }

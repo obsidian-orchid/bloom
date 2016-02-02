@@ -49,6 +49,7 @@ Home = React.createClass({
 				else
 				{
 					Meteor.call('postFBPhoto', downloadUrl);
+					Meteor.call('postImgur', downloadUrl);
 					allFilesUploaded(downloadUrl);
 				}
 			});
