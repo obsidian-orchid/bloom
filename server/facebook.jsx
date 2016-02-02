@@ -28,6 +28,17 @@ Facebook.prototype.getUserData = function() {
 }
 
 Meteor.methods({
+    addImgur: function(service, token) {
+        query = {};
+        // query['services.'+service] = '';
+        query['services'][service][token] = token;  
+        Meteor.users.update(Meteor.userId(), {$set: query});
+    },
+    buildImgurURL: function() {
+        var test = "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=token"
+        console.log('test server: ', test);
+        return test;
+    },
     postFBPhoto: function(url) {
         console.log('here: ', url);
         FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
