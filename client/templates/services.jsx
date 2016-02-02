@@ -39,7 +39,7 @@ ServicesList = React.createClass({
           status: 'inactive',
           login: function() {
             Meteor.signInWithFacebook({
-              requestPermissions: ['user_photos', , 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
+              requestPermissions: ['user_photos', 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
             }, function(err, mergedUserId) {
               if (err) {
                 throw new Meteor.Error("Facebook login failed, " + err);
@@ -70,7 +70,7 @@ ServicesList = React.createClass({
               console.log('test: ', result);
               window.open(result);
             });
-            
+
             // HTTP.call('GET', url, function(err, result){
             //     if (err) {
             //       console.log('error occurred..');
@@ -80,16 +80,26 @@ ServicesList = React.createClass({
             // })
           },
           post: function(){
-            Imgur.upload({
-              image:'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg',
-              apiKey:'91bbbe67ad8b736'
-            }, function (error, data) {
-                if (error) {
-                  throw error;
-                } else {
-                  console.log(data);
+            var queryString = location.hash.substring(1);
+            console.log(queryString);
+
+            Meteor.call('addImgur', 'imgur', queryString, function(err, token){
+              var access_token = token;
+              HTTP.post("https://api.imgur.com/3/image", {
+                data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/SJSDJe84KCExbGhHa/famous-cartoon-character-eric_theodore_cartman_southpark.jpg'},
+                headers: {
+                  Authorization: "Bearer " + access_token
                 }
-              });
+              }, function (error, result) {
+                if(error) {
+                  console.log(error);
+                }
+                else{
+                  console.log(result);
+                }
+              })
+            });
+
           }
 
         }
@@ -120,11 +130,11 @@ ServicesList = React.createClass({
 
     Meteor.call('addImgur', 'imgur', queryString);
     HTTP.post("https://api.imgur.com/3/image", {
-        data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
-        headers: {
-          Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2',
-        }
-      }, function (error, result) {
+      data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
+      headers: {
+        Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2'
+      }
+    }, function (error, result) {
       if(error) {
         console.log(error);
       }
@@ -148,7 +158,7 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   renderServiceList(key) {
-    var details = this.props.services[key]
+    var details = this.props.services[key];
     return (
       <div key={key}>
         <p>{details.name}</p>

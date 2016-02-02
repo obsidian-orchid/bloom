@@ -29,15 +29,19 @@ Facebook.prototype.getUserData = function() {
 
 Meteor.methods({
     addImgur: function(service, token) {
-        query = {};
-        // query['services.'+service] = '';
-        query['services'][service][token] = token;  
-        Meteor.users.update(Meteor.userId(), {$set: query});
+      query = {};
+      var arrStr = token.split(/[=&]/);
+      console.log(arrStr[1]);
+      // query['services.'+service] = '';
+      query['services.'+ service + '.token'] = arrStr[1];
+      Meteor.users.update(Meteor.userId(), {$set: query});
+      var access_token = Meteor.user().services.imgur.token;
+      return access_token;
     },
     buildImgurURL: function() {
-        var test = "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=token"
-        console.log('test server: ', test);
-        return test;
+      var test = "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=token";
+      console.log('test server: ', test);
+      return test;
     },
     postFBPhoto: function(url) {
         console.log('here: ', url);
@@ -62,7 +66,7 @@ Meteor.methods({
         Meteor.users.remove(mergedUserId);
     },
     removeService: function (userId, service) {
-        console.log('removeService', userId + ' : ' + service)
+        console.log('removeService', userId + ' : ' + service);
         
         query = {};
         query['services.'+service] = '';
