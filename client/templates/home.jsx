@@ -25,16 +25,18 @@ Home = React.createClass({
 		event.preventDefault();
 		//console.log('test: ', document.getElementById('input').files);
 		var fileUpload = document.getElementById('input').files;
-		var urls = [];
+		
 		for (var i = 0; i < fileUpload.length; i++) {
 			//https://bloom-photos.s3-us-west-1.amazonaws.com/DTEBgjvDQNLhZDvZx/792244_4741609493032_199570021_o.jpg
 			var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
 			console.log(imageLocal);
+			
+
 			imageDetails._collection.insert({
 				imageurl: imageLocal,
 				time: new Date()
 			});
-			Meteor.call('postFBPhoto', imageLocal);
+			
 			if (fileUpload[i] == null)
 			{
 				continue;
@@ -46,16 +48,13 @@ Home = React.createClass({
 				}
 				else
 				{
-					urls.push(downloadUrl);
-					if (urls.length > fileUpload.length - 1) {
-						allFilesUploaded();
-					}
+					Meteor.call('postFBPhoto', downloadUrl);
+					allFilesUploaded(downloadUrl);
 				}
 			});
 		}
-		function allFilesUploaded () {
-			Meteor.users.update(Meteor.userId(), {$push: {"profile.files": urls}});
-			console.log('All done!');
+		function allFilesUploaded (url) {
+			Meteor.users.update(Meteor.userId(), {$push: {"profile.files": url}});
 		}
 	},
 	render(){
