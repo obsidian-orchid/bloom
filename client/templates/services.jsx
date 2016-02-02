@@ -62,19 +62,23 @@ ServicesList = React.createClass({
             });
           }
         },
-        pinterest: {
-          name: 'Pinterest',
+        imgur: {
+          name: 'Imgur',
           status: 'inactive',
           login: function() {
-            var url = 'https://api.imgur.com/oauth2/authorize?client_id=91bbbe67ad8b736&response_type=token';
-            HTTP.call('GET', url, function(err, result){
-                if (err) {
-                  console.log('error occurred..');
-                  console.log(err);
-                }
-                console.log(result);
-            }
-            )},
+            Meteor.call('buildImgurURL', function(err, result) {
+              console.log('test: ', result);
+              window.open(result);
+            });
+            
+            // HTTP.call('GET', url, function(err, result){
+            //     if (err) {
+            //       console.log('error occurred..');
+            //       console.log(err);
+            //     }
+            //     console.log(result);
+            // })
+          },
           post: function(){
             Imgur.upload({
               image:'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg',
@@ -113,6 +117,8 @@ ServicesList = React.createClass({
   imgurPost(){
     var queryString = location.hash.substring(1);
     console.log(queryString);
+
+    Meteor.call('addImgur', 'imgur', queryString);
     HTTP.post("https://api.imgur.com/3/image", {
         data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
         headers: {
@@ -132,15 +138,6 @@ ServicesList = React.createClass({
     return (
       <div>
         <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} />
-        <br></br>
-        Imgur
-        <br></br>
-        <br></br>
-        <a href="https://api.imgur.com/oauth2/authorize?client_id=&response_type=token" target="_blank" className="btn" id="google-login">Add Imgur</a>
-        <button className="btn" id="logout">Remove Imgur</button>
-        <br></br>
-        <br></br>
-        <button className="btn" onClick={this.imgurPost}>Test Post</button>
       </div>
     )
   }
