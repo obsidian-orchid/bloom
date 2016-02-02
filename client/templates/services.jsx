@@ -39,7 +39,7 @@ ServicesList = React.createClass({
           status: 'inactive',
           login: function() {
             Meteor.signInWithFacebook({
-              requestPermissions: ['user_photos', , 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
+              requestPermissions: ['user_photos', 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
             }, function(err, mergedUserId) {
               if (err) {
                 throw new Meteor.Error("Facebook login failed, " + err);

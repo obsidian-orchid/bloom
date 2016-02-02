@@ -51,7 +51,7 @@ Meteor.methods({
         Meteor.users.remove(mergedUserId);
     },
     removeService: function (userId, service) {
-        console.log('removeService', userId + ' : ' + service)
+        console.log('removeService', userId + ' : ' + service);
         
         query = {};
         query['services.'+service] = '';
