@@ -16,19 +16,20 @@ Home = React.createClass({
 	},
 
   renderServices(){
-    //if(this.data.currentUser !== undefined) {
+    if(this.data.currentUser !== undefined) {
       var services = Object.keys(this.data.currentUser.services);
-      return services.map((image) => {
-        return <li>{image}</li>
+
+      return services.map((service) => {
+        return <EnabledServices service={service} />;
       });
-    //}
+    }
   },
 
 	uploadImage(event) {
 		event.preventDefault();
 		//console.log('test: ', document.getElementById('input').files);
 		var fileUpload = document.getElementById('input').files;
-		
+
 		for (var i = 0; i < fileUpload.length; i++) {
 			//https://bloom-photos.s3-us-west-1.amazonaws.com/DTEBgjvDQNLhZDvZx/792244_4741609493032_199570021_o.jpg
 			var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
@@ -37,7 +38,7 @@ Home = React.createClass({
 				imageurl: imageLocal,
 				time: new Date()
 			});
-			
+
 			if (fileUpload[i] == null)
 			{
 				continue;
@@ -49,8 +50,8 @@ Home = React.createClass({
 				}
 				else
 				{
-					Meteor.call('postFBPhoto', downloadUrl);
-					Meteor.call('postImgur', downloadUrl);
+					//Meteor.call('postFBPhoto', downloadUrl);
+					//Meteor.call('postImgur', downloadUrl);
 					allFilesUploaded(downloadUrl);
 				}
 			});
@@ -74,8 +75,8 @@ Home = React.createClass({
 					  <div className="row">
 						  <p className="flow-text">CLICK HERE TO UPLOAD</p>
 						  <input id="input" type="file" multiple/>
-						  <button className="btn waves-effect waves-light" type="submit" name="action">POST
-							<i className="mdi-content-send right"></i>
+						  <button className="btn waves-effect waves-light" type="submit" name="action">
+							<i className="mdi-content-add-box"></i>
 						  </button>
 					  </div>
 				  </form>
@@ -88,16 +89,23 @@ Home = React.createClass({
 	}
 });
 
+EnabledServices = React.createClass({
+  render(){
+    return (
+      <li className="tab col s3">{this.props.service}</li>
+    )
+  }
+});
+
 Image = React.createClass({
 	propTypes: {
 		image: React.PropTypes.object.isRequired
 	},
 	render(){
     return (
-			<div>
-				<li>{this.props.image}</li>
+			<div className="thumbnail">
+				<li><img src={this.props.image.imageurl}/></li>
 			</div>
 		);
 	}
-
 });
