@@ -135,11 +135,27 @@ Image = React.createClass({
 	propTypes: {
 		image: React.PropTypes.object.isRequired
 	},
+  getInitialState: function(){
+    return {
+      condition:false
+    }
+  },
 	render(){
     return (
 			//<div className="thumbnail">
-				<div className="thumbnail"><img src={this.props.image.imageurl}/></div>
+				<a href="" onClick={this.selected} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
 			//</div>
 		);
-	}
+	},
+
+  selected(event){
+    event.preventDefault();
+
+    this.setState({condition: !this.state.condition});
+
+    //console.log(event.target);
+    //event.target.toggleClass('selected');
+  }
+
+
 });
