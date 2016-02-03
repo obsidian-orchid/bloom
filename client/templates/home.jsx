@@ -10,7 +10,6 @@ Home = React.createClass({
 	},
 	renderImages(){
 		return this.data.images.map((image) => {
-			//console.log(image);
 			return <Image key={image._id} image={image} />
 		});
 	},
@@ -18,7 +17,29 @@ Home = React.createClass({
   renderServices(){
     if(this.data.currentUser !== undefined) {
       var services = Object.keys(this.data.currentUser.services);
-
+      services.splice(0,3);
+      for(var key in this.data.currentUser.services) {
+        if (key === 'google' && !key.hasOwnProperty('access_token')) {
+          var index = services.indexOf(key);
+          services.splice(index, 1);
+        }
+        if (key === 'imgur' && !key.hasOwnProperty('token')) {
+          var index = services.indexOf(key);
+          services.splice(index, 1);
+        }
+        if (key === 'facebook' && !key.hasOwnProperty('access_token')) {
+          var index = services.indexOf(key);
+          services.splice(index, 1);
+        }
+        if (key === 'twitter' && !key.hasOwnProperty('token')) {
+          var index = services.indexOf(key);
+          services.splice(index, 1);
+        }
+        if (key === 'pinterest' && !key.hasOwnProperty('token')) {
+          var index = services.indexOf(key);
+          services.splice(index, 1);
+        }
+      }
       return services.map((service) => {
         return <EnabledServices service={service} />;
       });
