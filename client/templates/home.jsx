@@ -1,16 +1,13 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 imageDetails = new Mongo.Collection('imageDetails');
 Home = React.createClass({
-
 	mixins: [ReactMeteorData],
-
 	getMeteorData(){
 		return {
 			images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
 			currentUser: Meteor.user()
 		};
 	},
-
 	renderImages(){
 		return this.data.images.map((image) => {
 			//console.log(image);
