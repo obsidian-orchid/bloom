@@ -73,3 +73,15 @@ footer {
   width: 150px;
   height: 150px;
 }
+
+.selected {
+  border: 3px solid #00c853;
+}
+
+/*.selected::before{*/
+  /*width: 15px;*/
+  /*height:15px;*/
+  /*background: #00c853;*/
+  /*content: '';*/
+  /*display: block;*/
+/*}*/
