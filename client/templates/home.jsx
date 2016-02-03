@@ -10,7 +10,6 @@ Home = React.createClass({
 	},
 	renderImages(){
 		return this.data.images.map((image) => {
-			//console.log(image);
 			return <Image key={image._id} image={image} />
 		});
 	},
