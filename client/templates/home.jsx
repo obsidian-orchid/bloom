@@ -27,7 +27,7 @@ Home = React.createClass({
           var index = services.indexOf(key);
           services.splice(index, 1);
         }
-        if (key === 'facebook' && !key.hasOwnProperty('access_token')) {
+        if (key === 'facebook' && !key.hasOwnProperty('accesstoken')) {
           var index = services.indexOf(key);
           services.splice(index, 1);
         }
