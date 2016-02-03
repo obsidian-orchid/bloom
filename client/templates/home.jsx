@@ -20,7 +20,7 @@ Home = React.createClass({
       var services = Object.keys(this.data.currentUser.services);
 
       return services.map((service) => {
-        return <EnabledServices service={service} />;
+        return <EnabledServices key={service} service={service} />;
       });
     }
   },
@@ -72,12 +72,22 @@ Home = React.createClass({
         </div>
         <div className="row">
 				  <form id="upload" className="col s12" onSubmit={this.uploadImage}>
-					  <div className="row">
-						  <p className="flow-text">CLICK HERE TO UPLOAD</p>
-						  <input id="input" type="file" multiple/>
-						  <button className="btn waves-effect waves-light" type="submit" name="action">
-							<i className="mdi-content-add-box"></i>
-						  </button>
+            <p className="flow-text">CLICK HERE TO UPLOAD</p>
+					  <div className="row valign-wrapper">
+							<div className="file-field input-field col s10 valign">
+                <div className="btn">
+                  <span>File</span>
+                  <input id="input" type="file" multiple/>
+                </div>
+                <div className="file-path-wrapper">
+                  <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
+                </div>
+              </div>
+              <div className="col s2 valign">
+                <button className="btn waves-effect waves-light " type="submit" name="action">
+                  <i className="mdi-content-add-box"></i> Post
+                </button>
+					    </div>
 					  </div>
 				  </form>
 				  <ul>
