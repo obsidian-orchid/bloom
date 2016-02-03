@@ -38,23 +38,38 @@ footer {
   padding-top: 0!important;
 }
 
-.thumbnail {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
+/*.thumbnail {*/
+  /*position: relative;*/
+  /*width: 100px;*/
+  /*height: 100px;*/
+  /*overflow: hidden;*/
+/*}*/
+/*.thumbnail img {*/
+  /*position: absolute;*/
+  /*left: 50%;*/
+  /*top: 50%;*/
+  /*height: 100%;*/
+  /*width: auto;*/
+  /*-webkit-transform: translate(-50%,-50%);*/
+  /*-ms-transform: translate(-50%,-50%);*/
+  /*transform: translate(-50%,-50%);*/
+/*}*/
+/*.thumbnail img.portrait {*/
+  /*width: 100%;*/
+  /*height: auto;*/
+/*}*/
+
+.thumbs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  /*align-items: flex-start;*/
+  /*align-content: flex-start;*/
 }
-.thumbnail img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-}
-.thumbnail img.portrait {
-  width: 100%;
-  height: auto;
+
+.thumbnail img{
+  margin:5px;
+  width: 150px;
+  height: 150px;
 }
