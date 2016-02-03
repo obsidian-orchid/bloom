@@ -14,6 +14,7 @@ authenticated.route("/", {
   name: 'home',
   subscriptions: function() {
     this.register('images', Meteor.subscribe('images'));
+    this.register('userData', Meteor.subscribe('userData'));
   },
   action: function() {
     ReactLayout.render(MainLayout, {

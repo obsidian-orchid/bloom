@@ -1,7 +1,5 @@
 var uploader = new Slingshot.Upload("myFileUploads");
-
 imageDetails = new Mongo.Collection('imageDetails');
-
 Home = React.createClass({
 
 	mixins: [ReactMeteorData],
@@ -14,7 +12,6 @@ Home = React.createClass({
 	},
 
 	renderImages(){
-		console.log(this.data.images);
 		return this.data.images.map((image) => {
 			//console.log(image);
 			return <Image key={image._id} image={image} />
@@ -22,23 +19,14 @@ Home = React.createClass({
 	},
 
   renderServices(){
-    var resultArray = [];
-    Meteor.call('EnabledServices', function(err, result){
-      if(err){
-        console.log(err);
-      }
-      console.log(result);
-      for(var key in result){
-        console.log(key);
-        if(result[key].token !== undefined){
-          resultArray.push(key);
-        }
-        else if(result[key].accessToken !== undefined){
-          resultArray.push(key);
-        }
-      }
-      return resultArray;
-    })
+    console.log(this.data.currentUser);
+    if(this.data.currentUser !== undefined) {
+      return this.data.currentUser.map((service) => {
+        //console.log(image);
+        return <EachServices key={service._id} service={service}/>
+      });
+    }
+
   },
 
 	uploadImage(event) {
@@ -79,7 +67,13 @@ Home = React.createClass({
 	render(){
 		return (
       <div>
-        {this.renderServices().map(this)}
+        <div className="row">
+          <div className="col s12">
+            <ul className="tabs">
+              {this.renderServices()}
+            </ul>
+          </div>
+        </div>
         <div className="row">
 				  <form id="upload" className="col s12" onSubmit={this.uploadImage}>
 					  <div className="row">
@@ -103,9 +97,7 @@ EachServices = React.createClass({
   render(){
     return (
       <div>
-          {this.props.list.map( ( service, index ) => {
-            return <p key={ `service-${ index }` }>{ service }</p>;
-          })}
+          <li></li>
       </div>
     )
   }
