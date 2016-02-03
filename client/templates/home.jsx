@@ -126,6 +126,7 @@ Home = React.createClass({
       <div className="">
         <div className="row">
           <div className="col s12">
+            <p className="flow-text">ENABLED SERVICES</p>
             <ul className="tabs">
               {this.renderServices()}
             </ul>
@@ -167,7 +168,7 @@ Home = React.createClass({
 EnabledServices = React.createClass({
   render(){
     return (
-      <li className="tab col s3">{this.props.service}</li>
+      <a href="" onClick={this.selected} className="tab col s3"><li className={this.state.condition ? "selected": ""} >{this.props.service}</li></a>
     )
   }
 });
