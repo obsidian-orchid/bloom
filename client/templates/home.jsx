@@ -19,14 +19,12 @@ Home = React.createClass({
 	},
 
   renderServices(){
-    console.log(this.data.currentUser);
-    if(this.data.currentUser !== undefined) {
-      return this.data.currentUser.map((service) => {
-        //console.log(image);
-        return <EachServices key={service._id} service={service}/>
+    //if(this.data.currentUser !== undefined) {
+      var services = Object.keys(this.data.currentUser.services);
+      return services.map((image) => {
+        return <li>{image}</li>
       });
-    }
-
+    //}
   },
 
 	uploadImage(event) {
@@ -93,28 +91,14 @@ Home = React.createClass({
 	}
 });
 
-EachServices = React.createClass({
-  render(){
-    return (
-      <div>
-          <li></li>
-      </div>
-    )
-  }
-});
-
 Image = React.createClass({
-
 	propTypes: {
 		image: React.PropTypes.object.isRequired
 	},
 	render(){
-    console.log('Here')
     return (
-			<div className="thumbnail">
-				<li>
-					<img src={this.props.image.imageurl} className="portrait" alt="Image"/>
-				</li>
+			<div>
+				<li>{this.props.image}</li>
 			</div>
 		);
 	}
