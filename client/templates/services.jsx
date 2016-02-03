@@ -153,21 +153,28 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   renderServiceList(key) {
-    var details = this.props.services[key];
-    var active = this.props.activeServices;
-    // console.log('active: ', active);
-
-    if(active.indexOf(key) !== -1) {
-      return (
-        <div key={key}>
-          <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {details.name}</button>
-          <br /><br />
-        </div>
-      )
-    }
+    var service = this.props.services[key];
+    //   var active = this.props.activeServices;
+  //   if(typeof active !== undefined) {
+  //     active = { 'something' : 1}
+  //   }
+  //   console.log(active[key]);
+    // var testObj = active[key];
+    // console.log('check: ', testObj.hasOwnProperty('accessToken'));
+    // if(true) {
+    //   return (
+    //     <div key={key}>
+    //       <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {service.name}</button>
+    //       <br /><br />
+    //     </div>
+    //   )
+    // }
     return (
       <div key={key}>
-        <button className="btn" onClick={this.props.login.bind(null, key)}>Add {details.name}</button>
+        <button className="btn" onClick={this.props.login.bind(null, key)}>Add {service.name}</button>
+        <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {service.name}</button>
+        <br /><br />
+        <button className="btn" onClick={this.props.post.bind(null, key)}>{service.name} Test Post</button>
         <br /><br />
       </div>
     )
@@ -182,69 +189,3 @@ var AppServiceList = React.createClass({
     )
   }
 });
-
-
-
-/*
-  Order
-  <Order/>
-*/
-var Order = React.createClass({
-  renderOrder : function(key) {
-    var fish = this.props.fishes[key];
-    var count = this.props.order[key];
-    var removeButton = <button onClick={this.props.removeFromOrder.bind(null,key)}>&times;</button>
-
-    if(!fish) {
-      return <li key={key}>Sorry, fish no longer available! {removeButton}</li>
-    }
-
-    return (
-      <li key={key}>
-        <span>
-          <CSSTransitionGroup component="span" transitionName="count" transitionLeaveTimeout={250} transitionEnterTimeout={250} className="count">
-            <span key={count}>{count}</span>
-          </CSSTransitionGroup>
-
-          lbs {fish.name} {removeButton}
-        </span>
-        <span className="price">{h.formatPrice(count * fish.price)}</span>
-      </li>)
-  },
-  render : function() {
-    var orderIds = Object.keys(this.props.order);
-    
-    var total = orderIds.reduce((prevTotal, key)=> {
-      var fish = this.props.fishes[key];
-      var count = this.props.order[key];
-      var isAvailable = fish && fish.status === 'available';
-
-      if(fish && isAvailable) {
-        return prevTotal + (count * parseInt(fish.price) || 0);
-      }
-
-      return prevTotal;
-    }, 0);
-
-    return (
-      <div className="order-wrap">
-        <h2 className="order-title">Your Order</h2>
-        
-        <CSSTransitionGroup
-              className="order"
-              component="ul"
-              transitionName="order"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={500}
-            >
-          {orderIds.map(this.renderOrder)}
-          <li className="total">
-            <strong>Total:</strong>
-            {h.formatPrice(total)}
-          </li>
-        </CSSTransitionGroup>
-
-      </div>
-    )
-  }
-})
