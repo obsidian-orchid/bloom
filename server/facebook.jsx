@@ -28,6 +28,11 @@ Facebook.prototype.getUserData = function() {
 }
 
 Meteor.methods({
+
+    EnabledServices: function(){
+      console.log(Meteor.user().services);
+      return Meteor.user().services;
+    },
     addImgur: function(service, token) {
       query = {};
       var arrStr = token.split(/[=&]/);

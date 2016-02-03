@@ -61,6 +61,7 @@ Meteor.publish('userData', function() {
              'profile': 1,
              // Created roles property
              //'roles': 1
+            'services': 1
          }
       });
     } else {
