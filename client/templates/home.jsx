@@ -41,7 +41,7 @@ Home = React.createClass({
         }
       }
       return services.map((service) => {
-        return <EnabledServices service={service} />;
+        return <EnabledServices key={service} service={service} />;
       });
     }
   },
@@ -83,7 +83,7 @@ Home = React.createClass({
 	},
 	render(){
 		return (
-      <div>
+      <div className="">
         <div className="row">
           <div className="col s12">
             <ul className="tabs">
@@ -93,18 +93,31 @@ Home = React.createClass({
         </div>
         <div className="row">
 				  <form id="upload" className="col s12" onSubmit={this.uploadImage}>
-					  <div className="row">
-						  <p className="flow-text">CLICK HERE TO UPLOAD</p>
-						  <input id="input" type="file" multiple/>
-						  <button className="btn waves-effect waves-light" type="submit" name="action">
-							<i className="mdi-content-add-box"></i>
-						  </button>
+            <p className="flow-text">CLICK HERE TO UPLOAD</p>
+					  <div className="row valign-wrapper">
+							<div className="file-field input-field col s10 valign">
+                <div className="btn">
+                  <span>File</span>
+                  <input id="input" type="file" multiple/>
+                </div>
+                <div className="file-path-wrapper">
+                  <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
+                </div>
+              </div>
+              <div className="col s2 valign">
+                <button className="btn waves-effect waves-light " type="submit" name="action">
+                  <i className="mdi-content-add-box"></i> Post
+                </button>
+					    </div>
 					  </div>
 				  </form>
-				  <ul>
-					  {this.renderImages()}
-				  </ul>
-			  </div>
+        </div>
+
+        <div className="row">
+          <div className="thumbs">
+            {this.renderImages()}
+          </div>
+        </div>
       </div>
 		);
 	}
@@ -124,9 +137,9 @@ Image = React.createClass({
 	},
 	render(){
     return (
-			<div className="thumbnail">
-				<li><img src={this.props.image.imageurl}/></li>
-			</div>
+			//<div className="thumbnail">
+				<div className="thumbnail"><img src={this.props.image.imageurl}/></div>
+			//</div>
 		);
 	}
 });
