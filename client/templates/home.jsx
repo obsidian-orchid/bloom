@@ -83,7 +83,7 @@ Home = React.createClass({
 	},
 	render(){
 		return (
-      <div>
+      <div className="">
         <div className="row">
           <div className="col s12">
             <ul className="tabs">
@@ -111,10 +111,13 @@ Home = React.createClass({
 					    </div>
 					  </div>
 				  </form>
-				  <ul>
-					  {this.renderImages()}
-				  </ul>
-			  </div>
+        </div>
+
+        <div className="row">
+          <div className="thumbs">
+            {this.renderImages()}
+          </div>
+        </div>
       </div>
 		);
 	}
@@ -134,9 +137,9 @@ Image = React.createClass({
 	},
 	render(){
     return (
-			<div className="thumbnail">
-				<li><img src={this.props.image.imageurl}/></li>
-			</div>
+			//<div className="thumbnail">
+				<div className="thumbnail"><img src={this.props.image.imageurl}/></div>
+			//</div>
 		);
 	}
 });
