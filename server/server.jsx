@@ -56,12 +56,12 @@ Meteor.publish('userData', function() {
          }, {
          fields: {
              // Default
-             'emails': 1,
+			'emails': 1,
              // Created profile property
-             'profile': 1,
+			'profile': 1,
              // Created roles property
              //'roles': 1
-            'services': 1
+			'services': 1
          }
       });
     } else {

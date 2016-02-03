@@ -94,10 +94,10 @@ authenticated.route("/services", {
   subscriptions: function() {
     //var selector = {category: {$ne: "private"}};
     this.register('services', Meteor.subscribe('services'));
+    this.register('userData', Meteor.subscribe('userData'));
   },
   action: function(params, queryParams) {
-    console.log(queryParams);
-
+    // console.log(queryParams);
     ReactLayout.render(MainLayout, {
       content: <ServicesList />
     });

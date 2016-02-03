@@ -1,6 +1,13 @@
 ServicesList = React.createClass({
-
+  mixins: [ReactMeteorData],
+  getMeteorData(){
+    return {
+      // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
+      currentUser: Meteor.user()
+    };
+  },
   getInitialState : function() {
+    // console.log('user: ', this.data.currentUser);
     return {
       services : {
         google : {
@@ -135,7 +142,7 @@ ServicesList = React.createClass({
   render() {
     return (
       <div>
-        <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} />
+        <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={Object.keys(this.data.currentUser.services)} />
       </div>
     )
   }
@@ -147,13 +154,21 @@ ServicesList = React.createClass({
 var AppServiceList = React.createClass({
   renderServiceList(key) {
     var details = this.props.services[key];
+    var active = this.props.activeServices;
+    // console.log('active: ', active);
+
+    if(active.indexOf(key) !== -1) {
+      return (
+        <div key={key}>
+          <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {details.name}</button>
+          <br /><br />
+        </div>
+      )
+    }
     return (
       <div key={key}>
-        <p>{details.name}</p>
         <button className="btn" onClick={this.props.login.bind(null, key)}>Add {details.name}</button>
-        <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {details.name}</button>
         <br /><br />
-        <button className="btn" onClick={this.props.post.bind(null, key)}>{details.name} Test Post</button>
       </div>
     )
   },
@@ -168,13 +183,68 @@ var AppServiceList = React.createClass({
   }
 });
 
-//var ImgurService = React.createClass({
-//  render(){
-//    return(
-//      <div>
-//        <button className="btn" id="google-login" onClick={this.login}>Add Imgur</button>
-//        <button className="btn" id="logout" onClick={ this.logout }>Remove Imgur</button>
-//      </div>
-//    )
-//  }
-//});
+
+
+/*
+  Order
+  <Order/>
+*/
+var Order = React.createClass({
+  renderOrder : function(key) {
+    var fish = this.props.fishes[key];
+    var count = this.props.order[key];
+    var removeButton = <button onClick={this.props.removeFromOrder.bind(null,key)}>&times;</button>
+
+    if(!fish) {
+      return <li key={key}>Sorry, fish no longer available! {removeButton}</li>
+    }
+
+    return (
+      <li key={key}>
+        <span>
+          <CSSTransitionGroup component="span" transitionName="count" transitionLeaveTimeout={250} transitionEnterTimeout={250} className="count">
+            <span key={count}>{count}</span>
+          </CSSTransitionGroup>
+
+          lbs {fish.name} {removeButton}
+        </span>
+        <span className="price">{h.formatPrice(count * fish.price)}</span>
+      </li>)
+  },
+  render : function() {
+    var orderIds = Object.keys(this.props.order);
+    
+    var total = orderIds.reduce((prevTotal, key)=> {
+      var fish = this.props.fishes[key];
+      var count = this.props.order[key];
+      var isAvailable = fish && fish.status === 'available';
+
+      if(fish && isAvailable) {
+        return prevTotal + (count * parseInt(fish.price) || 0);
+      }
+
+      return prevTotal;
+    }, 0);
+
+    return (
+      <div className="order-wrap">
+        <h2 className="order-title">Your Order</h2>
+        
+        <CSSTransitionGroup
+              className="order"
+              component="ul"
+              transitionName="order"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
+            >
+          {orderIds.map(this.renderOrder)}
+          <li className="total">
+            <strong>Total:</strong>
+            {h.formatPrice(total)}
+          </li>
+        </CSSTransitionGroup>
+
+      </div>
+    )
+  }
+})
