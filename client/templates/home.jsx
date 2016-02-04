@@ -100,7 +100,7 @@ Home = React.createClass({
     var state = this.state.services;
     _.each(services, function(service) {
       _.each(images, function(image) {
-        console.log(service, image)
+        console.log(service, image);
         state[service].post(image);
       })
     })
