@@ -63,7 +63,6 @@ Home = React.createClass({
 		var fileUpload = document.getElementById('input').files;
 
 		for (var i = 0; i < fileUpload.length; i++) {
-			//https://bloom-photos.s3-us-west-1.amazonaws.com/DTEBgjvDQNLhZDvZx/792244_4741609493032_199570021_o.jpg
 			var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
 			console.log(imageLocal);
 			imageDetails._collection.insert({
@@ -149,10 +148,22 @@ Home = React.createClass({
 });
 
 EnabledServices = React.createClass({
+  getInitialState: function(){
+    return {
+      condition:false
+    }
+  },
   render(){
     return (
-      <li className="tab col s3">{this.props.service}</li>
+      <li onClick={this.choosen} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
     )
+  },
+
+  choosen(event){
+    event.preventDefault();
+    console.log(this.state.condition);
+    this.setState({condition: !this.state.condition});
+
   }
 });
 
@@ -174,13 +185,10 @@ Image = React.createClass({
 	},
 
   selected(event){
+    console.log(event);
     event.preventDefault();
-
     this.setState({condition: !this.state.condition});
-
     //console.log(event.target);
     //event.target.toggleClass('selected');
   }
-
-
 });
