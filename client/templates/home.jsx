@@ -16,9 +16,7 @@ Home = React.createClass({
     // console.log('user: ', this.data.currentUser);
     return {
       selectedImages: {},
-      selectedServices: {
-        'testService': false
-      },
+      selectedServices: {},
       services: {
         google: {
           name: 'Google',
@@ -41,67 +39,70 @@ Home = React.createClass({
       }
     }
   },
-	renderImages(){
-		return this.data.images.map((image) => {
-			return <Image key={image._id} image={image} />
-		});
-	},
+  renderImages(){
+    return this.data.images.map((image) => {
+      return <Image key={image._id} image={image} selectedImages={this.state.selectedImages} />
+    });
+  },
   renderServices(){
     if(this.data.currentUser !== undefined) {
       var services = [];
       for(var key in this.data.currentUser.services) {
-        console.log(key, this.data.currentUser.services[key].hasOwnProperty('accessToken'));
+        //console.log(key, this.data.currentUser.services[key].hasOwnProperty('accessToken'));
         if(this.data.currentUser.services[key].hasOwnProperty('accessToken')){
           services.push(key);
         }
       }
-      console.log(services);
+      //console.log(services);
       return services.map((service) => {
         return <EnabledServices key={service} service={service} selectedServices={this.state.selectedServices} />;
       });
     }
   },
-	uploadImage(event) {
-		event.preventDefault();
-		//console.log('test: ', document.getElementById('input').files);
-		var fileUpload = document.getElementById('input').files;
+  uploadImage(event) {
+    event.preventDefault();
+    //console.log('test: ', document.getElementById('input').files);
+    var fileUpload = document.getElementById('input').files;
 
-		for (var i = 0; i < fileUpload.length; i++) {
-			var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
-			console.log(imageLocal);
-			imageDetails._collection.insert({
-				imageurl: imageLocal,
-				time: new Date()
-			});
+    for (var i = 0; i < fileUpload.length; i++) {
+      var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
+      console.log(imageLocal);
+      imageDetails._collection.insert({
+        imageurl: imageLocal,
+        time: new Date()
+      });
 
-			if (fileUpload[i] == null)
-			{
-				continue;
-			}
-			uploader.send(fileUpload[i], function (error, downloadUrl) {
-				if (error)
-				{
-					console.error('Error uploading', uploader.xhr.response);
-				}
-				else
-				{
-					//Meteor.call('postFBPhoto', downloadUrl);
-					//Meteor.call('postImgur', downloadUrl);
-					allFilesUploaded(downloadUrl);
-				}
-			});
-		}
-		function allFilesUploaded (url) {
-			Meteor.users.update(Meteor.userId(), {$push: {"profile.files": url}});
-		}
-	},
+      if (fileUpload[i] == null)
+      {
+        continue;
+      }
+      uploader.send(fileUpload[i], function (error, downloadUrl) {
+        if (error)
+        {
+          console.error('Error uploading', uploader.xhr.response);
+        }
+        else
+        {
+          //Meteor.call('postFBPhoto', downloadUrl);
+          //Meteor.call('postImgur', downloadUrl);
+          allFilesUploaded(downloadUrl);
+        }
+      });
+    }
+    function allFilesUploaded (url) {
+      Meteor.users.update(Meteor.userId(), {$push: {"profile.files": url}});
+    }
+  },
   postImage(images, services) {
-    // console.log('postImage: ', images, services);
+    //console.log('postImage: ', images, services);
     var state = this.state.services;
-    _.each(services, function(service) {
-      _.each(images, function(image) {
-        console.log(service, image)
-        state[service].post(image);
+    console.log(state);
+    _.each(services, function(key1, service) {
+      _.each(images, function(key2, image) {
+        console.log(service, image);
+        if(key1 === true && key2 === true){
+          state[service].post(image);
+        }
       })
     })
   },
@@ -138,8 +139,8 @@ Home = React.createClass({
               </div>
             </div>
           </form>
-          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, testImages, testServices) }>POST
-                    <i className="mdi-content-send right"></i></button>
+          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>POST
+            <i className="mdi-content-send right"></i></button>
         </div>
         <div className="row">
           <div className="thumbs">
@@ -147,8 +148,8 @@ Home = React.createClass({
           </div>
         </div>
       </div>
-		);
-	}
+    );
+  }
 });
 
 EnabledServices = React.createClass({
@@ -157,52 +158,74 @@ EnabledServices = React.createClass({
       condition:false
     }
   },
-  selectService(service) {
-    console.log('hey: ', this.props.selectedServices);
+//{function() { f1(); f2(); }}
+  render(){
+    return (
+      //<li onClick={this.choosen, this.selectService.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
+      <li onClick={this.chosen.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "chosen": ""}>{this.props.service}</a></li>
+    )
+  },
+
+  //selectService(service) {
+  //  console.log('hey: ', this.props.selectedServices);
+  //  if(this.props.selectedServices.hasOwnProperty(service)) {
+  //    if(this.props.selectedServices[service] = true) {
+  //      this.props.selectedServices[service] = false;
+  //    } else {
+  //      this.props.selectedServices[service] = true;
+  //    }
+  //    console.log('boom: ', this.props.selectedServices[service]);
+  //  }
+  //},
+
+  chosen(service){
+    //event.preventDefault();
+    this.setState({condition: !this.state.condition});
     if(this.props.selectedServices.hasOwnProperty(service)) {
-      if(this.props.selectedServices[service] = true) {
+      if (this.props.selectedServices[service] = true) {
         this.props.selectedServices[service] = false;
       } else {
         this.props.selectedServices[service] = true;
       }
-      
     }
-    console.log('boom: ', this.props.selectedServices[service]);
-  },
-  render(){
-    return (
-      <li onClick={this.choosen, this.selectService.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
-    )
-  },
-
-  choosen(event){
-    event.preventDefault();
-    this.setState({condition: !this.state.condition});
+    else{
+      this.props.selectedServices[service] = true;
+    }
+    console.log('boom: ', this.props.selectedServices);
   }
 });
 
 Image = React.createClass({
-	propTypes: {
-		image: React.PropTypes.object.isRequired
-	},
+  propTypes: {
+    image: React.PropTypes.object.isRequired
+  },
   getInitialState: function(){
     return {
       condition:false
     }
   },
-	render(){
+  render(){
     return (
-			//<div className="thumbnail">
-				<a href="" onClick={this.selected} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
-			//</div>
-		);
-	},
+      //<div className="thumbnail">
+      <a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
+      //</div>
+    );
+  },
 
-  selected(event){
-    console.log(event);
-    event.preventDefault();
+  selected(image){
+    //event.preventDefault();
     this.setState({condition: !this.state.condition});
+    if(this.props.selectedImages.hasOwnProperty(image)) {
+      if (this.props.selectedImages[image] = true) {
+        this.props.selectedImages[image] = false;
+      } else {
+        this.props.selectedImages[image] = true;
+      }
+    }
+    else{
+      this.props.selectedImages[image] = true;
+    }
+  }
     //console.log(event.target);
     //event.target.toggleClass('selected');
-  }
 });
