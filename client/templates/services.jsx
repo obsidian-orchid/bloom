@@ -1,10 +1,15 @@
 ServicesList = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData(){
+    var currentUser = Meteor.subscribe('userData');
     return {
-      // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
-      currentUser: Meteor.user()
-    };
+      ready: currentUser.ready(),
+      users: Meteor.users.find().fetch()
+    }
+    // return {
+    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
+    //   currentUser: Meteor.user()
+    // };
   },
   getInitialState : function() {
     // console.log('user: ', this.data.currentUser);
@@ -92,9 +97,10 @@ ServicesList = React.createClass({
           },
           setToken: function() {
             var queryString = location.hash.substring(1);
-            console.log(queryString);
-
-            Meteor.call('addImgur', 'imgur', queryString);
+            // console.log(queryString);
+            Meteor.call('addImgur', 'imgur', queryString, function(err, result) {
+              console.log('imgur post successful: ', result);
+            });
           }
 
         }
@@ -138,13 +144,20 @@ ServicesList = React.createClass({
       }
     })
   },
-
   render() {
-    return (
-      <div>
-        <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={Object.keys(this.data.currentUser.services)} />
-      </div>
-    )
+    if (this.data.ready) {
+      return (
+        <div>
+          <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={this.data.users.services} />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={ {'temp': 'loading'} } />
+        </div>
+      )
+    }
   }
 });
 
@@ -153,22 +166,8 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   renderServiceList(key) {
+    // console.log(this.props.activeServices);
     var service = this.props.services[key];
-    //   var active = this.props.activeServices;
-  //   if(typeof active !== undefined) {
-  //     active = { 'something' : 1}
-  //   }
-  //   console.log(active[key]);
-    // var testObj = active[key];
-    // console.log('check: ', testObj.hasOwnProperty('accessToken'));
-    // if(true) {
-    //   return (
-    //     <div key={key}>
-    //       <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {service.name}</button>
-    //       <br /><br />
-    //     </div>
-    //   )
-    // }
     return (
       <div key={key}>
         <button className="btn" onClick={this.props.login.bind(null, key)}>Add {service.name}</button>
