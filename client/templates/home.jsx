@@ -48,12 +48,12 @@ Home = React.createClass({
     if(this.data.currentUser !== undefined) {
       var services = [];
       for(var key in this.data.currentUser.services) {
-        console.log(key, this.data.currentUser.services[key].hasOwnProperty('accessToken'));
+        //console.log(key, this.data.currentUser.services[key].hasOwnProperty('accessToken'));
         if(this.data.currentUser.services[key].hasOwnProperty('accessToken')){
           services.push(key);
         }
       }
-      console.log(services);
+      //console.log(services);
       return services.map((service) => {
         return <EnabledServices key={service} service={service} selectedServices={this.state.selectedServices} />;
       });
@@ -94,12 +94,15 @@ Home = React.createClass({
     }
   },
   postImage(images, services) {
-    console.log('postImage: ', images, services);
+    //console.log('postImage: ', images, services);
     var state = this.state.services;
-    _.each(services, function(service) {
-      _.each(images, function(image) {
+    console.log(state);
+    _.each(services, function(key1, service) {
+      _.each(images, function(key2, image) {
         console.log(service, image);
-        state[service].post(image);
+        if(key1 === true && key2 === true){
+          state[service].post(image);
+        }
       })
     })
   },
