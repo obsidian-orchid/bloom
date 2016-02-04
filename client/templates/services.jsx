@@ -97,9 +97,10 @@ ServicesList = React.createClass({
           },
           setToken: function() {
             var queryString = location.hash.substring(1);
-            console.log(queryString);
-
-            Meteor.call('addImgur', 'imgur', queryString);
+            // console.log(queryString);
+            Meteor.call('addImgur', 'imgur', queryString, function(err, result) {
+              console.log('imgur post successful: ', result);
+            });
           }
 
         }

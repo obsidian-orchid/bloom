@@ -32,11 +32,11 @@ Meteor.methods({
     addImgur: function(service, token) {
       query = {};
       var arrStr = token.split(/[=&]/);
-      console.log(arrStr[1]);
+      console.log('arrStr: ', arrStr[1]);
       // query['services.'+service] = '';
       query['services.'+ service + '.accessToken'] = arrStr[1];
       Meteor.users.update(Meteor.userId(), {$set: query});
-      var access_token = Meteor.user().services.imgur.token;
+      var access_token = Meteor.user().services.imgur.accessToken;
       return access_token;
     },
     buildImgurURL: function() {
@@ -86,7 +86,7 @@ Meteor.methods({
         console.log('removeService', userId + ' : ' + service);
         
         query = {};
-        query['services.'+service] = '';
+        query['services.'+service] = {};
         Meteor.users.update(Meteor.userId(), {$set: query});
         return service;
     }
