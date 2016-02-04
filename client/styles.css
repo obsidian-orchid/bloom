@@ -80,7 +80,7 @@ footer {
 
 .choosen {
   /*border: 3px solid #00c853;*/
-  text-shadow: 2px 2px #FF0000;
+  text-shadow: 2px 2px 8px #FF0000;
 }
 
 /*.selected::before{*/
