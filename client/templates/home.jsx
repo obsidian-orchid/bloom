@@ -15,6 +15,10 @@ Home = React.createClass({
   getInitialState: function() {
     // console.log('user: ', this.data.currentUser);
     return {
+      selectedImages: {},
+      selectedServices: {
+        'testService': false
+      },
       services: {
         google: {
           name: 'Google',
@@ -53,7 +57,7 @@ Home = React.createClass({
       }
       console.log(services);
       return services.map((service) => {
-        return <EnabledServices key={service} service={service} />;
+        return <EnabledServices key={service} service={service} selectedServices={this.state.selectedServices} />;
       });
     }
   },
@@ -153,16 +157,27 @@ EnabledServices = React.createClass({
       condition:false
     }
   },
+  selectService(service) {
+    console.log('hey: ', this.props.selectedServices);
+    if(this.props.selectedServices.hasOwnProperty(service)) {
+      if(this.props.selectedServices[service] = true) {
+        this.props.selectedServices[service] = false;
+      } else {
+        this.props.selectedServices[service] = true;
+      }
+      
+    }
+    console.log('boom: ', this.props.selectedServices[service]);
+  },
   render(){
     return (
-      <li onClick={this.choosen} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
+      <li onClick={this.choosen, this.selectService.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
     )
   },
 
   choosen(event){
     event.preventDefault();
     this.setState({condition: !this.state.condition});
-
   }
 });
 
