@@ -161,7 +161,6 @@ EnabledServices = React.createClass({
 
   choosen(event){
     event.preventDefault();
-    console.log(this.state.condition);
     this.setState({condition: !this.state.condition});
 
   }
