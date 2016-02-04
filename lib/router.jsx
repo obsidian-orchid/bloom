@@ -80,6 +80,16 @@ insecure.route("/verify-email/:token", {
   }
 });
 
+insecure.route("/privacy", {
+  name: 'privacy',
+  subscriptions: function() {},
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <Privacy />
+    });
+  }
+});
+
 FlowRouter.route("/api", {
   subscriptions: function() {},
   action: function() {
