@@ -29,16 +29,12 @@ Facebook.prototype.getUserData = function() {
 
 Meteor.methods({
 
-    EnabledServices: function(){
-      console.log(Meteor.user().services);
-      return Meteor.user().services;
-    },
     addImgur: function(service, token) {
       query = {};
       var arrStr = token.split(/[=&]/);
       console.log(arrStr[1]);
       // query['services.'+service] = '';
-      query['services.'+ service + '.token'] = arrStr[1];
+      query['services.'+ service + '.accessToken'] = arrStr[1];
       Meteor.users.update(Meteor.userId(), {$set: query});
       var access_token = Meteor.user().services.imgur.token;
       return access_token;
@@ -49,7 +45,7 @@ Meteor.methods({
       return test;
     },
     postImgur: function(url) {
-      var access_token = Meteor.user().services.imgur.token;
+      var access_token = Meteor.user().services.imgur.accessToken;
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},
         headers: {
