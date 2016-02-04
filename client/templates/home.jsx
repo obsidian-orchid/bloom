@@ -16,9 +16,7 @@ Home = React.createClass({
     // console.log('user: ', this.data.currentUser);
     return {
       selectedImages: {},
-      selectedServices: {
-        'testService': false
-      },
+      selectedServices: {},
       services: {
         google: {
           name: 'Google',
@@ -43,7 +41,7 @@ Home = React.createClass({
   },
   renderImages(){
     return this.data.images.map((image) => {
-      return <Image key={image._id} image={image} />
+      return <Image key={image._id} image={image} selectedImages={this.state.selectedImages} />
     });
   },
   renderServices(){
@@ -96,7 +94,7 @@ Home = React.createClass({
     }
   },
   postImage(images, services) {
-    // console.log('postImage: ', images, services);
+    console.log('postImage: ', images, services);
     var state = this.state.services;
     _.each(services, function(service) {
       _.each(images, function(image) {
@@ -138,7 +136,7 @@ Home = React.createClass({
               </div>
             </div>
           </form>
-          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, testImages, testServices) }>POST
+          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>POST
             <i className="mdi-content-send right"></i></button>
         </div>
         <div className="row">
@@ -179,8 +177,6 @@ EnabledServices = React.createClass({
 
   chosen(service){
     //event.preventDefault();
-    console.log(service);
-    console.log('hey: ', this.props.selectedServices);
     this.setState({condition: !this.state.condition});
     if(this.props.selectedServices.hasOwnProperty(service)) {
       if (this.props.selectedServices[service] = true) {
@@ -208,16 +204,25 @@ Image = React.createClass({
   render(){
     return (
       //<div className="thumbnail">
-      <a href="" onClick={this.selected} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
+      <a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
       //</div>
     );
   },
 
-  selected(event){
-    console.log(event);
-    event.preventDefault();
+  selected(image){
+    //event.preventDefault();
     this.setState({condition: !this.state.condition});
+    if(this.props.selectedImages.hasOwnProperty(image)) {
+      if (this.props.selectedImages[image] = true) {
+        this.props.selectedImages[image] = false;
+      } else {
+        this.props.selectedImages[image] = true;
+      }
+    }
+    else{
+      this.props.selectedImages[image] = true;
+    }
+  }
     //console.log(event.target);
     //event.target.toggleClass('selected');
-  }
 });
