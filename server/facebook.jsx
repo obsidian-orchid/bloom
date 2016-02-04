@@ -8,7 +8,7 @@ function Facebook(accessToken) {
         timeout: 3000,
         pool: {maxSockets: Infinity},
         headers: {connection: "keep-alive"}
-    }
+    };
     this.fb.setOptions(this.options);
 }
 
@@ -21,14 +21,13 @@ Facebook.prototype.query = function(query, method) {
         });
     });
     return data.result;
-}
+};
 
 Facebook.prototype.getUserData = function() {
     return this.query('me');
-}
+};
 
 Meteor.methods({
-
     addImgur: function(service, token) {
       query = {};
       var arrStr = token.split(/[=&]/);
@@ -45,6 +44,7 @@ Meteor.methods({
       return test;
     },
     postImgur: function(url) {
+      var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},
@@ -56,7 +56,36 @@ Meteor.methods({
           console.log(error);
         }
         else{
-          console.log(result);
+          //console.log(result);
+          imageId = result.data.data.id;
+          link = result.data.data.link;
+          //console.log(imageId);
+          Images.insert({
+            url: url,
+            imageId: imageId,
+            link: link
+          })
+        }
+      })
+    },
+
+  //PlayersList.find({ name: "David" }).fetch();
+    deleteImgur: function(url){
+      var access_token = Meteor.user().services.imgur.accessToken;
+      //console.log(url);
+      var imageId = Images.findOne({ url: url }).imageId;
+      //console.log(imageId);
+      HTTP.del("https://api.imgur.com/3/image/"+imageId,{
+        headers: {
+          Authorization: "Bearer " + access_token
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else {
+          //console.log(result);
+          Images.remove({imageId: imageId});
         }
       })
     },
