@@ -22,18 +22,28 @@ Home = React.createClass({
           name: 'Google',
           post: function() {
 
+          },
+          delete: function(){
+
           }
         },
         facebook: {
           name: 'Facebook',
           post: function(imageURL) {
             Meteor.call('postFBPhoto', imageURL, function(err, data) {});
+          },
+          delete: function(){
+
           }
         },
         imgur: {
           name: 'Imgur',
           post: function(imageURL) {
             Meteor.call('postImgur', imageURL, function(err, data) {});
+          },
+          delete: function(imageURL){
+            console.log('delete this pic from imgur');
+            Meteor.call('deleteImgur', imageURL, function(err, data) {})
           }
         }
       }
@@ -96,15 +106,29 @@ Home = React.createClass({
   postImage(images, services) {
     //console.log('postImage: ', images, services);
     var state = this.state.services;
-    console.log(state);
+    //console.log(state);
     _.each(services, function(key1, service) {
       _.each(images, function(key2, image) {
-        console.log(service, image);
+        //console.log(service, image);
         if(key1 === true && key2 === true){
           state[service].post(image);
         }
       })
     })
+  },
+  deleteImage(images, services){
+    //console.log('deleteImage', images, services);
+    var state = this.state.services;
+    //console.log(state);
+    _.each(services, function(key1, service){
+      _.each(images, function(key2, image){
+        console.log(service, image);
+        if(key1 === true && key2 === true){
+          state[service].delete(image);
+        }
+      })
+    })
+
   },
   render(){
     var testImages = ['http://i.imgur.com/EPtcLTy.jpg', 'http://i.imgur.com/llWihVz.jpg'];
@@ -139,14 +163,16 @@ Home = React.createClass({
               </div>
             </div>
           </form>
-          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>POST
-            <i className="mdi-content-send right"></i></button>
         </div>
         <div className="row">
           <div className="thumbs">
             {this.renderImages()}
           </div>
         </div>
+        <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
+          <i className="mdi-content-send right"></i></button>
+        <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
+          <i className="mdi-action-delete right"></i></button>
       </div>
     );
   }
