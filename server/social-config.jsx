@@ -10,8 +10,8 @@ ServiceConfiguration.configurations.insert({
 
 ServiceConfiguration.configurations.insert({
     "service": "google",
-    "clientId": "89929469817-njrdulgdgpvtteo9sqqg6as9mo3e07e0.apps.googleusercontent.com",
-    "secret": "LZ6oa4TIS81EfXZsVMSkVjHg"
+    "clientId": "741984941520-9mn97jjvu3vsqbghjiruebeop96cqq15.apps.googleusercontent.com",
+    "secret": "HvdOe3C8l248AzZg49thP062"
 });
 
 //ServiceConfiguration.configurations.insert({
