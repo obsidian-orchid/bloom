@@ -10,6 +10,18 @@ var authenticated = FlowRouter.group({
   }]
 });
 
+insecure.route("/splash", {
+  name: 'splash',
+  subscriptions: function() {
+  },
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <Splash />
+    });
+  }
+});
+
+
 authenticated.route("/", {
   name: 'home',
   subscriptions: function() {

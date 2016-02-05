@@ -42,3 +42,5 @@ tunguska:accounts-imgur
 reactrouter:react-router
 simple:imgur
 alethes:lodash
+sanjo:jasmine
+velocity:html-reporter
