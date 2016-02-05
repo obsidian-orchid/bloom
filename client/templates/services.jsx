@@ -20,7 +20,7 @@ ServicesList = React.createClass({
   add(service) {
     console.log(service);
     var services = {
-      Facebook : { 
+      Facebook : {
         auth: function() {
           Meteor.signInWithFacebook({
             requestPermissions: ['user_posts', 'publish_actions', 'public_profile']
@@ -104,7 +104,7 @@ ServicesList = React.createClass({
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
-    
+
     return _.reduce(userServices, function(acc, userService, key) {
       _.each(services, function(service) {
         if(service.name === key) {
@@ -137,7 +137,7 @@ ServicesList = React.createClass({
 
 /*
  AppServiceList
-*/
+ */
 var AppServiceList = React.createClass({
   _DEV_renderServiceList(key) {
     var service = this.props.services[key];
