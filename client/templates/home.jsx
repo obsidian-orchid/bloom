@@ -120,27 +120,27 @@ Home = React.createClass({
           </div>
         </div>
         <div className="row">
-          <form id="upload" className="col s12" onSubmit={this.uploadImage}>
+          <form id="upload" className="col s12">
             <p className="flow-text">CLICK HERE TO UPLOAD</p>
             <div className="row valign-wrapper">
-              <div className="file-field input-field col s10 valign">
+              <div className="file-field input-field col m10 s8 valign">
                 <div className="btn">
                   <span>File</span>
-                  <input id="input" type="file" multiple/>
+                  <input id="input" type="file" multiple onChange={this.uploadImage}/>
                 </div>
                 <div className="file-path-wrapper">
                   <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
                 </div>
               </div>
-              <div className="col s2 valign">
-                <button className="btn waves-effect waves-light " type="submit" name="action">
-                  <i className="mdi-content-add-box"></i> Post
+              <div className="col m2 s4 valign">
+                <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
+                  POST
+                  <i className="mdi-content-send right"></i>
                 </button>
               </div>
             </div>
           </form>
-          <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>POST
-            <i className="mdi-content-send right"></i></button>
+
         </div>
         <div className="row">
           <div className="thumbs">
@@ -151,6 +151,10 @@ Home = React.createClass({
     );
   }
 });
+
+//<button className="btn-floating waves-effect waves-light orange" type="submit" name="action">
+//                  <i  className="mdi-content-add"></i>
+//                </button>
 
 EnabledServices = React.createClass({
   getInitialState: function(){
