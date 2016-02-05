@@ -68,9 +68,7 @@ Meteor.methods({
         }
       })
     },
-
-  //PlayersList.find({ name: "David" }).fetch();
-    deleteImgur: function(url){
+   deleteImgur: function(url){
       var access_token = Meteor.user().services.imgur.accessToken;
       //console.log(url);
       var imageId = Images.findOne({ url: url }).imageId;
@@ -88,6 +86,43 @@ Meteor.methods({
           Images.remove({imageId: imageId});
         }
       })
+    },
+    postGoogle: function(url){
+      var access_token = Meteor.user().services.google.accessToken;
+      //console.log(access_token);
+      var googleID = Meteor.user().services.google.id;
+      var xmlData = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<atom:entry xmlns="http://www.w3.org/2005/Atom"'+
+        'xmlns:media="http://search.yahoo.com/mrss/"'+
+        'xmlns:gphoto="http://schemas.google.com/photos/2007">'+
+        '<title type="text">Trip To Italy</title>'+
+        '<summary type="text">This was the recent trip I took to Italy.</summary>'+
+        '<gphoto:location>Italy</gphoto:location>'+
+        '<gphoto:access>public</gphoto:access>'+
+        '<gphoto:timestamp>1152255600000</gphoto:timestamp>'+
+        '<media:group>'+
+        '<media:keywords>italy, vacation</media:keywords>'+
+        '</media:group>'+
+        '<category scheme="http://schemas.google.com/g/2005#kind"'+
+        'term="http://schemas.google.com/photos/2007#album"></category>'+
+        '<atom:/entry>';
+      console.log(xmlData);
+      HTTP.post("https://picasaweb.google.com/data/feed/api/user/"+googleID, {
+        headers:{
+          'Content-Type': 'application/atom+xml',
+          'Authorization': 'Bearer ' + access_token,
+          'X-JavaScript-User-Agent': "Google APIs Explorer"
+        },
+        params: xmlData
+      }, function (err, result) {
+        if (err) {
+          console.log('error occurred..');
+          console.log(err);
+          return;
+        }
+        console.log(result);
+      });
+
     },
     postFBPhoto: function(url) {
         console.log('here: ', url);

@@ -25,7 +25,8 @@ ServicesList = React.createClass({
                 'https://www.googleapis.com/auth/plus.me',
                 'https://www.googleapis.com/auth/plus.media.upload',
                 'https://www.googleapis.com/auth/plus.stream.write',
-                'https://www.googleapis.com/auth/userinfo.profile']
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://picasaweb.google.com/data/']
             }, function (err, mergedUserId) {
               if (err) {
                 console.log('error', err);

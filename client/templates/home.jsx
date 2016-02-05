@@ -20,8 +20,8 @@ Home = React.createClass({
       services: {
         google: {
           name: 'Google',
-          post: function() {
-
+          post: function(imageURL) {
+            Meteor.call('postGoogle', imageURL, function(err, data) {});
           },
           delete: function(){
 
