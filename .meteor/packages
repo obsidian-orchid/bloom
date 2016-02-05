@@ -44,3 +44,7 @@ simple:imgur
 alethes:lodash
 sanjo:jasmine
 velocity:html-reporter
+meteorhacks:npm
+
+
+npm-container
