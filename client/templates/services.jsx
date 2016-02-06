@@ -104,13 +104,13 @@ ServicesList = React.createClass({
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
-    
+
     return _.reduce(userServices, function(acc, userService, key) {
       _.each(services, function(service) {
         if(service.name === key) {
           acc[key] = {
             'name': key,
-            'state': service.state
+            'state': userService.state
           }
         }
       })
@@ -121,6 +121,7 @@ ServicesList = React.createClass({
   render() {
     if (this.data.userLoading && this.data.servicesLoading) {
       // console.log('userServices: ', this.data.userServices[0]);
+      // console.log('activeAppList: ', this.activeAppList());
       return (
         <div>
           <p>Loading...</p>
@@ -150,7 +151,9 @@ var AppServiceList = React.createClass({
     )
   },
   renderServiceList(service) {
-    var serviceState = this.props.activeAppList[service];
+    // console.log('check2: ', this.props.activeAppList[service]);
+    var serviceState = this.props.activeAppList[service].state;
+
     if(serviceState) {
       return (
         <div key={service}>
