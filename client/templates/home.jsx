@@ -30,7 +30,6 @@ Home = React.createClass({
     });
   },
   uploadImage(event) {
-    var userId = this.data.userServices[0]._id;
     event.preventDefault();
     //console.log('test: ', document.getElementById('input').files);
     var fileUpload = document.getElementById('input').files;
