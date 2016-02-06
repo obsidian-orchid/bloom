@@ -1,0 +1,11 @@
+{
+  "name": "SnapShare",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "meteor --settings settings-dev.json",
+    "dev": "meteor --settings settings-dev.json",
+    "dev-ios": "meteor run ios --production --settings settings-dev.json",
+    "deploy": "meteor deploy snapshare.meteor.com --settings settings-deploy.json"
+  }
+}

@@ -43,6 +43,8 @@ node_modules
 # Ignore AWS keys
 settings-development.json
 settings.json
+settings-deploy.json
+settings-dev.json
 
 # Ignore Facebook API keys
 social-config.jsx
