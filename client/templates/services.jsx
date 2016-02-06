@@ -20,7 +20,7 @@ ServicesList = React.createClass({
   add(service) {
     console.log(service);
     var services = {
-      Facebook : {
+      facebook : {
         auth: function() {
           Meteor.signInWithFacebook({
             requestPermissions: ['user_posts', 'publish_actions', 'public_profile']
@@ -42,20 +42,7 @@ ServicesList = React.createClass({
           });
         }
       },
-      Tumblr: {
-        auth: function(){
-          Meteor.call('LogToTumblr', function(err, result){
-            if(err){
-              console.log('Merging with Tumblr failed', err);
-            }
-            else{
-              console.log(result);
-              window.open(result);
-            }
-          })
-        }
-      },
-      Google : {
+      google : {
         auth: function() {
           Meteor.signInWithGoogle ({
             requestPermissions: ['https://www.googleapis.com/auth/plus.login',
@@ -81,7 +68,7 @@ ServicesList = React.createClass({
           })
         }
       },
-      Imgur: {
+      imgur: {
         auth: function() {
           Meteor.call('buildImgurURL', function(err, result) {
             console.log('test: ', result);
@@ -107,10 +94,10 @@ ServicesList = React.createClass({
   imgurToken() {
     var queryString = location.hash.substring(1);
     // console.log(queryString);
-    Meteor.call('addImgur', 'Imgur', queryString, function(err, result) {
+    Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
       console.log('Imgur added: ', result);
     });
-    Meteor.call('toggleServiceCommon', 'Imgur', true, function(err, result) {
+    Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
       console.log('service state: ', result);
     });
   },
@@ -133,8 +120,8 @@ ServicesList = React.createClass({
   },
   render() {
     if (this.data.userLoading && this.data.servicesLoading) {
-      // console.log('userServices: ', this.data.userServices[0]);
-      // console.log('activeAppList: ', this.activeAppList());
+      console.log('userServices: ', this.data.userServices[0]);
+      console.log('activeAppList: ', this.activeAppList());
       return (
         <div>
           <p>Loading...</p>
@@ -164,10 +151,10 @@ var AppServiceList = React.createClass({
     )
   },
   renderServiceList(service) {
-    // console.log('check2: ', this.props.activeAppList[service]);
+    console.log('check2: ', this.props.activeAppList[service]);
     var serviceState = this.props.activeAppList[service].state;
 
-    if(serviceState) {
+    if (serviceState) {
       return (
         <div key={service}>
           <button className="btn" onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
@@ -182,7 +169,9 @@ var AppServiceList = React.createClass({
       </div>
     )
   },
-  render : function() {
+  render: function () {
+    // console.log('services: ', this.props.services);
+    // console.log('active services: ', this.props.activeAppList);
     return (
       <div>
         <p className="flow-text">MANAGE SERVICES</p>

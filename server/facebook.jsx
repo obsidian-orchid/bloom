@@ -26,7 +26,7 @@ Facebook.prototype.getUserData = function() {
 };
 
 Meteor.methods({
-  postFacebook: function(url) {
+  post_facebook: function(url) {
     FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
     var fbUserId = Meteor.user().services.facebook.id;
 
@@ -39,6 +39,7 @@ Meteor.methods({
         console.log('Could not post on Facebook', err);
       } else {
         console.log('res: ', res);
+        return 'Facebook';
       }
     });
   }

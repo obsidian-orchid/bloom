@@ -1,12 +1,12 @@
 Meteor.methods({
-    addImgur: function(service, token) {
+    add_imgur: function(service, token) {
       query = {};
       var arrStr = token.split(/[=&]/);
       console.log('arrStr: ', arrStr[1]);
       // query['services.'+service] = '';
       query['services.'+ service + '.accessToken'] = arrStr[1];
       Meteor.users.update(Meteor.userId(), {$set: query});
-      var access_token = Meteor.user().services.Imgur.accessToken;
+      var access_token = Meteor.user().services.imgur.accessToken;
       return access_token;
     },
     buildImgurURL: function() {
@@ -14,9 +14,9 @@ Meteor.methods({
       console.log('test server: ', test);
       return test;
     },
-    postImgur: function(url) {
+    post_imgur: function(url) {
       var imageId, link;
-      var access_token = Meteor.user().services.Imgur.accessToken;
+      var access_token = Meteor.user().services.imgur.accessToken;
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},
         headers: {
@@ -41,8 +41,8 @@ Meteor.methods({
     },
 
   //PlayersList.find({ name: "David" }).fetch();
-    deleteImgur: function(url){
-      var access_token = Meteor.user().services.Imgur.accessToken;
+    delete_imgur: function(url){
+      var access_token = Meteor.user().services.imgur.accessToken;
       //console.log(url);
       var imageId = Images.findOne({ url: url }).imageId;
       //console.log(imageId);

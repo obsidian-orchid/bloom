@@ -73,7 +73,7 @@ Home = React.createClass({
       _.each(images, function(key2, image) {
         console.log(service, image);
         if(key1 === true && key2 === true){
-          postService = 'post' + service;
+          postService = 'post_' + service;
           // console.log('postService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
             'Successful post to ' + service + ' : ' + data;
@@ -92,7 +92,7 @@ Home = React.createClass({
       _.each(images, function(key2, image){
         // console.log(service, image);
         if(key1 === true && key2 === true){
-          postService = 'delete' + service;
+          postService = 'delete_' + service;
           // state[service].delete(image);
           console.log('deleteService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
