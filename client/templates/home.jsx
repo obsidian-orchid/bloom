@@ -30,7 +30,7 @@ Home = React.createClass({
         facebook: {
           name: 'Facebook',
           post: function(imageURL) {
-            Meteor.call('postFBPhoto', imageURL, function(err, data) {});
+            Meteor.call('postFacebook', imageURL, function(err, data) {});
           },
           delete: function(){
 
@@ -93,7 +93,7 @@ Home = React.createClass({
         }
         else
         {
-          //Meteor.call('postFBPhoto', downloadUrl);
+          //Meteor.call('postFacebook', downloadUrl);
           //Meteor.call('postImgur', downloadUrl);
           allFilesUploaded(downloadUrl);
         }

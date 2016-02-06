@@ -39,7 +39,9 @@ ServiceConfiguration.configurations.insert({
 });
 
 Meteor.publish('services', function(){
-    return Services.find();
+	return Services.find({
+		'state': true
+	});
  });
 
 Meteor.publish('images', function(){
@@ -48,25 +50,43 @@ Meteor.publish('images', function(){
 
 //sending the correct user data to the client depending on who is logged in
 Meteor.publish('userData', function() {
-     var currentUser;
-     currentUser = this.userId;
-     if (currentUser) {
-         return Meteor.users.find({
-             _id: currentUser
-         }, {
-         fields: {
-             // Default
+	// // var services = Services.find({
+	// // 	'state': true
+	// // }).fetch();
+	// var currentUser;
+	// currentUser = this.userId;
+
+	// if (currentUser) {
+	// 	var services = Meteor.users.find({
+	// 		_id: currentUser
+	// 	}, {
+	// 		fields: {
+	// 			'profile': 1,
+	// 			'services': 1
+	// 		}
+	// 	});
+	// 	// services.forEach(function(service) {
+	// 	// 	console.log('s: ', service)
+	// 	// })
+ //  } else {
+ //  	return this.ready();
+ //  }
+	
+	var currentUser;
+	currentUser = this.userId;
+	if (currentUser) {
+	   return Meteor.users.find({
+	       _id: currentUser
+	   }, {
+	   fields: {
 			'emails': 1,
-             // Created profile property
 			'profile': 1,
-             // Created roles property
-             //'roles': 1
 			'services': 1
-         }
-      });
-    } else {
-      return this.ready();
-  }
+	   }
+	});
+	} else {
+		return this.ready();
+	}
 });
 
 //allows us to add custom fields to users
