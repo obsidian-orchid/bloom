@@ -1,179 +1,167 @@
 ServicesList = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData(){
-    var currentUser = Meteor.subscribe('userData');
+    var userServicesData = Meteor.subscribe('userData');
+    var servicesData = Meteor.subscribe('services');
     return {
-      ready: currentUser.ready(),
-      users: Meteor.users.find().fetch()
+      userLoading: !userServicesData.ready(),
+      servicesLoading: !servicesData.ready(),
+      userServices: Meteor.users.find().fetch(),
+      services: Services.find().fetch()
     }
     // return {
     //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
     //   currentUser: Meteor.user()
     // };
   },
-  getInitialState : function() {
-    // console.log('user: ', this.data.currentUser);
-    return {
-      services : {
-        google : {
-          name : 'Google',
-          status: 'inactive',
-          login: function() {
-            Meteor.signInWithGoogle ({
-              requestPermissions: ['https://www.googleapis.com/auth/plus.login',
-                'https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/plus.me',
-                'https://www.googleapis.com/auth/plus.media.upload',
-                'https://www.googleapis.com/auth/plus.stream.write',
-                'https://www.googleapis.com/auth/userinfo.profile']
-            }, function (err, mergedUserId) {
-              if (err) {
-                console.log('error', err);
-              }
-              // mergedUsers is set if a merge occured
-              if (mergedUserId) {
-                console.log(mergedUserId, 'merged with', Meteor.userId());
-                // Remove merged collection
-                Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
-                  if (err) {
-                    console.log('error', err);
-                  }
-                });
-              }
-            })
-          },
-          post: function() {
-
-          }
-        },
-        facebook : {
-          name : 'Facebook',
-          status: 'inactive',
-          login: function() {
-            Meteor.signInWithFacebook({
-              requestPermissions: ['user_photos', 'user_videos', 'user_posts', 'publish_actions', 'public_profile']
-            }, function(err, mergedUserId) {
-              if (err) {
-                throw new Meteor.Error("Facebook login failed, " + err);
-              }
-              // mergedUsers is set if a merge occured
-              if (mergedUserId) {
-                console.log(mergedUserId, 'merged with', Meteor.userId());
-                // Remove merged collection
-                Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
-                  if (err) {
-                    console.log('error', err);
-                  }
-                });
-              }
-            });
-          },
-          post: function() {
-            var imageURL = 'https://i.ytimg.com/vi/ITxA_Z1vITY/hqdefault.jpg';
-            Meteor.call('postFBPhoto', imageURL, function(err, data) {
-            });
-          }
-        },
-        imgur: {
-          name: 'Imgur',
-          status: 'inactive',
-          login: function() {
-            Meteor.call('buildImgurURL', function(err, result) {
-              console.log('test: ', result);
-              window.open(result);
-            });
-
-            // HTTP.call('GET', url, function(err, result){
-            //     if (err) {
-            //       console.log('error occurred..');
-            //       console.log(err);
-            //     }
-            //     console.log(result);
-            // })
-          },
-          post: function(){
-            // var url = 'https://bloom-photos.s3-us-west-1.amazonaws.com/SJSDJe84KCExbGhHa/famous-cartoon-character-eric_theodore_cartman_southpark.jpg';
-            Meteor.call('postImgur', url)
-          },
-          setToken: function() {
-            var queryString = location.hash.substring(1);
-            // console.log(queryString);
-            Meteor.call('addImgur', 'imgur', queryString, function(err, result) {
-              console.log('imgur post successful: ', result);
-            });
-          }
-
+  getInitialState() {
+    return {}
+  },
+  add(service) {
+    console.log(service);
+    var services = {
+      Facebook : { 
+        auth: function() {
+          Meteor.signInWithFacebook({
+            requestPermissions: ['user_posts', 'publish_actions', 'public_profile']
+          }, function(err, mergedUserId) {
+            if (err) {
+              throw new Meteor.Error("Facebook add failed, " + err);
+            }
+            // mergedUsers is set if a merge occured
+            if (mergedUserId) {
+              console.log(mergedUserId, 'merged with', Meteor.userId());
+              // Remove merged collection
+              Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
+                if (err) {
+                  console.log('error', err);
+                }
+                console.log('Facebook added');
+              });
+            }
+          });
+        }
+      },
+      Google : {
+        auth: function() {
+          Meteor.signInWithGoogle ({
+            requestPermissions: ['https://www.googleapis.com/auth/plus.login',
+              'https://www.googleapis.com/auth/userinfo.email',
+              'https://www.googleapis.com/auth/plus.me',
+              'https://www.googleapis.com/auth/plus.media.upload',
+              'https://www.googleapis.com/auth/plus.stream.write',
+              'https://www.googleapis.com/auth/userinfo.profile']
+          }, function (err, mergedUserId) {
+            if (err) {
+              console.log('error', err);
+            }
+            // mergedUsers is set if a merge occured
+            if (mergedUserId) {
+              console.log(mergedUserId, 'merged with', Meteor.userId());
+              // Remove merged collection
+              Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
+                if (err) {
+                  console.log('error', err);
+                }
+              });
+            }
+          })
+        }
+      },
+      Imgur: {
+        auth: function() {
+          Meteor.call('buildImgurURL', function(err, result) {
+            console.log('test: ', result);
+            window.open(result);
+          });
         }
       }
     }
-  },
-  post : function(key)  {
-    var service = this.state.services[key];
-    service.post();
-  },
-  login: function(key) {
-    console.log('key: ', key);
-    var service = this.state.services[key];
-    service.login();
-
-  },
-  logout : function(key) {
-    var id = Meteor.userId();
-    Meteor.call('removeService', id, key, function(err, data) {
-      console.log('logged out of ', data)
+    services[service].auth();
+    Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+      console.log('service state: ', result);
     });
   },
-  //curl -X POST -H "Authorization: Bearer 950a46d0c2b18a08339814074580381a2acae6d2" -F
-  //"image=https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg" https://api.imgur.com/3/upload
-  imgurPost(){
+  remove(service) {
+    var id = Meteor.userId();
+    Meteor.call('removeService', id, service, function(err, result) {
+      console.log('logged out of ', result)
+    });
+    Meteor.call('toggleServiceCommon', service, false, function(err, result) {
+      console.log('service state: ', result);
+    });
+  },
+  imgurToken() {
     var queryString = location.hash.substring(1);
-    console.log(queryString);
+    // console.log(queryString);
+    Meteor.call('addImgur', 'Imgur', queryString, function(err, result) {
+      console.log('Imgur added: ', result);
+    });
+    Meteor.call('toggleServiceCommon', 'Imgur', true, function(err, result) {
+      console.log('service state: ', result);
+    });
+  },
+  activeAppList() {
+    var services = this.data.services;
+    var userServices = this.data.userServices[0].services;
+    
+    return _.reduce(userServices, function(acc, userService, key) {
+      _.each(services, function(service) {
+        if(service.name === key) {
+          acc[key] = {
+            'name': key,
+            'state': service.state
+          }
+        }
+      })
+      return acc;
+    }, {});
 
-    Meteor.call('addImgur', 'imgur', queryString);
-    HTTP.post("https://api.imgur.com/3/image", {
-      data: {image: 'https://bloom-photos.s3-us-west-1.amazonaws.com/uLutxQYutGeGNiE4s/famous-cartoon-character-homer-simpson.jpg'},
-      headers: {
-        Authorization: "Bearer " + '950a46d0c2b18a08339814074580381a2acae6d2'
-      }
-    }, function (error, result) {
-      if(error) {
-        console.log(error);
-      }
-      else{
-        console.log(result);
-      }
-    })
   },
   render() {
-    if (this.data.ready) {
+    if (this.data.userLoading && this.data.servicesLoading) {
+      // console.log('userServices: ', this.data.userServices[0]);
       return (
         <div>
-          <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={this.data.users.services} />
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <AppServiceList services={this.state.services} login={this.login} logout={this.logout} post={this.post} activeServices={ {'temp': 'loading'} } />
+          <p>Loading...</p>
         </div>
       )
     }
+    return (
+      <div>
+        <AppServiceList activeAppList={this.activeAppList()} services={this.data.services} add={this.add} remove={this.remove}  imgurToken={this.imgurToken} />
+      </div>
+    )
   }
 });
 
 /*
  AppServiceList
- */
+*/
 var AppServiceList = React.createClass({
-  renderServiceList(key) {
-    // console.log(this.props.activeServices);
+  _DEV_renderServiceList(key) {
     var service = this.props.services[key];
     return (
-      <div key={key}>
-        <button className="btn" onClick={this.props.login.bind(null, key)}>Add {service.name}</button>
-        <button className="btn" onClick={this.props.logout.bind(null, key)}>Remove {service.name}</button>
+      <div key={service.name}>
+        <button className="btn" onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
+        <button className="btn" onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
         <br /><br />
-        <button className="btn" onClick={this.props.post.bind(null, key)}>{service.name} Test Post</button>
+      </div>
+    )
+  },
+  renderServiceList(service) {
+    var serviceState = this.props.activeAppList[service];
+    if(serviceState) {
+      return (
+        <div key={service}>
+          <button className="btn" onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+          <br /><br />
+        </div>
+      )
+    }
+    return (
+      <div key={service}>
+        <button className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
         <br /><br />
       </div>
     )
@@ -181,9 +169,14 @@ var AppServiceList = React.createClass({
   render : function() {
     return (
       <div>
-        {Object.keys(this.props.services).map(this.renderServiceList)}
+        <p className="flow-text">MANAGE SERVICES</p>
+        {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
         <br /><br />
-        <button className="btn" onClick={this.props.services.imgur.setToken}>Set Imgur Token</button>
+        <br /><br />
+        <p className="flow-text">DEV LINKS</p>
+        {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
+        <br /><br />
+        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
       </div>
     )
   }
