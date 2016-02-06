@@ -75,8 +75,15 @@ ServicesList = React.createClass({
             window.open(result);
           });
         }
+      },
+      Pinterest: {
+        auth: function() {
+          Meteor.call('getPinterestAuthCodeURL', function(err, result){
+            console.log(result);
+          });
+        }
       }
-    }
+    };
     services[service].auth();
     Meteor.call('toggleServiceCommon', service, true, function(err, result) {
       console.log('service state: ', result);
@@ -113,7 +120,7 @@ ServicesList = React.createClass({
             'state': userService.state
           }
         }
-      })
+      });
       return acc;
     }, {});
 

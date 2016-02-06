@@ -44,3 +44,5 @@ simple:imgur
 alethes:lodash
 sanjo:jasmine
 velocity:html-reporter
+force-ssl
+tarang:ssl

@@ -1,3 +1,34 @@
+//On startup of server remove all services
+//and insert new ones
+Meteor.startup(function(){
+	Services.remove({});
+
+  var supportedServices = [
+    {name: 'facebook', state: true},
+    {name: 'google', state: false},
+    {name: 'imgur', state: true},
+    {name: 'twitter', state: true},
+    {name: 'pinterest', state: true}
+  ];
+
+  for(key in supportedServices){
+    Services.insert(supportedServices[key])
+  }
+});
+
+//configuring service configurations for twitter
+ServiceConfiguration.configurations.remove({
+  service: "twitter"
+});
+
+ServiceConfiguration.configurations.insert({
+  service: "twitter",
+  consumerKey: Meteor.settings.consumerKey,
+  loginStyle: "popup",
+  consumerSecret: Meteor.settings.consumerSecret
+});
+
+//meteor methods required for services
 Meteor.methods({
   toggleServiceCommon(service, opt) {
     // console.log('service: ', service);
