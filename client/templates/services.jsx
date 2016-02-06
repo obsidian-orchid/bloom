@@ -50,6 +50,7 @@ ServicesList = React.createClass({
             }
             else{
               console.log(result);
+              window.open(result);
             }
           })
         }
