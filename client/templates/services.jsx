@@ -9,6 +9,10 @@ ServicesList = React.createClass({
       userServices: Meteor.users.find().fetch(),
       services: Services.find().fetch()
     }
+    // return {
+    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
+    //   currentUser: Meteor.user()
+    // };
   },
   getInitialState() {
     return {}
@@ -119,6 +123,16 @@ ServicesList = React.createClass({
       console.log('service state: ', result);
     });
   },
+  imgurToken() {
+    //var queryString = location.hash.substring(1);
+    // console.log(queryString);
+    //Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
+    //  console.log('Imgur added: ', result);
+    //});
+    //Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
+    //  console.log('service state: ', result);
+    //});
+  },
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -138,14 +152,14 @@ ServicesList = React.createClass({
   },
   render() {
     if (this.data.userLoading && this.data.servicesLoading) {
-      console.log('userServices: ', this.data.userServices[0]);
-      console.log('activeAppList: ', this.activeAppList());
       return (
         <div>
           <p>Loading...</p>
         </div>
       )
     }
+    console.log('userServices: ', this.data.userServices[0]);
+    console.log('activeAppList: ', this.activeAppList());
     return (
       <div>
         <AppServiceList activeAppList={this.activeAppList()} services={this.data.services} add={this.add} remove={this.remove}  imgurToken={this.imgurToken} />
@@ -168,6 +182,25 @@ var AppServiceList = React.createClass({
       </div>
     )
   },
+  loginTwitter(options, callback) {
+    Meteor.call('twitterGetToken', function(err, result) {
+      OAuth_SS.authorizeWindow(result)
+      // console.log('result: ', result);
+    })
+    // if (! callback && typeof options === "function") {
+    //   callback = options;
+    //   options = null;
+    // }
+
+    // var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(callback);
+    // TwitterSS.requestCredential(options, credentialRequestCompleteCallback);
+  },
+  loginTumblr(options, callback) {
+    Meteor.call('tumblrGetToken', function(err, result) {
+      OAuth_SS.authorizeWindow(result)
+      // console.log('result: ', result);
+    })
+  },
   renderServiceList(service) {
     console.log('check2: ', this.props.activeAppList[service]);
     var serviceState = this.props.activeAppList[service].state;
@@ -180,17 +213,9 @@ var AppServiceList = React.createClass({
         </div>
       )
     }
-    var btnStyle = {
-      paddingLeft: '48px',
-      paddingTop: '1px',
-      backgroundImage: 'url(services/'+ service +'.png)',
-      backgroundSize: '20px',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '15px center'
-    };
     return (
       <div key={service}>
-        <button style={btnStyle} className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
+        <button className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
         <br /><br />
       </div>
     )
@@ -206,6 +231,12 @@ var AppServiceList = React.createClass({
         <br /><br />
         <p className="flow-text">DEV LINKS</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
+        <br /><br />
+        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
+        <br /><br />
+        <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
+        <br /><br />
+        <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
         <br /><br />
       </div>
     )

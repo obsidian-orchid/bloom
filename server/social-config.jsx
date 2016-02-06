@@ -14,6 +14,12 @@ ServiceConfiguration.configurations.insert({
     "secret": "HvdOe3C8l248AzZg49thP062"
 });
 
+ServiceConfiguration.configurations.insert({
+    service: 'twitter',
+	consumerKey: 'hhsLUrt8nUrefjeDRuUTrwsQN',
+	secret: '70F1khPQUT0FO2VnF1Q0YxiMnswjhRqD3lVGN0eMLM0KncOVaV'
+});
+
 //ServiceConfiguration.configurations.insert({
 //    "service": "imgur",
 //    "clientId": "e808bd261a2d336",
