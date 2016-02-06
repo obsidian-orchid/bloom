@@ -8,7 +8,12 @@ convertXmlToJson = ( xmlString ) => {
   return xml2json.toJson( xmlString , { object: true } );
 };
 
-var http = Npm.require("http");
+var client = Tumblr.createClient({
+  consumer_key: Meteor.settings.tumblrKey,
+  consumer_secret: Meteor.settings.tumblrSecret,
+  token: Meteor.settings.tumblrToken,
+  token_secret: Meteor.settings.tumblrTokenSecret
+});
 
 function Facebook(accessToken) {
     console.log('token: ', accessToken);
@@ -148,6 +153,25 @@ Meteor.methods({
       //    console.log(result);
       //  }
       //});
+
+    },
+    loginToTumblr: function(){
+      console.log('Tumblr');
+      HTTP.post("https://www.tumblr.com/oauth/request_token",{
+        headers:{
+          consumer_key: 'mPLsW0RI1aezze3yJZOm1uXink8Geokx0DeLh3SOefk9hQMzkc',
+          consumer_secret: '930K8wpv9RwwdGK3bRmHgBGKXMsbulMMztXv4sAmX2lP5NG7WO',
+          token: '7Mkf4dNU1sEXdxKJK97029U2rRcCySkwyPfzrTMFdEXnYA5EYz',
+          token_secret: '0gGmdG5O8WjpEpWPHtvqlEbCJdgKnGQwkyA2BbSljCcIieEcSG'
+        },function(err,result){
+          if(err){
+            console.log(err);
+          }
+          else{
+            console.log(result);
+          }
+        }
+      })
 
     },
     postFBPhoto: function(url) {

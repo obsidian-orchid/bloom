@@ -104,6 +104,21 @@ ServicesList = React.createClass({
             });
           }
 
+        },
+        tumblr:{
+          name: 'Tumblr',
+          status: 'inactive',
+          login: function(){
+            Meteor.call('loginToTumblr', function(err, result){
+
+            });
+          },
+          post: function(){
+
+          },
+          delete: function(){
+
+          }
         }
       }
     }
