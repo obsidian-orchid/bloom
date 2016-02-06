@@ -86,22 +86,35 @@ Home = React.createClass({
     // console.log('images: ', images);
     // console.log('services: ', services);
     var state = this.state.services;
-    var postService;
+    var delService;
     //console.log(state);
     _.each(services, function(key1, service){
       _.each(images, function(key2, image){
         // console.log(service, image);
         if(key1 === true && key2 === true){
-          postService = 'delete_' + service;
+          delService = 'delete_' + service;
           // state[service].delete(image);
-          console.log('deleteService: ', postService, image);
-          Meteor.call(postService, image, function(err, data) {
-            console.log('Successful removal from ' + service + ' : ' + data);
+          console.log('deleteService: ', delService, image);
+          Meteor.call(delService, image, function(err, data) {
           });
         }
       })
     })
 
+  },
+  createAlbum(services){
+    var album = document.getElementById('album').value;
+    console.log(album, services);
+    var state = this.state.services;
+    console.log(state);
+    var albumService;
+    _.each(services, function(key1, service){
+      if(key1 === true){
+        albumService = 'create_'+ service;
+        Meteor.call(albumService, album, function(err, data){})
+      }
+
+    });
   },
   activeAppList() {
     var services = this.data.services;
@@ -115,7 +128,7 @@ Home = React.createClass({
             'state': service.state
           }
         }
-      })
+      });
       return acc;
     }, {});
 
@@ -134,16 +147,15 @@ Home = React.createClass({
       <div className="">
         <div className="row">
           <div className="col s12">
-
             <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
-
           </div>
         </div>
         <div className="row">
+          <input id="album" type="text" placeholder="Album" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
+          <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
+            <i className="mdi-av-queue right"></i></button>
           <form id="upload" className="col s12">
-            <p className="flow-text">CREATE A NEW ALBUM</p>
-            <input placeholder="ALbum" id="album" type="text" className="validate"/>
-            <p className="flow-text">CLICK HERE TO UPLOAD NEW PHOTOS</p>
+            <p className="flow-text">CLICK HERE TO UPLOAD</p>
             <div className="row valign-wrapper">
               <div className="file-field input-field col m10 s8 valign">
                 <div className="btn">

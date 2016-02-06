@@ -14,6 +14,24 @@ Meteor.methods({
       console.log('test server: ', test);
       return test;
     },
+    create_imgur: function(albumTitle){
+      console.log(albumTitle);
+      var access_token = Meteor.user().services.imgur.accessToken;
+      HTTP.post("https://api.imgur.com/3/album",{
+        headers: {
+          Authorization: "Bearer " + access_token
+        },
+        params: {title: albumTitle}
+      }, function(error, result){
+        if(error){
+          console.log(error);
+        }
+        else{
+          console.log(result.content);
+          return result.content;
+        }
+      })
+    },
     post_imgur: function(url) {
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
