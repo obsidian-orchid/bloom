@@ -2,22 +2,7 @@ Meteor.methods({
   toggleServiceCommon(service, opt) {
     // console.log('service: ', service);
     var user = Meteor.users.findOne({_id: this.userId});
-<<<<<<< HEAD
-    var state;
 
-    if(user.services[service].state) {
-      state = false;
-    } else {
-      state = true;
-    }
-
-    if (arguments.length === 2) {
-      state = opt;
-    }
-
-=======
-    
->>>>>>> 39495bf3a6a66b44460d78250229f6223c513d0d
     var query = {};
     query['services.'+ service + '.state'] = opt;
     Meteor.users.update(Meteor.userId(), {$set: query});
