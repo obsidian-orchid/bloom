@@ -2,22 +2,11 @@ Meteor.methods({
   toggleServiceCommon(service, opt) {
     // console.log('service: ', service);
     var user = Meteor.users.findOne({_id: this.userId});
-    var state;
-
-    if(user.services[service].state) {
-      state = false;
-    } else {
-      state = true;
-    }
-
-    if (arguments.length === 2) {
-      state = opt; 
-    }
     
     var query = {};
-    query['services.'+ service + '.state'] = state;
+    query['services.'+ service + '.state'] = opt;
     Meteor.users.update(Meteor.userId(), {$set: query});
-    return 'set ' + service + ' ' + state;
+    return 'set ' + service + ' ' + opt;
   },
 
   addCommonService: function(service, token) {
@@ -27,7 +16,7 @@ Meteor.methods({
     // query['services.'+service] = '';
     query['services.'+ service + '.accessToken'] = arrStr[1];
     Meteor.users.update(Meteor.userId(), {$set: query});
-    var access_token = Meteor.user().services.imgur.accessToken;
+    var access_token = Meteor.user().services.Imgur.accessToken;
     return access_token;
   },
 
