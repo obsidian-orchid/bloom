@@ -11,9 +11,9 @@ Meteor.methods({
     }
 
     if (arguments.length === 2) {
-      state = opt; 
+      state = opt;
     }
-    
+
     var query = {};
     query['services.'+ service + '.state'] = state;
     Meteor.users.update(Meteor.userId(), {$set: query});
@@ -32,14 +32,14 @@ Meteor.methods({
   },
 
   removeMergedCollection: function (mergedUserId) {
-      console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
-      Meteor.users.remove(mergedUserId);
+    console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
+    Meteor.users.remove(mergedUserId);
   },
   removeService: function (userId, service) {
-      query = {};
-      query['services.' + service] = {};
-      Meteor.users.update(Meteor.userId(), {$set: query}, function(err, result) {
-        return result;
-      });
+    query = {};
+    query['services.' + service] = {};
+    Meteor.users.update(Meteor.userId(), {$set: query}, function(err, result) {
+      return result;
+    });
   }
 });

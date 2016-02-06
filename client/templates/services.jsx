@@ -42,6 +42,18 @@ ServicesList = React.createClass({
           });
         }
       },
+      Tumblr: {
+        auth: function(){
+          Meteor.call('LogToTumblr', function(err, result){
+            if(err){
+              console.log('Merging with Tumblr failed', err);
+            }
+            else{
+              console.log(result);
+            }
+          })
+        }
+      },
       Google : {
         auth: function() {
           Meteor.signInWithGoogle ({
