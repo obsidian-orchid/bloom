@@ -172,7 +172,6 @@ Meteor.methods({
           }
         }
       })
-
     },
     postFBPhoto: function(url) {
         console.log('here: ', url);
