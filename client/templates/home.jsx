@@ -76,7 +76,7 @@ Home = React.createClass({
           postService = 'post_' + service;
           // console.log('postService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
-            'Successful post to ' + service + ' : ' + data;
+            console.log('Successful post to ' + service + ' : ' + data);
           });
         }
       })
@@ -96,7 +96,7 @@ Home = React.createClass({
           // state[service].delete(image);
           console.log('deleteService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
-            'Successful removal from ' + service + ' : ' + data;
+            console.log('Successful removal from ' + service + ' : ' + data);
           });
         }
       })
@@ -141,7 +141,9 @@ Home = React.createClass({
         </div>
         <div className="row">
           <form id="upload" className="col s12">
-            <p className="flow-text">CLICK HERE TO UPLOAD</p>
+            <p className="flow-text">CREATE A NEW ALBUM</p>
+            <input placeholder="ALbum" id="album" type="text" className="validate"/>
+            <p className="flow-text">CLICK HERE TO UPLOAD NEW PHOTOS</p>
             <div className="row valign-wrapper">
               <div className="file-field input-field col m10 s8 valign">
                 <div className="btn">

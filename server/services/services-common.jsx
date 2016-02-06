@@ -8,7 +8,8 @@ Meteor.startup(function(){
     {name: 'google', state: false},
     {name: 'imgur', state: true},
     {name: 'twitter', state: true},
-    {name: 'pinterest', state: true}
+    {name: 'pinterest', state: true},
+    {name: 'tumblr', state: true}
   ];
 
   for(key in supportedServices){
