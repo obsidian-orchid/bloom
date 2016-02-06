@@ -1,52 +1,27 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 imageDetails = new Mongo.Collection('imageDetails');
+
 Home = React.createClass({
   mixins: [ReactMeteorData],
-  getMeteorData() {
+  getMeteorData(){
+    var userServicesData = Meteor.subscribe('userData');
+    var servicesData = Meteor.subscribe('services');
     return {
+      userLoading: !userServicesData.ready(),
+      servicesLoading: !servicesData.ready(),
+      userServices: Meteor.users.find().fetch(),
+      services: Services.find().fetch(),
       images: imageDetails.find({}, {
         sort: {
           createdAt: -1
         }
-      }).fetch(),
-      currentUser: Meteor.user()
-    };
+      }).fetch()
+    }
   },
   getInitialState: function() {
-    // console.log('user: ', this.data.currentUser);
     return {
       selectedImages: {},
-      selectedServices: {},
-      services: {
-        google: {
-          name: 'Google',
-          post: function(imageURL) {
-            Meteor.call('postGoogle', imageURL, function(err, data) {});
-          },
-          delete: function(){
-
-          }
-        },
-        facebook: {
-          name: 'Facebook',
-          post: function(imageURL) {
-            Meteor.call('postFacebook', imageURL, function(err, data) {});
-          },
-          delete: function(){
-
-          }
-        },
-        imgur: {
-          name: 'Imgur',
-          post: function(imageURL) {
-            Meteor.call('postImgur', imageURL, function(err, data) {});
-          },
-          delete: function(imageURL){
-            console.log('delete this pic from imgur');
-            Meteor.call('deleteImgur', imageURL, function(err, data) {})
-          }
-        }
-      }
+      selectedServices: {}
     }
   },
   renderImages(){
@@ -54,29 +29,14 @@ Home = React.createClass({
       return <Image key={image._id} image={image} selectedImages={this.state.selectedImages} />
     });
   },
-  renderServices(){
-    if(this.data.currentUser !== undefined) {
-      var services = [];
-      for(var key in this.data.currentUser.services) {
-        //console.log(key, this.data.currentUser.services[key].hasOwnProperty('accessToken'));
-        if(this.data.currentUser.services[key].hasOwnProperty('accessToken')){
-          services.push(key);
-        }
-      }
-      //console.log(services);
-      return services.map((service) => {
-        return <EnabledServices key={service} service={service} selectedServices={this.state.selectedServices} />;
-      });
-    }
-  },
   uploadImage(event) {
     event.preventDefault();
     //console.log('test: ', document.getElementById('input').files);
     var fileUpload = document.getElementById('input').files;
 
     for (var i = 0; i < fileUpload.length; i++) {
-      var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+this.data.currentUser._id+"/"+fileUpload[i].name;
-      console.log(imageLocal);
+      var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
+      console.log('imageLocal: ', imageLocal);
       imageDetails._collection.insert({
         imageurl: imageLocal,
         time: new Date()
@@ -104,43 +64,79 @@ Home = React.createClass({
     }
   },
   postImage(images, services) {
-    //console.log('postImage: ', images, services);
+    // console.log('images: ', images);
+    // console.log('services: ', services);
     var state = this.state.services;
+    var postService;
     //console.log(state);
     _.each(services, function(key1, service) {
       _.each(images, function(key2, image) {
-        //console.log(service, image);
+        console.log(service, image);
         if(key1 === true && key2 === true){
-          state[service].post(image);
+          postService = 'post' + service;
+          // console.log('postService: ', postService, image);
+          Meteor.call(postService, image, function(err, data) {
+            'Successful post to ' + service + ' : ' + data;
+          });
         }
       })
     })
   },
   deleteImage(images, services){
-    //console.log('deleteImage', images, services);
+    // console.log('images: ', images);
+    // console.log('services: ', services);
     var state = this.state.services;
+    var postService;
     //console.log(state);
     _.each(services, function(key1, service){
       _.each(images, function(key2, image){
-        console.log(service, image);
+        // console.log(service, image);
         if(key1 === true && key2 === true){
-          state[service].delete(image);
+          postService = 'delete' + service;
+          // state[service].delete(image);
+          console.log('deleteService: ', postService, image);
+          Meteor.call(postService, image, function(err, data) {
+            'Successful removal from ' + service + ' : ' + data;
+          });
         }
       })
     })
 
   },
+  activeAppList() {
+    var services = this.data.services;
+    var userServices = this.data.userServices[0].services;
+
+    return _.reduce(userServices, function(acc, userService, key) {
+      _.each(services, function(service) {
+        if(service.name === key) {
+          acc[key] = {
+            'name': key,
+            'state': service.state
+          }
+        }
+      })
+      return acc;
+    }, {});
+
+  },
   render(){
-    var testImages = ['http://i.imgur.com/EPtcLTy.jpg', 'http://i.imgur.com/llWihVz.jpg'];
-    // var testServices = this.getActiveServices();
-    var testServices = ["facebook", "imgur"];
+    if (this.data.userLoading && this.data.servicesLoading) {
+      return (
+        <div>
+          <p>Loading...</p>
+        </div>
+      )
+    }
+    // console.log('activeServices: ', this.activeAppList());
+    // console.log('userId: ', this.data.userServices[0]._id);
     return (
       <div className="">
         <div className="row">
           <div className="col s12">
-            <ul className="tabs">
-              {this.renderServices()}
-            </ul>
+
+            <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
+
           </div>
         </div>
         <div className="row">
@@ -157,10 +153,7 @@ Home = React.createClass({
                 </div>
               </div>
               <div className="col m2 s4 valign">
-                <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
-                  POST
-                  <i className="mdi-content-send right"></i>
-                </button>
+
               </div>
             </div>
           </form>
@@ -168,11 +161,13 @@ Home = React.createClass({
         </div>
         <div className="row">
           <div className="thumbs">
+
             {this.renderImages()}
+
           </div>
         </div>
         <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
-          <i className="mdi-content-send right"></i></button>
+          POST<i className="mdi-content-send right"></i></button>
         <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
           <i className="mdi-action-delete right"></i></button>
       </div>
@@ -180,36 +175,26 @@ Home = React.createClass({
   }
 });
 
-//<button className="btn-floating waves-effect waves-light orange" type="submit" name="action">
-//                  <i  className="mdi-content-add"></i>
-//                </button>
-
+/*
+ EnabledServices
+ */
 EnabledServices = React.createClass({
   getInitialState: function(){
     return {
-      condition:false
+      condition: false
     }
   },
-//{function() { f1(); f2(); }}
-  render(){
-    return (
-      //<li onClick={this.choosen, this.selectService.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "choosen": ""}>{this.props.service}</a></li>
-      <li onClick={this.chosen.bind(null, this.props.service)} className="tab col s3"><a href="" className={this.state.condition ? "chosen": ""}>{this.props.service}</a></li>
-    )
+  renderServiceList(service){
+    var serviceState = this.props.activeAppList[service];
+    // console.log('check: ', serviceState)
+    if(serviceState) {
+      return (
+        <li key={service} onClick={this.chosen.bind(null, service)} className="tab col s3">
+          <a href="" className={this.state.condition ? "chosen": ""}>{service}</a>
+        </li>
+      )
+    }
   },
-
-  //selectService(service) {
-  //  console.log('hey: ', this.props.selectedServices);
-  //  if(this.props.selectedServices.hasOwnProperty(service)) {
-  //    if(this.props.selectedServices[service] = true) {
-  //      this.props.selectedServices[service] = false;
-  //    } else {
-  //      this.props.selectedServices[service] = true;
-  //    }
-  //    console.log('boom: ', this.props.selectedServices[service]);
-  //  }
-  //},
-
   chosen(service){
     //event.preventDefault();
     this.setState({condition: !this.state.condition});
@@ -224,9 +209,19 @@ EnabledServices = React.createClass({
       this.props.selectedServices[service] = true;
     }
     console.log('boom: ', this.props.selectedServices);
+  },
+  render(){
+    return (
+      <ul className="tabs">
+        {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
+      </ul>
+    )
   }
 });
 
+/*
+ Image
+ */
 Image = React.createClass({
   propTypes: {
     image: React.PropTypes.object.isRequired
@@ -258,6 +253,42 @@ Image = React.createClass({
       this.props.selectedImages[image] = true;
     }
   }
-    //console.log(event.target);
-    //event.target.toggleClass('selected');
+  //console.log(event.target);
+  //event.target.toggleClass('selected');
 });
+
+
+// Image = React.createClass({
+//   propTypes: {
+//     image: React.PropTypes.object.isRequired
+//   },
+//   getInitialState: function(){
+//     return {
+//       condition:false
+//     }
+//   },
+//   renderImages(image){
+//     return (
+//       <a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
+//     )
+//   },
+//   selected(image){
+//     //event.preventDefault();
+//     this.setState({condition: !this.state.condition});
+//     if(this.props.selectedImages.hasOwnProperty(image)) {
+//       if (this.props.selectedImages[image] = true) {
+//         this.props.selectedImages[image] = false;
+//       } else {
+//         this.props.selectedImages[image] = true;
+//       }
+//     }
+//     else{
+//       this.props.selectedImages[image] = true;
+//     }
+//   },
+//   render(){
+//     return (
+//       {this.data.images.map(this.renderImages)}
+//     );
+//   }
+// });
