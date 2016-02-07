@@ -120,6 +120,12 @@ Home = React.createClass({
   albumsList(){
     var newServices = this.data.services;
     console.log(newServices);
+    _.each(newServices, function(key1,service) {
+      console.log(key1.album);
+      return key1.album.map((album) => {
+        return <AlbumsAvailable key={album._id} album={album}/>
+      });
+    })
 
   },
   activeAppList() {
@@ -202,11 +208,15 @@ Home = React.createClass({
 /*Albums available for posting images*/
 
 AlbumsAvailable = React.createClass({
+  getInitialState: function(){
+    return {
+      condition:false
+    }
+  },
   render(){
+    console.log(this.props.album);
     return (
-      <div>
-
-      </div>
+        <li className="tab col s3">{this.props.album.albumTitle}</li>
     )
   }
 });
