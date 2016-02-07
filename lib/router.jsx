@@ -119,7 +119,6 @@ authenticated.route("/services", {
     this.register('userData', Meteor.subscribe('userData'));
   },
   action: function(params, queryParams) {
-    // console.log(queryParams);
     ReactLayout.render(MainLayout, {
       content: <ServicesList />
     });
