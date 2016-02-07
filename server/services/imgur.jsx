@@ -14,6 +14,31 @@ Meteor.methods({
       console.log('test server: ', test);
       return test;
     },
+    create_imgur: function(albumTitle){
+      //console.log(albumTitle);
+      var access_token = Meteor.user().services.imgur.accessToken;
+      HTTP.post("https://api.imgur.com/3/album",{
+        headers: {
+          Authorization: "Bearer " + access_token
+        },
+        params: {title: albumTitle}
+      }, function(error, result){
+        if(error){
+          console.log(error);
+        }
+        else{
+          //console.log(result.data.data.id);
+          Services.update(
+            {name: 'imgur'},
+            {$push: {album: {albumId: result.data.data.id, albumTitle: albumTitle }}}
+          );
+            //service.album[service.album.length - 1].albumId = result.data.data.id;
+            //service.album[service.album.length - 1].albumTitle = albumTitle;
+          return result.content;
+
+        }
+      })
+    },
     post_imgur: function(url) {
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
@@ -61,3 +86,4 @@ Meteor.methods({
       })
     }
 });
+

@@ -44,5 +44,9 @@ simple:imgur
 alethes:lodash
 sanjo:jasmine
 velocity:html-reporter
+meteorhacks:npm
+npm-container
+mrt:twit
+twitter
 force-ssl
 tarang:ssl

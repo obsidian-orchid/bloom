@@ -76,7 +76,7 @@ Home = React.createClass({
           postService = 'post_' + service;
           // console.log('postService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
-            'Successful post to ' + service + ' : ' + data;
+            console.log('Successful post to ' + service + ' : ' + data);
           });
         }
       })
@@ -86,27 +86,39 @@ Home = React.createClass({
     // console.log('images: ', images);
     // console.log('services: ', services);
     var state = this.state.services;
-    var postService;
+    var delService;
     //console.log(state);
     _.each(services, function(key1, service){
       _.each(images, function(key2, image){
         // console.log(service, image);
         if(key1 === true && key2 === true){
-          postService = 'delete_' + service;
+          delService = 'delete_' + service;
           // state[service].delete(image);
-          console.log('deleteService: ', postService, image);
-          Meteor.call(postService, image, function(err, data) {
-            'Successful removal from ' + service + ' : ' + data;
+          console.log('deleteService: ', delService, image);
+          Meteor.call(delService, image, function(err, data) {
           });
         }
       })
     })
 
   },
+  createAlbum(services){
+    var album = document.getElementById('album').value;
+    console.log(album, services);
+    var state = this.state.services;
+    var albumService;
+    _.each(services, function(key1, service){
+      if(key1 === true){
+        albumService = 'create_'+ service;
+        Meteor.call(albumService, album, function(err, data){})
+      }
+
+    });
+  },
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
-    
+
     return _.reduce(userServices, function(acc, userService, key) {
       _.each(services, function(service) {
         if(service.name === key) {
@@ -115,7 +127,7 @@ Home = React.createClass({
             'state': service.state
           }
         }
-      })
+      });
       return acc;
     }, {});
 
@@ -134,12 +146,13 @@ Home = React.createClass({
       <div className="">
         <div className="row">
           <div className="col s12">
-
-              <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
-            
+            <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
           </div>
         </div>
         <div className="row">
+          <input id="album" type="text" placeholder="Album" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
+          <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
+            <i className="mdi-av-queue right"></i></button>
           <form id="upload" className="col s12">
             <p className="flow-text">CLICK HERE TO UPLOAD</p>
             <div className="row valign-wrapper">
@@ -153,7 +166,7 @@ Home = React.createClass({
                 </div>
               </div>
               <div className="col m2 s4 valign">
-                
+
               </div>
             </div>
           </form>
@@ -163,11 +176,11 @@ Home = React.createClass({
           <div className="thumbs">
 
             {this.renderImages()}
-          
+
           </div>
         </div>
         <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
-        POST<i className="mdi-content-send right"></i></button>
+          POST<i className="mdi-content-send right"></i></button>
         <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
           <i className="mdi-action-delete right"></i></button>
       </div>
@@ -177,7 +190,7 @@ Home = React.createClass({
 
 /*
  EnabledServices
-*/
+ */
 EnabledServices = React.createClass({
   getInitialState: function(){
     return {
@@ -221,7 +234,7 @@ EnabledServices = React.createClass({
 
 /*
  Image
-*/
+ */
 Image = React.createClass({
   propTypes: {
     image: React.PropTypes.object.isRequired
@@ -253,8 +266,8 @@ Image = React.createClass({
       this.props.selectedImages[image] = true;
     }
   }
-    //console.log(event.target);
-    //event.target.toggleClass('selected');
+  //console.log(event.target);
+  //event.target.toggleClass('selected');
 });
 
 

@@ -4,11 +4,12 @@ Meteor.startup(function(){
 	Services.remove({});
 
   var supportedServices = [
-    {name: 'facebook', state: true},
-    {name: 'google', state: false},
-    {name: 'imgur', state: true},
-    {name: 'twitter', state: true},
-    {name: 'pinterest', state: true}
+    {name: 'facebook', state: true, album: [{albumId: '', albumTitle: ''}]},
+    {name: 'google', state: false, album: [{albumId: '', albumTitle: ''}]},
+    {name: 'imgur', state: true, album: [{albumId: '', albumTitle: ''}]},
+    {name: 'twitter', state: true, album: [{albumId: '', albumTitle: ''}]},
+    {name: 'pinterest', state: true, album: [{albumId: '', albumTitle: ''}]},
+    {name: 'tumblr', state: true, album: [{albumId: '', albumTitle: ''}]}
   ];
 
   for(key in supportedServices){
@@ -33,7 +34,7 @@ Meteor.methods({
   toggleServiceCommon(service, opt) {
     // console.log('service: ', service);
     var user = Meteor.users.findOne({_id: this.userId});
-    
+
     var query = {};
     query['services.'+ service + '.state'] = opt;
     Meteor.users.update(Meteor.userId(), {$set: query});
@@ -52,14 +53,14 @@ Meteor.methods({
   },
 
   removeMergedCollection: function (mergedUserId) {
-      console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
-      Meteor.users.remove(mergedUserId);
+    console.log('Merging DB items of user', mergedUserId, 'with user', Meteor.userId());
+    Meteor.users.remove(mergedUserId);
   },
   removeService: function (userId, service) {
-      query = {};
-      query['services.' + service] = {};
-      Meteor.users.update(Meteor.userId(), {$set: query}, function(err, result) {
-        return result;
-      });
+    query = {};
+    query['services.' + service] = {};
+    Meteor.users.update(Meteor.userId(), {$set: query}, function(err, result) {
+      return result;
+    });
   }
 });

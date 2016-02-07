@@ -20,7 +20,7 @@ ServicesList = React.createClass({
   add(service) {
     console.log(service);
     var services = {
-      facebook : { 
+      facebook : {
         auth: function() {
           Meteor.signInWithFacebook({
             requestPermissions: ['user_posts', 'publish_actions', 'public_profile']
@@ -41,6 +41,27 @@ ServicesList = React.createClass({
             }
           });
         }
+      },
+      Tumblr: {
+        auth: function(){
+          Meteor.call('LogToTumblr', function(err, result){
+            if(err){
+              console.log('Merging with Tumblr failed', err);
+            }
+            else{
+              console.log(result);
+              window.open(result);
+            }
+          })
+        }
+      },
+      Twitter:{
+        auth: function(){
+          Meteor.loginWithTwitter(function(err, result){
+
+          })
+        }
+
       },
       google : {
         auth: function() {
@@ -145,7 +166,7 @@ ServicesList = React.createClass({
 
 /*
  AppServiceList
-*/
+ */
 var AppServiceList = React.createClass({
   _DEV_renderServiceList(key) {
     var service = this.props.services[key];
@@ -161,7 +182,7 @@ var AppServiceList = React.createClass({
     console.log('check2: ', this.props.activeAppList[service]);
     var serviceState = this.props.activeAppList[service].state;
 
-    if(serviceState) {
+    if (serviceState) {
       return (
         <div key={service}>
           <button className="btn" onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
@@ -176,7 +197,7 @@ var AppServiceList = React.createClass({
       </div>
     )
   },
-  render : function() {
+  render: function () {
     // console.log('services: ', this.props.services);
     // console.log('active services: ', this.props.activeAppList);
     return (
