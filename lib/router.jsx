@@ -119,10 +119,21 @@ authenticated.route("/services", {
     this.register('userData', Meteor.subscribe('userData'));
   },
   action: function(params, queryParams) {
-    // console.log(queryParams);
     ReactLayout.render(MainLayout, {
       content: <ServicesList />
     });
+  }
+});
+
+authenticated.route("/services/:service", {
+  name: 'services',
+  subscriptions: function() {
+    this.register('services', Meteor.subscribe('services'));
+    this.register('userData', Meteor.subscribe('userData'));
+  },
+  action: function(params, queryParams) {
+    window.close();
+    Meteor.call(params.service + 'AuthToken', queryParams.code);
   }
 });
 

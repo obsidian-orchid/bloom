@@ -1,59 +1,82 @@
 /**
  * Created by siobhan on 2016/02/05.
  */
-function Pinterest(accessToken) {
-  this.accessToken = accessToken;
-  this.options = {
-    timeout: 3000,
-    pool: {maxSockets: Infinity},
-    headers: {connection: "keep-alive"}
-  };
-}
-
-//Facebook.prototype.query = function(query, method) {
-//  var self = this;
-//  var method = (typeof method === 'undefined') ? 'get' : method;
-//  var data = Meteor.sync(function(done) {
-//    self.fb[method](query, function(err, res) {
-//        done(null, res);
-//    });
-//  });
-//  return data.result;
-//};
-//
-//Facebook.prototype.getUserData = function() {
-//  return this.query('me');
-//};
 
 Meteor.methods({
-  getPinterestAuthCodeURL: function(){
-    return "https://api.pinterest.com/oauth/?response_type=code" +
-      "&redirect_uri=https://localhost:3000/services" +
+    pinterestAuthToken: function(code){
+      HTTP.post("https://api.pinterest.com/v1/oauth/token", {
+        data: {
+          client_id: Meteor.settings.PinterestClientId,
+          client_secret: Meteor.settings.PinterestClientSecret,
+          grant_type: "authorization_code",
+          code: code
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else{
+          console.log('result: ', result.data);
+          query = {};
+          query['services.pinterest.accessToken'] = result.data.access_token;
+          Meteor.users.update(Meteor.userId(), {$set: query});
+        }
+      });
+    },
+    pinterestAuthLink: function() {
+      return "https://api.pinterest.com/oauth/?response_type=code" +
+      "&redirect_uri=https://localhost:3000/services/pinterest" +
       "&client_id=" + Meteor.settings.PinterestClientId +
-      "&scope=read_public,write_public" +
-      ""
-  },
-  getPinterestAccessTokenURL: function(code){
-    return "https://api.pinterest.com/v1/oauth/token?" +
-      "grant_type=authorization_code" +
-      "&client_id=" + Meteor.settings.PinterestClientId +
-      "&client_secret=" + Meteor.settings.PinterestClientSecret +
-      "&code=" + code;
-  }
-  //postFacebook: function(url) {
-  //  FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
-  //  var fbUserId = Meteor.user().services.facebook.id;
-  //
-  //  var wallPost = {
-  //    url: url
-  //  };
-  //
-  //  FBGraph.post(fbUserId + "/photos", wallPost, function(err, res) {
-  //    if (err) {
-  //      console.log('Could not post on Facebook', err);
-  //    } else {
-  //      console.log('res: ', res);
-  //    }
-  //  });
-  //}
+      "&scope=read_public,write_public";
+    },
+    post_pinterest: function(url) {
+      console.log("posting to pinterest");
+      var imageId, link;
+      var access_token = Meteor.user().services.pinterest.accessToken;
+      HTTP.post("https://api.pinterest.com/v1/pins/", {
+        data: {
+          board: "obsidiano/snapshare",
+          note: "Shared with SnapShare",
+          image_url: url
+        },
+        headers: {
+          Authorization: "Bearer " + access_token
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else{
+          console.log('result: ', result);
+          imageId = result.data.data.id;
+          link = result.data.data.url;
+          //console.log(imageId);
+          Images.insert({
+            url: url,
+            imageId: imageId,
+            link: link
+          })
+        }
+      })
+    }
+
+  //  delete_pinterest: function(url){
+  //    var access_token = Meteor.user().services.imgur.accessToken;
+  //    //console.log(url);
+  //    var imageId = Images.findOne({ url: url }).imageId;
+  //    //console.log(imageId);
+  //    HTTP.del("https://api.imgur.com/3/image/"+imageId,{
+  //      headers: {
+  //        Authorization: "Bearer " + access_token
+  //      }
+  //    }, function (error, result) {
+  //      if(error) {
+  //        console.log(error);
+  //      }
+  //      else {
+  //        //console.log(result);
+  //        Images.remove({imageId: imageId});
+  //      }
+  //    })
+  //  }
 });
