@@ -6,6 +6,7 @@ Home = React.createClass({
   getMeteorData(){
     var userServicesData = Meteor.subscribe('userData');
     var servicesData = Meteor.subscribe('services');
+    //console.log(servicesData);
     return {
       userLoading: !userServicesData.ready(),
       servicesLoading: !servicesData.ready(),
@@ -117,6 +118,8 @@ Home = React.createClass({
     });
   },
   albumsList(){
+    var newServices = this.data.services;
+    console.log(newServices);
 
   },
   activeAppList() {
@@ -155,11 +158,12 @@ Home = React.createClass({
         </div>
         <div className ="row">
           <div className="col s12">
-            <AlbumsAvailable />
+            {this.albumsList()}
           </div>
         </div>
         <div className="row">
-          <input id="album" type="text" placeholder="Album" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
+          <p className="flow-text">SELECT SERVICE YOU WANT TO ADD THE ALBUM TO AND CREATE NEW ALBUM</p>
+          <input id="album" type="text" placeholder="Album Title" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
           <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
             <i className="mdi-av-queue right"></i></button>
           <form id="upload" className="col s12">
@@ -183,9 +187,7 @@ Home = React.createClass({
         </div>
         <div className="row">
           <div className="thumbs">
-
             {this.renderImages()}
-
           </div>
         </div>
         <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
