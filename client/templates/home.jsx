@@ -103,6 +103,8 @@ Home = React.createClass({
     })
 
   },
+  //There is a limit to the number of albums that can be created in 24 hours
+  //Add alert if the album limit exeeds
   createAlbum(services){
     var album = document.getElementById('album').value;
     document.getElementById('album').value = '';
