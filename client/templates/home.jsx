@@ -116,6 +116,9 @@ Home = React.createClass({
 
     });
   },
+  albumsList(){
+
+  },
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -148,6 +151,11 @@ Home = React.createClass({
         <div className="row">
           <div className="col s12">
             <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
+          </div>
+        </div>
+        <div className ="row">
+          <div className="col s12">
+            <AlbumsAvailable />
           </div>
         </div>
         <div className="row">
@@ -186,6 +194,18 @@ Home = React.createClass({
           <i className="mdi-action-delete right"></i></button>
       </div>
     );
+  }
+});
+
+/*Albums available for posting images*/
+
+AlbumsAvailable = React.createClass({
+  render(){
+    return (
+      <div>
+
+      </div>
+    )
   }
 });
 
