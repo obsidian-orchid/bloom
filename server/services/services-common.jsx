@@ -4,12 +4,12 @@ Meteor.startup(function(){
 	Services.remove({});
 
   var supportedServices = [
-    {name: 'facebook', state: true, album: [{albumId: '', albumTitle: ''}]},
-    {name: 'google', state: false, album: [{albumId: '', albumTitle: ''}]},
-    {name: 'imgur', state: true, album: [{albumId: '', albumTitle: ''}]},
-    {name: 'twitter', state: true, album: [{albumId: '', albumTitle: ''}]},
-    {name: 'pinterest', state: true, album: [{albumId: '', albumTitle: ''}]},
-    {name: 'tumblr', state: true, album: [{albumId: '', albumTitle: ''}]}
+    {name: 'facebook', state: true, album: []},
+    {name: 'google', state: false, album: []},
+    {name: 'imgur', state: true, album: []},
+    {name: 'twitter', state: true, album: []},
+    {name: 'pinterest', state: true, album: []},
+    {name: 'tumblr', state: true, album: []}
   ];
 
   for(key in supportedServices){
