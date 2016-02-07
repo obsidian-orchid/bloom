@@ -15,7 +15,7 @@ Meteor.methods({
       return test;
     },
     create_imgur: function(albumTitle){
-      console.log(albumTitle);
+      //console.log(albumTitle);
       var access_token = Meteor.user().services.imgur.accessToken;
       HTTP.post("https://api.imgur.com/3/album",{
         headers: {
@@ -27,8 +27,15 @@ Meteor.methods({
           console.log(error);
         }
         else{
-          console.log(result.content);
+          //console.log(result.data.data.id);
+          Services.update(
+            {name: 'imgur'},
+            {$push: {album: {albumId: result.data.data.id, albumTitle: albumTitle }}}
+          );
+            //service.album[service.album.length - 1].albumId = result.data.data.id;
+            //service.album[service.album.length - 1].albumTitle = albumTitle;
           return result.content;
+
         }
       })
     },

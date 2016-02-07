@@ -106,7 +106,6 @@ Home = React.createClass({
     var album = document.getElementById('album').value;
     console.log(album, services);
     var state = this.state.services;
-    console.log(state);
     var albumService;
     _.each(services, function(key1, service){
       if(key1 === true){
