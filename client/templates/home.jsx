@@ -104,6 +104,7 @@ Home = React.createClass({
   },
   createAlbum(services){
     var album = document.getElementById('album').value;
+    document.getElementById('album').value = '';
     console.log(album, services);
     var state = this.state.services;
     var albumService;
