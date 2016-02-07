@@ -7,9 +7,12 @@ ServicesList = React.createClass({
       userLoading: !userServicesData.ready(),
       servicesLoading: !servicesData.ready(),
       userServices: Meteor.users.find().fetch(),
-      services: Services.find().fetch(),
-      //imgurLink:"https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=code"
-    };
+      services: Services.find().fetch()
+    }
+    // return {
+    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
+    //   currentUser: Meteor.user()
+    // };
   },
   getInitialState() {
     return {}
