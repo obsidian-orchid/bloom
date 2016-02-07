@@ -1,5 +1,5 @@
 Meteor.methods({
-    getImgurAuthToken: function(code){
+    imgurAuthToken: function(code){
       HTTP.post("https://api.imgur.com/oauth2/token", {
         data: {
           client_id: Meteor.settings.ImgurClientId,
@@ -19,7 +19,7 @@ Meteor.methods({
         }
       });
     },
-    getAuthLink: function() {
+    imgurAuthLink: function() {
       return "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=code";
     },
     post_imgur: function(url) {
