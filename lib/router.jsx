@@ -119,12 +119,31 @@ authenticated.route("/services", {
     this.register('userData', Meteor.subscribe('userData'));
   },
   action: function(params, queryParams) {
-    // console.log(queryParams);
+     console.log(queryParams, params);
+    if(queryParams['code']){
+      window.close();
+      Meteor.call('getImgurAuthToken', queryParams['code']);
+    }
     ReactLayout.render(MainLayout, {
       content: <ServicesList />
     });
   }
 });
+
+//insecure.route("/services/", {
+//  name: 'services-token',
+//  subscriptions: function() {
+//    this.register('services', Meteor.subscribe('services'));
+//    this.register('userData', Meteor.subscribe('userData'));
+//  },
+//  action: function(params, queryParams) {
+//    //var token = FlowRouter.getParam("token");
+//    console.log(queryParams);
+//    ReactLayout.render(MainLayout, {
+//      content: <ServicesList />
+//    });
+//  }
+//});
 
 FlowRouter.notFound = {
   action: function() {

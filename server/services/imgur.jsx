@@ -1,20 +1,29 @@
 Meteor.methods({
-    add_imgur: function(service, token) {
-      query = {};
-      var arrStr = token.split(/[=&]/);
-      console.log('arrStr: ', arrStr[1]);
-      // query['services.'+service] = '';
-      query['services.'+ service + '.accessToken'] = arrStr[1];
-      Meteor.users.update(Meteor.userId(), {$set: query});
-      var access_token = Meteor.user().services.imgur.accessToken;
-      return access_token;
+    getImgurAuthToken: function(code){
+      HTTP.post("https://api.imgur.com/oauth2/token", {
+        data: {
+          client_id: Meteor.settings.ImgurClientId,
+          client_secret: Meteor.settings.ImgurClientSecret,
+          grant_type: "authorization_code",
+          code: code
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else{
+          console.log('result: ', result.data);
+          query = {};
+          query['services.imgur.accessToken'] = result.data.access_token;
+          Meteor.users.update(Meteor.userId(), {$set: query});
+        }
+      });
     },
-    buildImgurURL: function() {
-      var test = "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=token";
-      console.log('test server: ', test);
-      return test;
+    getAuthLink: function() {
+      return "https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=code";
     },
     post_imgur: function(url) {
+      console.log("posting to imgur");
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
       HTTP.post("https://api.imgur.com/3/image", {

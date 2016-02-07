@@ -7,12 +7,9 @@ ServicesList = React.createClass({
       userLoading: !userServicesData.ready(),
       servicesLoading: !servicesData.ready(),
       userServices: Meteor.users.find().fetch(),
-      services: Services.find().fetch()
-    }
-    // return {
-    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
-    //   currentUser: Meteor.user()
-    // };
+      services: Services.find().fetch(),
+      //imgurLink:"https://api.imgur.com/oauth2/authorize?client_id="+Meteor.settings.ImgurClientId+"&response_type=code"
+    };
   },
   getInitialState() {
     return {}
@@ -70,9 +67,10 @@ ServicesList = React.createClass({
       },
       imgur: {
         auth: function() {
-          Meteor.call('buildImgurURL', function(err, result) {
-            console.log('test: ', result);
-            window.open(result);
+          Meteor.call('getAuthLink', function(err, result) {
+            var left = (screen.width/2)-(400/2);
+            var top = (screen.height/2)-(400/2);
+            window.open(result, 'name', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=400, height= 400, top='+top+', left='+left);
           });
         }
       },
@@ -99,14 +97,14 @@ ServicesList = React.createClass({
     });
   },
   imgurToken() {
-    var queryString = location.hash.substring(1);
+    //var queryString = location.hash.substring(1);
     // console.log(queryString);
-    Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
-      console.log('Imgur added: ', result);
-    });
-    Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
-      console.log('service state: ', result);
-    });
+    //Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
+    //  console.log('Imgur added: ', result);
+    //});
+    //Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
+    //  console.log('service state: ', result);
+    //});
   },
   activeAppList() {
     var services = this.data.services;
