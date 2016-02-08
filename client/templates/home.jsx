@@ -171,13 +171,14 @@ Home = React.createClass({
         width: 350,
         height: 350,
         quality: 75,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: Camera.DestinationType.FILE_URI
       }, function (err, data) {
         if (err) {
           console.log('Error taking images', error);
         }
-        console.log(data);
-        Session.set('photo', data);
+        console.log(imageURI);
+        Session.set('photo', imageURI);
       });
     }
     else{
@@ -239,7 +240,6 @@ Home = React.createClass({
           <i className="mdi-action-delete right"></i></button>
         < takePhoto />
         < libraryEvent />
-        <p><img src="{{photo}}"/></p>
         <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
         <p><input type="button" className="capture" value="Library Event" onClick={this.libraryEvent} /></p>
       </div>
