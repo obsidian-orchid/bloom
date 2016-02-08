@@ -1,6 +1,9 @@
 var uploader = new Slingshot.Upload("myFileUploads");
 imageDetails = new Mongo.Collection('imageDetails');
 
+//For camera
+const takePhoto = BlazeToReact('takePhoto');
+
 Home = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData(){
@@ -147,6 +150,40 @@ Home = React.createClass({
     }, {});
 
   },
+  takePhoto(){
+    console.log('Starting camera service');
+    MeteorCamera.getPicture({
+      width: 350,
+      height: 350,
+      quality: 75 }, function(err, data){
+      if(err){
+        console.log('Error taking images', error);
+      }
+      console.log(data);
+      Session.set('photo', data);
+    });
+
+  },
+  libraryEvent(){
+    console.log('phoneLibrary');
+    if (Meteor.isCordova) {
+      MeteorCamera.getPicture({
+        width: 350,
+        height: 350,
+        quality: 75,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+      }, function (err, data) {
+        if (err) {
+          console.log('Error taking images', error);
+        }
+        console.log(data);
+        Session.set('photo', data);
+      });
+    }
+    else{
+      alert('Cordova only feature');
+    }
+  },
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
@@ -187,11 +224,9 @@ Home = React.createClass({
                 </div>
               </div>
               <div className="col m2 s4 valign">
-
               </div>
             </div>
           </form>
-
         </div>
         <div className="row">
           <div className="thumbs">
@@ -202,6 +237,11 @@ Home = React.createClass({
           POST<i className="mdi-content-send right"></i></button>
         <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
           <i className="mdi-action-delete right"></i></button>
+        < takePhoto />
+        < libraryEvent />
+        <p><img src="{{photo}}"/></p>
+        <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
+        <p><input type="button" className="capture" value="Library Event" onClick={this.libraryEvent} /></p>
       </div>
     );
   }
