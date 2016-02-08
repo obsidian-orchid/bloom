@@ -6,6 +6,7 @@ Home = React.createClass({
   getMeteorData(){
     var userServicesData = Meteor.subscribe('userData');
     var servicesData = Meteor.subscribe('services');
+    //console.log(servicesData);
     return {
       userLoading: !userServicesData.ready(),
       servicesLoading: !servicesData.ready(),
@@ -102,8 +103,11 @@ Home = React.createClass({
     })
 
   },
+  //There is a limit to the number of albums that can be created in 24 hours
+  //Add alert if the album limit exeeds
   createAlbum(services){
     var album = document.getElementById('album').value;
+    document.getElementById('album').value = '';
     console.log(album, services);
     var state = this.state.services;
     var albumService;
@@ -114,6 +118,17 @@ Home = React.createClass({
       }
 
     });
+  },
+  albumsList(){
+    var newServices = this.data.services;
+    console.log(newServices);
+    _.each(newServices, function(key1,service) {
+      console.log(key1.album);
+      return key1.album.map((album) => {
+        return <AlbumsAvailable key={album._id} album={album}/>
+      });
+    })
+
   },
   activeAppList() {
     var services = this.data.services;
@@ -149,8 +164,14 @@ Home = React.createClass({
             <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
           </div>
         </div>
+        <div className ="row">
+          <div className="col s12">
+            {this.albumsList()}
+          </div>
+        </div>
         <div className="row">
-          <input id="album" type="text" placeholder="Album" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
+          <p className="flow-text">SELECT SERVICE YOU WANT TO ADD THE ALBUM TO AND CREATE NEW ALBUM</p>
+          <input id="album" type="text" placeholder="Album Title" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
           <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
             <i className="mdi-av-queue right"></i></button>
           <form id="upload" className="col s12">
@@ -174,9 +195,7 @@ Home = React.createClass({
         </div>
         <div className="row">
           <div className="thumbs">
-
             {this.renderImages()}
-
           </div>
         </div>
         <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
@@ -185,6 +204,22 @@ Home = React.createClass({
           <i className="mdi-action-delete right"></i></button>
       </div>
     );
+  }
+});
+
+/*Albums available for posting images*/
+
+AlbumsAvailable = React.createClass({
+  getInitialState: function(){
+    return {
+      condition:false
+    }
+  },
+  render(){
+    console.log(this.props.album);
+    return (
+        <li className="tab col s3">{this.props.album.albumTitle}</li>
+    )
   }
 });
 
