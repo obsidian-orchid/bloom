@@ -67,13 +67,17 @@ footer {
   /*align-items: flex-start;*/
   /*align-content: flex-start;*/
 }
-
-.thumbnail img{
-  margin:5px;
-  width: 150px;
-  height: 150px;
-  /*border: 1px solid black;*/
+.card .card-image img{
+  height: 250px;
+  width: auto;
 }
+
+/*.thumbnail img{*/
+  /*margin:5px;*/
+  /*width: 150px;*/
+  /*height: 150px;*/
+  /*/!*border: 1px solid black;*!/*/
+/*}*/
 
 .selected {
   border: 3px solid #00c853;
@@ -83,27 +87,10 @@ footer {
   /*border: 3px solid #00c853;*/
   text-shadow: 2px 2px 8px #FF0000;
 }
-
-/*.selected::before{*/
-  /*width: 15px;*/
-  /*height:15px;*/
-  /*background: #00c853;*/
-  /*content: '';*/
-  /*display: block;*/
-/*}*/
-
 .image-container {
   width: 250px;
   margin-left: 5px;
   margin-right: 5px;
-  /*padding: 10px;*/
-  /*border: 1px solid black;*/
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*flex-wrap: nowrap;*/
-  /*justify-content: center;*/
-  /*align-items: center;*/
-  /*align-content: center;*/
 }
 
 .service-icon {
@@ -141,9 +128,8 @@ footer {
   filter: grayscale(0%);
 }
 
-
-/*.image {*/
-  /*border: 1px solid black;*/
-  /*width: 150px;*/
-  /*height: 150px;*/
+/*button{*/
+  /*padding: 5px 6px 5px 30px;*/
+  /*background: url('services/imgur.png') no-repeat 5px center;*/
+  /*background-size: 20px;*/
 /*}*/
