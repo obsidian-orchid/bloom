@@ -118,8 +118,8 @@ footer {
   transition-property: transform;
 }
 .service-icon:hover, .service-icon:focus, .service-icon:active {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  -webkit-transform: scale(1.25);
+  transform: scale(1.25);
 }
 
 .service-icon.inactive {

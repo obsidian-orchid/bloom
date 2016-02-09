@@ -22,16 +22,18 @@ Image = React.createClass({
       selectedServices: {}
     }
   },
+  handleServiceSelect(service, event){
+    var val = this.state.selectedServices[service.name] || false;
+    this.state.selectedServices[service.name] = !val;
+    console.log(this.state.selectedServices);
+  },
   renderServices(){
     return this.data.services.map((service) =>{
-      return <ImageServices key={service._id} serviceName={service.name}/>
+      return <ImageServices onClick={this.handleServiceSelect.bind(null, service)} key={service._id} serviceName={service.name}/>
     })
   },
   render(){
     return (
-      //<div className="thumbnail">
-      //<a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
-      //</div>
       <div className="card image-container">
         <div className="card-image waves-effect waves-block waves-light">
           <img className="" src={this.props.image.imageurl}/>
@@ -43,27 +45,7 @@ Image = React.createClass({
         </div>
       </div>
     );
-  },
-  toggleService(event){
-    console.log(event);
-  },
-
-  selected(image){
-    //event.preventDefault();
-    this.setState({condition: !this.state.condition});
-    if(this.props.selectedImages.hasOwnProperty(image)) {
-      if (this.props.selectedImages[image] = true) {
-        this.props.selectedImages[image] = false;
-      } else {
-        this.props.selectedImages[image] = true;
-      }
-    }
-    else{
-      this.props.selectedImages[image] = true;
-    }
   }
-  //console.log(event.target);
-  //event.target.toggleClass('selected');
 });
 
 ImageServices = React.createClass({
@@ -81,10 +63,10 @@ ImageServices = React.createClass({
     )
   },
   toggleSelect(){
-    console.log("clicked");
     this.setState({
       showActive: !this.state.showActive
-    })
+    });
+    this.props.onClick();
   }
 
 });
