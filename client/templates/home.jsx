@@ -167,8 +167,8 @@ Home = React.createClass({
       }
       //console.log(data);
       Session.set('photo', data);
-      var image = document.getElementById ('picture');
-      image.src = data;
+      //var image = document.getElementById ('picture');
+      //image.src = data;
       var contentType = 'image/png';
       var b64Data = data.slice(23);
       var blob = b64toBlob(b64Data, contentType);
