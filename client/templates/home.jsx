@@ -197,6 +197,10 @@ Home = React.createClass({
         else
         {
           console.log(downloadUrl);
+          imageDetails._collection.insert({
+            imageurl: downloadUrl,
+            time: new Date()
+          });
         }
       });
     });
