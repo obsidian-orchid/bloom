@@ -107,7 +107,7 @@ Home = React.createClass({
           postService = 'post_' + service;
           // console.log('postService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
-            //console.log('Successful post to ' + service + ' : ' + data);
+            console.log('Successful post to ' + service + ' : ' + data);
           });
         }
       })
@@ -160,24 +160,6 @@ Home = React.createClass({
     })
 
   },
-  activeAppList() {
-    var services = this.data.services;
-    var userServices = this.data.userServices[0].services;
-
-    return _.reduce(userServices, function(acc, userService, key) {
-      _.each(services, function(service) {
-        if(service.name === key) {
-          acc[key] = {
-            'name': key,
-            'state': service.state
-          }
-        }
-      });
-      return acc;
-    }, {});
-
-  },
-  //take photo with laptop camera and upload it to s3
   takePhoto(){
 
     console.log('Starting camera service');
@@ -260,15 +242,8 @@ Home = React.createClass({
         </div>
       )
     }
-    // console.log('activeServices: ', this.activeAppList());
-    // console.log('userId: ', this.data.userServices[0]._id);
     return (
       <div className="">
-        <div className="row">
-          <div className="col s12">
-            <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
-          </div>
-        </div>
         <div className="row">
           <form id="upload" className="col s12">
             <p className="flow-text">CLICK HERE TO UPLOAD</p>
@@ -294,8 +269,7 @@ Home = React.createClass({
             {this.renderImages()}
           </div>
         </div>
-        <button className="btn waves-effect waves-light" onClick={ this.postImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
-          POST<i className="mdi-content-send right"></i></button>
+
         <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
           <i className="mdi-action-delete right"></i></button>
         < takePhoto />
@@ -332,49 +306,6 @@ AlbumsAvailable = React.createClass({
     //console.log(this.props.album);
     return (
         <li className="tab col s3">{this.props.album.albumTitle}</li>
-    )
-  }
-});
-
-/*
- EnabledServices
- */
-EnabledServices = React.createClass({
-  getInitialState: function(){
-    return {
-      condition: false
-    }
-  },
-  renderServiceList(service){
-    var serviceState = this.props.activeAppList[service];
-    if(serviceState) {
-      return (
-        <li key={service} onClick={this.chosen.bind(null, service)} className="tab col s3">
-          <a href="" className={this.state.condition ? "chosen": ""}>{service}</a>
-        </li>
-      )
-    }
-  },
-  chosen(service){
-    //event.preventDefault();
-    this.setState({condition: !this.state.condition});
-    if(this.props.selectedServices.hasOwnProperty(service)) {
-      if (this.props.selectedServices[service] = true) {
-        this.props.selectedServices[service] = false;
-      } else {
-        this.props.selectedServices[service] = true;
-      }
-    }
-    else{
-      this.props.selectedServices[service] = true;
-    }
-    //console.log('boom: ', this.props.selectedServices);
-  },
-  render(){
-    return (
-      <ul className="tabs">
-        {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
-      </ul>
     )
   }
 });

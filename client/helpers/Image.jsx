@@ -1,6 +1,6 @@
 
 /*
- Image
+  Class to handle individual images within the main home page
  */
 Image = React.createClass({
   mixins: [ReactMeteorData],
@@ -20,15 +20,12 @@ Image = React.createClass({
     var userServices = this.data.userServices[0].services;
     var list = [];
 
-    //console.log(userServices);
-
     for(service in userServices){
-      console.log(userServices[service]);
       if(userServices[service].state === true){
         var newServ = {
           'name': service,
           'state': true
-        }
+        };
         list.push(newServ);
       }
     }
@@ -41,23 +38,27 @@ Image = React.createClass({
       selectedServices: {}
     }
   },
-  handleServiceSelect(service, event){
+  handleServiceSelect(service){
     var slot = this.state.selectedServices[service.name];
+
+    //removing services we don't enable
     if(slot){
       delete this.state.selectedServices[service.name];
     }
     else{
       this.state.selectedServices[service.name] = true;
     }
+
+    //passing which service is selected for which image to parent
     this.props.onChange(this.state.selectedServices);
   },
+  //rendering services that are available
   renderServices(){
-    console.log(this.activeAppList(), this.data.services);
-    var objs = this.activeAppList();
-    return objs.map((service) =>{
+    return this.activeAppList().map((service) =>{
       return <ImageServices onClick={this.handleServiceSelect.bind(null, service)} key={service.name} serviceName={service.name}/>
     })
   },
+  //rendering our actual image inside a card
   render(){
     return (
       <div className="card image-container">
@@ -74,6 +75,9 @@ Image = React.createClass({
   }
 });
 
+/*
+  Class to handle individual services for each image
+ */
 ImageServices = React.createClass({
   propTypes: {
     serviceName: React.PropTypes.string.isRequired
@@ -88,6 +92,7 @@ ImageServices = React.createClass({
       <img onClick={this.toggleSelect} className={this.state.showActive ? "service-icon" : "service-icon inactive"} src={'services/' + this.props.serviceName + '.png'}/>
     )
   },
+  //toggles selection attribute on each image service
   toggleSelect(){
     this.setState({
       showActive: !this.state.showActive
