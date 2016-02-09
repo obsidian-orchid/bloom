@@ -148,7 +148,6 @@ authenticated.route("/services/:service", {
     if(typeof params !== undefined) {
       Meteor.call(params.service + 'AuthToken', queryParams);
     }
-    // Meteor.call(params.service + 'AuthToken', queryParams.code);
   }
 });
 

@@ -1,5 +1,10 @@
 Meteor.methods({
-    imgurAuthToken: function(code){
+    imgurAuthToken: function(params){
+      // params = OAuth_SS_helper.queryStringToJSON(params);
+      console.log('params: ', params);
+      var code = params.code;
+      console.log('code: ', code);
+
       HTTP.post("https://api.imgur.com/oauth2/token", {
         data: {
           client_id: Meteor.settings.ImgurClientId,
