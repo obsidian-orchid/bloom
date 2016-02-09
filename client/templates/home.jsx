@@ -283,7 +283,6 @@ Home = React.createClass({
         < takePhoto />
         < libraryEvent />
         <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
-        <img id="picture"/>
       </div>
     );
   }
