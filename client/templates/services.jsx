@@ -9,10 +9,6 @@ ServicesList = React.createClass({
       userServices: Meteor.users.find().fetch(),
       services: Services.find().fetch()
     }
-    // return {
-    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
-    //   currentUser: Meteor.user()
-    // };
   },
   getInitialState() {
     return {}
@@ -123,16 +119,6 @@ ServicesList = React.createClass({
       console.log('service state: ', result);
     });
   },
-  imgurToken() {
-    //var queryString = location.hash.substring(1);
-    // console.log(queryString);
-    //Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
-    //  console.log('Imgur added: ', result);
-    //});
-    //Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
-    //  console.log('service state: ', result);
-    //});
-  },
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -194,9 +180,17 @@ var AppServiceList = React.createClass({
         </div>
       )
     }
+    var btnStyle = {
+      paddingLeft: '48px',
+      paddingTop: '1px',
+      backgroundImage: 'url(services/'+ service +'.png)',
+      backgroundSize: '20px',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: '15px center'
+    };
     return (
       <div key={service}>
-        <button className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
+        <button style={btnStyle} className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
         <br /><br />
       </div>
     )
@@ -213,7 +207,6 @@ var AppServiceList = React.createClass({
         <p className="flow-text">DEV LINKS</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <br /><br />
-        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
       </div>
     )
   }
