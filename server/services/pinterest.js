@@ -3,7 +3,9 @@
  */
 
 Meteor.methods({
-    pinterestAuthToken: function(code){
+    pinterestAuthToken: function(params){
+      var code = params.code;
+
       HTTP.post("https://api.pinterest.com/v1/oauth/token", {
         data: {
           client_id: Meteor.settings.PinterestClientId,
