@@ -20,6 +20,16 @@ insecure.route("/splash", {
     });
   }
 });
+insecure.route("/images", {
+  name: 'images',
+  subscriptions: function() {
+  },
+  action: function() {
+    ReactLayout.render(MainLayout, {
+      content: <Images />
+    });
+  }
+});
 
 
 authenticated.route("/", {
