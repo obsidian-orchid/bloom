@@ -94,17 +94,25 @@ footer {
 }
 
 .service-icon {
+  display: inline-block;
+
+  padding-top: 1px;
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: 3px center;
+
   margin: 5px;
   width:32px;
   height: 32px;
   cursor: pointer;
+  border-radius: 50%;
 
   -webkit-transition-duration: 0.2s;
   transition-duration: 0.2s;
   -webkit-transition-property: transform;
   transition-property: transform;
 }
-.service-icon:hover, .service-icon:focus, .service-icon:active {
+.service-icon:hover, .service-icon:focus {
   -webkit-transform: scale(1.25);
   transform: scale(1.25);
 }
@@ -137,29 +145,34 @@ footer {
   background-position: 15px center;
 }
 
-.social-button.imgur {
+.imgur {
   background-image: url('services/imgur.png');
   background-color: #000000;
 }
 
-.social-button.pinterest {
+.pinterest {
   background-image:  url('services/pinterest.png');
   background-color: #bd081c;
 }
 
-.social-button.twitter {
+.twitter {
   background-image: url('services/twitter.png');
   background-color: #55acee;
 }
 
-.social-button.tumblr {
+.tumblr {
   background-image: url('services/tumblr.png');
   background-color: #35465c;
 }
 
-.social-button.facebook {
+.facebook {
   background-image: url('services/facebook.png');
   background-color: #3b5998;
+}
+
+.google {
+  background-image: url('services/google.png');
+  background-color: #bebebe;
 }
 
 

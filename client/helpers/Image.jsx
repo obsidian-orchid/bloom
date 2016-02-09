@@ -89,7 +89,7 @@ ImageServices = React.createClass({
   },
   render(){
     return (
-      <img onClick={this.toggleSelect} className={this.state.showActive ? "service-icon" : "service-icon inactive"} src={'services/' + this.props.serviceName + '.png'}/>
+      <div onClick={this.toggleSelect} className={this.state.showActive ? "service-icon " + this.props.serviceName : "service-icon inactive " + this.props.serviceName}></div>
     )
   },
   //toggles selection attribute on each image service

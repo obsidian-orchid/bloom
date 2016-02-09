@@ -190,6 +190,8 @@ Home = React.createClass({
         var blob = new Blob(byteArrays, {type: contentType});
         return blob;
       }
+
+      var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(blob, function (error, downloadUrl) {
         if (error)
         {
