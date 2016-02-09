@@ -1,4 +1,4 @@
-// Accounts.oauth.registerService('twitter');
+ // Accounts.oauth.registerService('twitter');
 
 // Meteor.methods({
 //   myLoginWithTwitter: function(options, callback) {
@@ -20,17 +20,23 @@ var urls = {
   authenticate: "https://api.twitter.com/oauth/authenticate?oauth_token="
 }
 
-var twitter = new OAuth_SS('twitter', 1, urls);
+var config = {
+  service: 'twitter',
+  consumerKey: Meteor.settings.TwitterClientKey,
+  secret: Meteor.settings.TwitterSecret
+}
+
+var twitter = new OAuth_SS(1, urls, config);
 
 Meteor.methods({
-  checkAuth: function() {
+  twitterGetToken: function() {
     return twitter.generateRequestToken();
   },
   twitterAuthToken: function(params) {
     twitter.generateAccessToken(params);
-  },
-  verifyAuth: function() {
-    return twitter.verifyService();
-  }
+  }//,
+  // verifyAuth: function() {
+  //   return twitter.verifyService();
+  // }
 
 });

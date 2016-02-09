@@ -1,42 +1,28 @@
-OAuth_SS = function(name, type, urls) {
-  this.service = name;
+OAuth_SS = function(type, urls, config) {
+  this.type = type;
   this.urls = urls;
-  this.config = {
-    service: 'twitter',
-    consumerKey: 'hhsLUrt8nUrefjeDRuUTrwsQN',
-    secret: '70F1khPQUT0FO2VnF1Q0YxiMnswjhRqD3lVGN0eMLM0KncOVaV'
-  };
+  this.config = config;
   this.requestToken = {};
   this.requestTokenSecret = {};
   this.accessToken = {};
   this.accessTokenSecret = {};
 };
 
+OAuth_SS.prototype.clear = function() {
+  var self = this;
+  self.requestToken = {};
+  self.requestTokenSecret = {};
+  self.accessToken = {};
+  self.accessTokenSecret = {};
+}
+
 OAuth_SS.prototype.generateRequestToken = function() {
   var self = this;
   // Create OAUTH1 headers
   var oauthBinding = new OAuth1Binding(self.config, self.urls);
   var headers = oauthBinding._buildHeader();
-  // console.log('oa: ', oauthBinding);
-  // console.log('hdr: ', headers);
-
-  // Make request
-  // oauthBinding._call('POST', self.urls.requestToken, headers, null, function(err, res) {
-  //   console.log('res: ', res);
-  //   var tokens = queryStringToJSON(res.content);
-
-  //   if (! tokens.oauth_callback_confirmed) {
-  //     throw 'Error: oauth_callback_confirmed false when requesting oauth1 token: ' + res;
-  //   }
-
-  //   self.requestToken = tokens.oauth_token;
-  //   self.requestTokenSecret = tokens.oauth_token_secret;
-
-  //   var redirectUrl = 'https://api.twitter.com/oauth/authenticate?oauth_token=' + self.requestToken;
-  //   this.res.writeHead(302, {'Location': redirectUrl});
-  //   this.res.end();
-  //   return 'dude';
-  // });
+  // console.log('oaRT: ', oauthBinding);
+  console.log('hdrRT: ', headers);
 
   var response =  oauthBinding._call('POST', self.urls.requestToken, headers);
   var tokens = queryStringToJSON(response.content);
@@ -54,15 +40,18 @@ OAuth_SS.prototype.generateRequestToken = function() {
 
 OAuth_SS.prototype.generateAccessToken = function(params) {
   var self = this;
-  console.log('code: ', params);
+  // console.log('code: ', params);
 
   var oauthBinding = new OAuth1Binding(self.config, self.urls);
   var headers = oauthBinding._buildHeader({
     oauth_token: params.oauth_token,
     oauth_verifier: params.oauth_verifier
   });
-  // console.log('oa: ', oauthBinding);
-  // console.log('hdr: ', headers);
+  // console.log('oaAT: ', oauthBinding);
+  console.log('hdrAT: ', headers);
+
+  // http://localhost:3000/services/tumblr?oauth_token=jYPiybv97krPDyomPncRsOR70wv3hKKvTNonrGx38A9P9DsyFz&oauth_verifier=9YVZ7zIKLGSDCINA7SbOYJs1IcLBidabig02NdI4STFSW3EYe0#_=_
+  // https://apigee.com/oauth_callback/tumblr/oauth1callback?oauth_token=QtZTwgEhfNsx9R0VeLqGIOf02OczzgI7KQXMewtnAsrVUVVBUs&oauth_verifier=L3DlS6gesi5iMFwvYhDPkoG95Aow0EpLHgOmKchv1KBe41HjqA#_=_
 
   var response = oauthBinding._call('POST', self.urls.accessToken, headers);
   var tokens = queryStringToJSON(response.content);
@@ -80,14 +69,18 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   self.accessToken = tokens.oauth_token;
   self.accessTokenSecret = tokens.oauth_token_secret;
 
+  console.log('token: ', self.accessToken);
+  console.log('secret: ', self.accessTokenSecret);
+
   var query = {};
   query.userId = Meteor.userId();
   query.services = {};
-  query.services[self.service] = { 
+  query.services[self.config.service] = { 
       accessToken: self.accessToken,
       accessTokenSecret: self.accessTokenSecret
   };
-  UserServices.upsert({id: Meteor.userId}, {$set: query});
+  // http://localhost:3000/services/twitter?oauth_token=iNlFEQAAAAAAkG43AAABUscgLJQ&oauth_verifier=IzzapmlO5SSiKp7U0sRq2HYUrEaPIoXJ
+  UserServices.upsert({userId: Meteor.userId}, {$set: query});
 }
 
 function queryStringToJSON(str) {
