@@ -55,7 +55,7 @@ Home = React.createClass({
       uploader.send(fileUpload[i], function (error, downloadUrl) {
         if (error)
         {
-          console.error('Error uploading', uploader.xhr.response);
+          console.error('Error uploading', error,  uploader.xhr.response);
         }
         else
         {
@@ -244,16 +244,7 @@ Home = React.createClass({
             <EnabledServices activeAppList={this.activeAppList()} services={this.data.services} selectedServices={this.state.selectedServices} />
           </div>
         </div>
-        <div className ="row">
-          <div className="col s12">
-            {this.albumsList()}
-          </div>
-        </div>
         <div className="row">
-          <p className="flow-text">SELECT SERVICE YOU WANT TO ADD THE ALBUM TO AND CREATE NEW ALBUM</p>
-          <input id="album" type="text" placeholder="Album Title" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
-          <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
-            <i className="mdi-av-queue right"></i></button>
           <form id="upload" className="col s12">
             <p className="flow-text">CLICK HERE TO UPLOAD</p>
             <div className="row valign-wrapper">
@@ -284,12 +275,26 @@ Home = React.createClass({
         < libraryEvent />
         <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
       </div>
+
+
+      //ALBUM STUFF REMOVED FOR NOW
+      //
+      //  <div className ="row">
+      //    <div className="col s12">
+      //      {this.albumsList()}
+      //    </div>
+      //    <p className="flow-text">SELECT SERVICE YOU WANT TO ADD THE ALBUM TO AND CREATE NEW ALBUM</p>
+      //    <input id="album" type="text" placeholder="Album Title" onSubmit={ this.createAlbum.bind(null, this.state.selectedServices) }/>
+      //    <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
+      //      <i className="mdi-av-queue right"></i></button>
+      //  </div>
+
+
     );
   }
 });
 
 /*Albums available for posting images*/
-
 AlbumsAvailable = React.createClass({
   getInitialState: function(){
     return {
@@ -315,7 +320,6 @@ EnabledServices = React.createClass({
   },
   renderServiceList(service){
     var serviceState = this.props.activeAppList[service];
-    // console.log('check: ', serviceState)
     if(serviceState) {
       return (
         <li key={service} onClick={this.chosen.bind(null, service)} className="tab col s3">
@@ -347,77 +351,3 @@ EnabledServices = React.createClass({
     )
   }
 });
-
-/*
- Image
- */
-Image = React.createClass({
-  propTypes: {
-    image: React.PropTypes.object.isRequired
-  },
-  getInitialState: function(){
-    return {
-      condition:false
-    }
-  },
-  render(){
-    return (
-      //<div className="thumbnail">
-      <a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
-      //</div>
-    );
-  },
-
-  selected(image){
-    //event.preventDefault();
-    this.setState({condition: !this.state.condition});
-    if(this.props.selectedImages.hasOwnProperty(image)) {
-      if (this.props.selectedImages[image] = true) {
-        this.props.selectedImages[image] = false;
-      } else {
-        this.props.selectedImages[image] = true;
-      }
-    }
-    else{
-      this.props.selectedImages[image] = true;
-    }
-  }
-  //console.log(event.target);
-  //event.target.toggleClass('selected');
-});
-
-
-// Image = React.createClass({
-//   propTypes: {
-//     image: React.PropTypes.object.isRequired
-//   },
-//   getInitialState: function(){
-//     return {
-//       condition:false
-//     }
-//   },
-//   renderImages(image){
-//     return (
-//       <a href="" onClick={this.selected.bind(null, this.props.image.imageurl)} className="thumbnail"><img className={this.state.condition ? "selected": ""} src={this.props.image.imageurl}/></a>
-//     )
-//   },
-//   selected(image){
-//     //event.preventDefault();
-//     this.setState({condition: !this.state.condition});
-//     if(this.props.selectedImages.hasOwnProperty(image)) {
-//       if (this.props.selectedImages[image] = true) {
-//         this.props.selectedImages[image] = false;
-//       } else {
-//         this.props.selectedImages[image] = true;
-//       }
-//     }
-//     else{
-//       this.props.selectedImages[image] = true;
-//     }
-//   },
-//   render(){
-//     return (
-//       {this.data.images.map(this.renderImages)}
-//     );
-//   }
-// });
