@@ -69,22 +69,8 @@ Home = React.createClass({
   },
   uploadImage(event) {
     event.preventDefault();
-    //console.log('test: ', document.getElementById('input').files);
     var fileUpload = document.getElementById('input').files;
-
     for (var i = 0; i < fileUpload.length; i++) {
-      //var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
-      //console.log('imageLocal: ', imageLocal);
-      //imageDetails._collection.insert({
-      //  imageurl: imageLocal,
-      //  time: new Date()
-      //});
-
-      //console.log(fileUpload[i]);
-      //if (fileUpload[i] == null)
-      //{
-      //  continue;
-      //}
       var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(fileUpload[i], function (error, downloadUrl) {
         console.log('file: ', downloadUrl);
@@ -100,9 +86,6 @@ Home = React.createClass({
           });
         }
       });
-    }
-    function allFilesUploaded (url) {
-      Meteor.users.update(Meteor.userId(), {$push: {"profile.files": url}});
     }
   },
   //postImage(images, services) {
