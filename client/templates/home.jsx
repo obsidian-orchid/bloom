@@ -30,8 +30,7 @@ Home = React.createClass({
         'tumblr': {},
         'facebook': {},
         'pinterest': {}
-      }
-      selectedServices: {},
+      },
       cameraImages: {}
     }
   },
@@ -51,11 +50,20 @@ Home = React.createClass({
   uploadImagePerService(){
     for(service in this.state.imagesPerService){
       for(image in this.state.imagesPerService[service]){
-        console.log(this.state.imagesPerService[service][image]);
         postService = 'post_' + service;
-        // console.log('postService: ', postService, image);
         Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
           console.log('Successful post to ' + service + ' : ' + data, err);
+        });
+      }
+    }
+  },
+  removePerService(images, services){
+    for(service in this.state.imagesPerService){
+      for(image in this.state.imagesPerService[service]){
+        delService = 'delete_' + service;
+
+        Meteor.call(delService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
+        console.log('Successful delete from ' + service + ' : ' + data, err);
         });
       }
     }
@@ -94,45 +102,45 @@ Home = React.createClass({
       Meteor.users.update(Meteor.userId(), {$push: {"profile.files": url}});
     }
   },
-  postImage(images, services) {
-    // console.log('images: ', images);
-    // console.log('services: ', services);
-    var state = this.state.services;
-    var postService;
-    //console.log(state);
-    _.each(services, function(key1, service) {
-      _.each(images, function(key2, image) {
-        console.log(service, image);
-        if(key1 === true && key2 === true){
-          postService = 'post_' + service;
-          // console.log('postService: ', postService, image);
-          Meteor.call(postService, image, function(err, data) {
-            console.log('Successful post to ' + service + ' : ' + data);
-          });
-        }
-      })
-    })
-  },
-  deleteImage(images, services){
-    // console.log('images: ', images);
-    // console.log('services: ', services);
-    var state = this.state.services;
-    var delService;
-    //console.log(state);
-    _.each(services, function(key1, service){
-      _.each(images, function(key2, image){
-        // console.log(service, image);
-        if(key1 === true && key2 === true){
-          delService = 'delete_' + service;
-          // state[service].delete(image);
-          //console.log('deleteService: ', delService, image);
-          Meteor.call(delService, image, function(err, data) {
-          });
-        }
-      })
-    })
-
-  },
+  //postImage(images, services) {
+  //  // console.log('images: ', images);
+  //  // console.log('services: ', services);
+  //  var state = this.state.services;
+  //  var postService;
+  //  //console.log(state);
+  //  _.each(services, function(key1, service) {
+  //    _.each(images, function(key2, image) {
+  //      console.log(service, image);
+  //      if(key1 === true && key2 === true){
+  //        postService = 'post_' + service;
+  //        // console.log('postService: ', postService, image);
+  //        Meteor.call(postService, image, function(err, data) {
+  //          console.log('Successful post to ' + service + ' : ' + data);
+  //        });
+  //      }
+  //    })
+  //  })
+  //},
+  //deleteImage(images, services){
+  //  // console.log('images: ', images);
+  //  // console.log('services: ', services);
+  //  var state = this.state.services;
+  //  var delService;
+  //  //console.log(state);
+  //  _.each(services, function(key1, service){
+  //    _.each(images, function(key2, image){
+  //      // console.log(service, image);
+  //      if(key1 === true && key2 === true){
+  //        delService = 'delete_' + service;
+  //        // state[service].delete(image);
+  //        //console.log('deleteService: ', delService, image);
+  //        Meteor.call(delService, image, function(err, data) {
+  //        });
+  //      }
+  //    })
+  //  })
+  //
+  //},
   //There is a limit to the number of albums that can be created in 24 hours
   //Add alert if the album limit exeeds
   createAlbum(services){
@@ -174,8 +182,8 @@ Home = React.createClass({
       }
       //console.log(data);
       Session.set('photo', data);
-      var image = document.getElementById ('picture');
-      image.src = data;
+      //var image = document.getElementById ('picture');
+      //image.src = data;
       var contentType = 'image/png';
       var b64Data = data.slice(23);
       var blob = b64toBlob(b64Data, contentType);
@@ -248,6 +256,8 @@ Home = React.createClass({
           <form id="upload" className="col s12">
             <p className="flow-text">CLICK HERE TO UPLOAD</p>
             <div className="row valign-wrapper">
+              <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
+              < takePhoto />< libraryEvent />
               <div className="file-field input-field col m10 s8 valign">
                 <div className="btn">
                   <span>File</span>
@@ -262,19 +272,19 @@ Home = React.createClass({
             </div>
           </form>
         </div>
-        <button className="btn waves-effect waves-light" onClick={ this.uploadImagePerService}>
-          UPLOAD<i className="mdi-content-send right"></i></button>
         <div className="row">
           <div className="thumbs">
             {this.renderImages()}
           </div>
         </div>
 
-        <button className="btn waves-effect waves-light" onClick={ this.deleteImage.bind(null, this.state.selectedImages, this.state.selectedServices) }>
-          <i className="mdi-action-delete right"></i></button>
-        < takePhoto />
-        < libraryEvent />
-        <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
+        <button className="btn waves-effect waves-light" onClick={ this.uploadImagePerService}>
+          UPLOAD<i className="mdi-content-send right"></i>
+        </button>
+        <button className="btn waves-effect waves-light" onClick={ this.removePerService}>
+          UNDO<i className="mdi-action-delete right"></i>
+        </button>
+        <p></p>
       </div>
 
 
