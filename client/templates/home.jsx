@@ -1,4 +1,4 @@
-var uploader = new Slingshot.Upload("myFileUploads");
+
 imageDetails = new Mongo.Collection('imageDetails');
 
 //For camera
@@ -74,27 +74,31 @@ Home = React.createClass({
     var fileUpload = document.getElementById('input').files;
 
     for (var i = 0; i < fileUpload.length; i++) {
-      var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
-      console.log('imageLocal: ', imageLocal);
-      imageDetails._collection.insert({
-        imageurl: imageLocal,
-        time: new Date()
-      });
+      //var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
+      //console.log('imageLocal: ', imageLocal);
+      //imageDetails._collection.insert({
+      //  imageurl: imageLocal,
+      //  time: new Date()
+      //});
 
-      if (fileUpload[i] == null)
-      {
-        continue;
-      }
+      //console.log(fileUpload[i]);
+      //if (fileUpload[i] == null)
+      //{
+      //  continue;
+      //}
+      var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(fileUpload[i], function (error, downloadUrl) {
+        console.log('file: ', downloadUrl);
         if (error)
         {
           console.error('Error uploading', error,  uploader.xhr.response);
         }
         else
         {
-          //Meteor.call('postFacebook', downloadUrl);
-          //Meteor.call('postImgur', downloadUrl);
-          allFilesUploaded(downloadUrl);
+          imageDetails._collection.insert({
+            imageurl: downloadUrl,
+            time: new Date()
+          });
         }
       });
     }

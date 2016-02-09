@@ -25,7 +25,7 @@ Meteor.methods({
     },
     pinterestAuthLink: function() {
       return "https://api.pinterest.com/oauth/?response_type=code" +
-      "&redirect_uri=https://localhost:3000/services/pinterest" +
+      "&redirect_uri=https://snapshare.meteor.com/services/pinterest" +
       "&client_id=" + Meteor.settings.PinterestClientId +
       "&scope=read_public,write_public";
     },
