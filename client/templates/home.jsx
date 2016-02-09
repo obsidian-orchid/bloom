@@ -63,7 +63,7 @@ Home = React.createClass({
         delService = 'delete_' + service;
 
         Meteor.call(delService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
-        console.log('Successful delete from ' + service + ' : ' + data, err);
+          console.log('Successful delete from ' + service + ' : ' + data, err);
         });
       }
     }
@@ -74,12 +74,13 @@ Home = React.createClass({
     var fileUpload = document.getElementById('input').files;
 
     for (var i = 0; i < fileUpload.length; i++) {
-      var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
-      console.log('imageLocal: ', imageLocal);
-      imageDetails._collection.insert({
-        imageurl: imageLocal,
-        time: new Date()
-      });
+      //var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
+      //console.log('imageLocal: ', imageLocal);
+      var FR= new FileReader();
+      FR.onload = function(e) {
+        console.log(e.target.result);
+      };
+      FR.readAsDataURL(fileUpload[i]);
 
       if (fileUpload[i] == null)
       {
@@ -92,8 +93,11 @@ Home = React.createClass({
         }
         else
         {
-          //Meteor.call('postFacebook', downloadUrl);
-          //Meteor.call('postImgur', downloadUrl);
+          imageDetails._collection.insert({
+            imageurl: downloadUrl,
+            time: new Date()
+          });
+          console.log(downloadUrl);
           allFilesUploaded(downloadUrl);
         }
       });
@@ -315,7 +319,7 @@ AlbumsAvailable = React.createClass({
   render(){
     //console.log(this.props.album);
     return (
-        <li className="tab col s3">{this.props.album.albumTitle}</li>
+      <li className="tab col s3">{this.props.album.albumTitle}</li>
     )
   }
 });
