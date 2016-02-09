@@ -63,7 +63,7 @@ Image = React.createClass({
     return (
       <div className="card image-container">
         <div className="card-image waves-effect waves-block waves-light">
-          <img className="" src={this.props.image.imageurl}/>
+          <img className="upload-image" src={this.props.image.imageurl}/>
         </div>
 
         <div className="card-action">
