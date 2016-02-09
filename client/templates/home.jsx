@@ -26,13 +26,39 @@ Home = React.createClass({
     return {
       selectedImages: {},
       selectedServices: {},
+      imagesPerService: {
+        'tumblr': {},
+        'facebook': {},
+        'pinterest': {}
+      }
+      selectedServices: {},
       cameraImages: {}
     }
   },
   renderImages(){
     return this.data.images.map((image) => {
-      return <Image key={image._id} image={image} selectedImages={this.state.selectedImages} />
+      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} image={image} selectedImages={this.state.selectedImages} />
     });
+  },
+  addImageToService(image, services){
+    for (key in services){
+      var store = this.state.imagesPerService[key] || {};
+      store[image._id] = image;
+      this.state.imagesPerService[key] = store;
+    }
+    console.log(this.state.imagesPerService);
+  },
+  uploadImagePerService(){
+    for(service in this.state.imagesPerService){
+      for(image in this.state.imagesPerService[service]){
+        console.log(this.state.imagesPerService[service][image]);
+        postService = 'post_' + service;
+        // console.log('postService: ', postService, image);
+        Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
+          console.log('Successful post to ' + service + ' : ' + data, err);
+        });
+      }
+    }
   },
   uploadImage(event) {
     event.preventDefault();
@@ -40,9 +66,8 @@ Home = React.createClass({
     var fileUpload = document.getElementById('input').files;
 
     for (var i = 0; i < fileUpload.length; i++) {
-      console.log('file', fileUpload[i]);
       var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
-      //console.log('imageLocal: ', imageLocal);
+      console.log('imageLocal: ', imageLocal);
       imageDetails._collection.insert({
         imageurl: imageLocal,
         time: new Date()
@@ -262,6 +287,8 @@ Home = React.createClass({
             </div>
           </form>
         </div>
+        <button className="btn waves-effect waves-light" onClick={ this.uploadImagePerService}>
+          UPLOAD<i className="mdi-content-send right"></i></button>
         <div className="row">
           <div className="thumbs">
             {this.renderImages()}

@@ -7,7 +7,6 @@ Image = React.createClass({
   getMeteorData(){
     var userServicesData = Meteor.subscribe('userData');
     var servicesData = Meteor.subscribe('services');
-    console.log(Meteor.users.find().fetch());
     return {
       userServices: Meteor.users.find().fetch(),
       services: Services.find({state: true}).fetch()
@@ -16,6 +15,26 @@ Image = React.createClass({
   propTypes: {
     image: React.PropTypes.object.isRequired
   },
+  activeAppList() {
+    var services = this.data.services;
+    var userServices = this.data.userServices[0].services;
+    var list = [];
+
+    //console.log(userServices);
+
+    for(service in userServices){
+      console.log(userServices[service]);
+      if(userServices[service].state === true){
+        var newServ = {
+          'name': service,
+          'state': true
+        }
+        list.push(newServ);
+      }
+    }
+
+    return list;
+  },
   getInitialState: function(){
     return {
       condition:false,
@@ -23,13 +42,20 @@ Image = React.createClass({
     }
   },
   handleServiceSelect(service, event){
-    var val = this.state.selectedServices[service.name] || false;
-    this.state.selectedServices[service.name] = !val;
-    console.log(this.state.selectedServices);
+    var slot = this.state.selectedServices[service.name];
+    if(slot){
+      delete this.state.selectedServices[service.name];
+    }
+    else{
+      this.state.selectedServices[service.name] = true;
+    }
+    this.props.onChange(this.state.selectedServices);
   },
   renderServices(){
-    return this.data.services.map((service) =>{
-      return <ImageServices onClick={this.handleServiceSelect.bind(null, service)} key={service._id} serviceName={service.name}/>
+    console.log(this.activeAppList(), this.data.services);
+    var objs = this.activeAppList();
+    return objs.map((service) =>{
+      return <ImageServices onClick={this.handleServiceSelect.bind(null, service)} key={service.name} serviceName={service.name}/>
     })
   },
   render(){
