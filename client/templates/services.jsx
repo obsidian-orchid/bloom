@@ -9,10 +9,6 @@ ServicesList = React.createClass({
       userServices: Meteor.users.find().fetch(),
       services: Services.find().fetch()
     }
-    // return {
-    //   // images: imageDetails.find({}, {sort: {createdAt: -1}}).fetch(),
-    //   currentUser: Meteor.user()
-    // };
   },
   getInitialState() {
     return {}
@@ -123,16 +119,6 @@ ServicesList = React.createClass({
       console.log('service state: ', result);
     });
   },
-  imgurToken() {
-    //var queryString = location.hash.substring(1);
-    // console.log(queryString);
-    //Meteor.call('add_imgur', 'imgur', queryString, function(err, result) {
-    //  console.log('Imgur added: ', result);
-    //});
-    //Meteor.call('toggleServiceCommon', 'imgur', true, function(err, result) {
-    //  console.log('service state: ', result);
-    //});
-  },
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -152,14 +138,14 @@ ServicesList = React.createClass({
   },
   render() {
     if (this.data.userLoading && this.data.servicesLoading) {
+      console.log('userServices: ', this.data.userServices[0]);
+      console.log('activeAppList: ', this.activeAppList());
       return (
         <div>
           <p>Loading...</p>
         </div>
       )
     }
-    console.log('userServices: ', this.data.userServices[0]);
-    console.log('activeAppList: ', this.activeAppList());
     return (
       <div>
         <AppServiceList activeAppList={this.activeAppList()} services={this.data.services} add={this.add} remove={this.remove}  imgurToken={this.imgurToken} />
@@ -176,8 +162,8 @@ var AppServiceList = React.createClass({
     var service = this.props.services[key];
     return (
       <div key={service.name}>
-        <button className="btn" onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
-        <button className="btn" onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
+        <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
+        <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
         <br /><br />
       </div>
     )
@@ -211,14 +197,14 @@ var AppServiceList = React.createClass({
     if (serviceState) {
       return (
         <div key={service}>
-          <button className="btn" onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
           <br /><br />
         </div>
       )
     }
     return (
       <div key={service}>
-        <button className="btn" onClick={this.props.add.bind(null, service)}>Add {service}</button>
+        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
         <br /><br />
       </div>
     )
@@ -235,7 +221,6 @@ var AppServiceList = React.createClass({
         <p className="flow-text">DEV LINKS</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <br /><br />
-        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
         <br /><br />
         <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
         <br /><br />

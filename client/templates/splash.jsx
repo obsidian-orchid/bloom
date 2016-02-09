@@ -31,17 +31,9 @@ Splash = React.createClass({
   },
   submitForm(event){
     event.preventDefault();
+    $('.thumbs').append(<div/>, { text: "hi"
+
+    });
     console.log("submitted");
   }
 });
-
-MeteorFile = function(options){
-
-};
-
-MeteorFile.prototype = {
-  constructor: MeteorFile,
-  read: function(file, callback){
-
-  },
-}

@@ -128,6 +128,41 @@ footer {
   filter: grayscale(0%);
 }
 
+
+.social-button {
+  padding-left: 48px;
+  padding-top: 1px;
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+}
+
+.social-button.imgur {
+  background-image: url('services/imgur.png');
+  background-color: #000000;
+}
+
+.social-button.pinterest {
+  background-image:  url('services/pinterest.png');
+  background-color: #bd081c;
+}
+
+.social-button.twitter {
+  background-image: url('services/twitter.png');
+  background-color: #55acee;
+}
+
+.social-button.tumblr {
+  background-image: url('services/tumblr.png');
+  background-color: #35465c;
+}
+
+.social-button.facebook {
+  background-image: url('services/facebook.png');
+  background-color: #3b5998;
+}
+
+
 /*button{*/
   /*padding: 5px 6px 5px 30px;*/
   /*background: url('services/imgur.png') no-repeat 5px center;*/
