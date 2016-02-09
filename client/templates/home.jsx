@@ -25,7 +25,8 @@ Home = React.createClass({
   getInitialState: function() {
     return {
       selectedImages: {},
-      selectedServices: {}
+      selectedServices: {},
+      cameraImages: {}
     }
   },
   renderImages(){
@@ -39,8 +40,9 @@ Home = React.createClass({
     var fileUpload = document.getElementById('input').files;
 
     for (var i = 0; i < fileUpload.length; i++) {
+      console.log('file', fileUpload[i]);
       var imageLocal = "https://bloom-photos.s3-us-west-1.amazonaws.com/"+Meteor.userId()+"/"+fileUpload[i].name;
-      console.log('imageLocal: ', imageLocal);
+      //console.log('imageLocal: ', imageLocal);
       imageDetails._collection.insert({
         imageurl: imageLocal,
         time: new Date()
@@ -80,7 +82,7 @@ Home = React.createClass({
           postService = 'post_' + service;
           // console.log('postService: ', postService, image);
           Meteor.call(postService, image, function(err, data) {
-            console.log('Successful post to ' + service + ' : ' + data);
+            //console.log('Successful post to ' + service + ' : ' + data);
           });
         }
       })
@@ -98,7 +100,7 @@ Home = React.createClass({
         if(key1 === true && key2 === true){
           delService = 'delete_' + service;
           // state[service].delete(image);
-          console.log('deleteService: ', delService, image);
+          //console.log('deleteService: ', delService, image);
           Meteor.call(delService, image, function(err, data) {
           });
         }
@@ -111,7 +113,7 @@ Home = React.createClass({
   createAlbum(services){
     var album = document.getElementById('album').value;
     document.getElementById('album').value = '';
-    console.log(album, services);
+    //console.log(album, services);
     var state = this.state.services;
     var albumService;
     _.each(services, function(key1, service){
@@ -124,9 +126,9 @@ Home = React.createClass({
   },
   albumsList(){
     var newServices = this.data.services;
-    console.log(newServices);
+    //console.log(newServices);
     _.each(newServices, function(key1,service) {
-      console.log(key1.album);
+      //console.log(key1.album);
       return key1.album.map((album) => {
         return <AlbumsAvailable key={album._id} album={album}/>
       });
@@ -150,8 +152,11 @@ Home = React.createClass({
     }, {});
 
   },
+  //take photo with laptop camera and upload it to s3
   takePhoto(){
     console.log('Starting camera service');
+    //console.log(this.state.cameraImages);
+    //console.log(this.state);
     MeteorCamera.getPicture({
       width: 350,
       height: 350,
@@ -159,13 +164,32 @@ Home = React.createClass({
       if(err){
         console.log('Error taking images', error);
       }
-      console.log(data);
+      //console.log(data);
       Session.set('photo', data);
+      console.log(data);
+      var image = document.getElementById ('picture');
+      image.src = data;
+      //image.toBlob(function(data) {
+      //  var url = URL.createObjectURL(data);
+      //  console.log(url);
+      //});
+      uploader.send(data, function (error, downloadUrl) {
+        if (error)
+        {
+          console.error('Error uploading', uploader.xhr.response);
+        }
+        else
+        {
+          //Meteor.call('postFacebook', downloadUrl);
+          //Meteor.call('postImgur', downloadUrl);
+          console.log(downloadUrl);
+        }
+      });
+      Meteor.call('cameraPhoto', data, function(err, result){});
     });
-
   },
   libraryEvent(){
-    console.log('phoneLibrary');
+    //console.log('phoneLibrary');
     if (Meteor.isCordova) {
       MeteorCamera.getPicture({
         width: 350,
@@ -177,8 +201,9 @@ Home = React.createClass({
         if (err) {
           console.log('Error taking images', error);
         }
-        console.log(imageURI);
-        Session.set('photo', imageURI);
+        //console.log(data);
+        Session.set('photo', data);
+        Meteor.call('cameraPhonePhoto', data, function(err, result){});
       });
     }
     else{
@@ -242,6 +267,7 @@ Home = React.createClass({
         < libraryEvent />
         <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
         <p><input type="button" className="capture" value="Library Event" onClick={this.libraryEvent} /></p>
+        <img id="picture"/>
       </div>
     );
   }
@@ -256,7 +282,7 @@ AlbumsAvailable = React.createClass({
     }
   },
   render(){
-    console.log(this.props.album);
+    //console.log(this.props.album);
     return (
         <li className="tab col s3">{this.props.album.albumTitle}</li>
     )
@@ -296,7 +322,7 @@ EnabledServices = React.createClass({
     else{
       this.props.selectedServices[service] = true;
     }
-    console.log('boom: ', this.props.selectedServices);
+    //console.log('boom: ', this.props.selectedServices);
   },
   render(){
     return (
