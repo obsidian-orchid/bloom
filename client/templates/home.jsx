@@ -206,28 +206,28 @@ Home = React.createClass({
       });
     });
   },
-  //libraryEvent(){
-  //  //console.log('phoneLibrary');
-  //  if (Meteor.isCordova) {
-  //    MeteorCamera.getPicture({
-  //      width: 350,
-  //      height: 350,
-  //      quality: 75,
-  //      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-  //      destinationType: Camera.DestinationType.FILE_URI
-  //    }, function (err, data) {
-  //      if (err) {
-  //        console.log('Error taking images', error);
-  //      }
-  //      //console.log(data);
-  //      Session.set('photo', data);
-  //      Meteor.call('cameraPhonePhoto', data, function(err, result){});
-  //    });
-  //  }
-  //  else{
-  //    alert('Cordova only feature');
-  //  }
-  //},
+  libraryEvent(){
+    //console.log('phoneLibrary');
+    if (Meteor.isCordova) {
+      MeteorCamera.getPicture({
+        width: 350,
+        height: 350,
+        quality: 75,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: Camera.DestinationType.FILE_URI
+      }, function (err, data) {
+        if (err) {
+          console.log('Error taking images', error);
+        }
+        //console.log(data);
+        Session.set('photo', data);
+        Meteor.call('cameraPhonePhoto', data, function(err, result){});
+      });
+    }
+    else{
+      alert('Cordova only feature');
+    }
+  },
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
