@@ -27,6 +27,16 @@ Meteor.publish('userData', function() {
 	}
 });
 
+Meteor.methods({
+  cameraPhoto: function(imageData){
+    console.log('in server');
+
+  },
+  cameraPhonePhoto: function(imageUrl){
+    console.log('in server from Phone', imageUrl);
+  }
+});
+
 //allows us to add custom fields to users
 Accounts.onCreateUser(function(options, user){
   user.profile = options.profile || {};
