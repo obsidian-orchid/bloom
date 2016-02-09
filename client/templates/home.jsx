@@ -154,6 +154,7 @@ Home = React.createClass({
   },
   //take photo with laptop camera and upload it to s3
   takePhoto(){
+
     console.log('Starting camera service');
     //console.log(this.state.cameraImages);
     //console.log(this.state);
@@ -166,50 +167,62 @@ Home = React.createClass({
       }
       //console.log(data);
       Session.set('photo', data);
-      console.log(data);
       var image = document.getElementById ('picture');
       image.src = data;
-      //image.toBlob(function(data) {
-      //  var url = URL.createObjectURL(data);
-      //  console.log(url);
-      //});
-      uploader.send(data, function (error, downloadUrl) {
+      var contentType = 'image/png';
+      var b64Data = data.slice(23);
+      var blob = b64toBlob(b64Data, contentType);
+      function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          var slice = byteCharacters.slice(offset, offset + sliceSize);
+          var byteNumbers = new Array(slice.length);
+          for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+          var byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+        var blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+      }
+      uploader.send(blob, function (error, downloadUrl) {
         if (error)
         {
           console.error('Error uploading', uploader.xhr.response);
         }
         else
         {
-          //Meteor.call('postFacebook', downloadUrl);
-          //Meteor.call('postImgur', downloadUrl);
           console.log(downloadUrl);
         }
       });
-      Meteor.call('cameraPhoto', data, function(err, result){});
     });
   },
-  libraryEvent(){
-    //console.log('phoneLibrary');
-    if (Meteor.isCordova) {
-      MeteorCamera.getPicture({
-        width: 350,
-        height: 350,
-        quality: 75,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        destinationType: Camera.DestinationType.FILE_URI
-      }, function (err, data) {
-        if (err) {
-          console.log('Error taking images', error);
-        }
-        //console.log(data);
-        Session.set('photo', data);
-        Meteor.call('cameraPhonePhoto', data, function(err, result){});
-      });
-    }
-    else{
-      alert('Cordova only feature');
-    }
-  },
+  //libraryEvent(){
+  //  //console.log('phoneLibrary');
+  //  if (Meteor.isCordova) {
+  //    MeteorCamera.getPicture({
+  //      width: 350,
+  //      height: 350,
+  //      quality: 75,
+  //      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+  //      destinationType: Camera.DestinationType.FILE_URI
+  //    }, function (err, data) {
+  //      if (err) {
+  //        console.log('Error taking images', error);
+  //      }
+  //      //console.log(data);
+  //      Session.set('photo', data);
+  //      Meteor.call('cameraPhonePhoto', data, function(err, result){});
+  //    });
+  //  }
+  //  else{
+  //    alert('Cordova only feature');
+  //  }
+  //},
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
@@ -266,7 +279,6 @@ Home = React.createClass({
         < takePhoto />
         < libraryEvent />
         <p><input type="button" className="capture" value="Take Photo" onClick={this.takePhoto} /></p>
-        <p><input type="button" className="capture" value="Library Event" onClick={this.libraryEvent} /></p>
         <img id="picture"/>
       </div>
     );

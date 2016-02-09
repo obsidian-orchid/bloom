@@ -1,6 +1,7 @@
 /**
  * Created by siobhan on 2016/02/06.
  */
+var cameraId = 0;
 Slingshot.fileRestrictions("myFileUploads", {
   allowedFileTypes: ["image/png", "image/jpeg", "image/gif"],
   maxSize: 10 * 1024 * 1024 // 10 MB (use null for unlimited)
@@ -26,6 +27,11 @@ Slingshot.createDirective("myFileUploads", Slingshot.S3Storage, {
 	key: function (file) {
 		//Store file into a directory by the user's username.
 		var user = Meteor.users.findOne(this.userId);
-		return user._id + "/" + file.name;
+		if(file.name === undefined){
+			cameraId++;
+			console.log('From camera');
+			return user._id + "/cameraSnapShare" + cameraId;
+		}
+		return user._id + "/SnapShare" + file.name;
 	}
 });
