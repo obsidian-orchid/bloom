@@ -143,7 +143,12 @@ authenticated.route("/services/:service", {
   },
   action: function(params, queryParams) {
     window.close();
-    Meteor.call(params.service + 'AuthToken', queryParams.code);
+    console.log('params: ', params);
+    console.log('queryParams: ', queryParams);
+    if(typeof params !== undefined) {
+      Meteor.call(params.service + 'AuthToken', queryParams);
+    }
+    // Meteor.call(params.service + 'AuthToken', queryParams.code);
   }
 });
 

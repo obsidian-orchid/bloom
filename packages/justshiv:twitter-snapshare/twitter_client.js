@@ -27,10 +27,13 @@ TwitterSS.requestCredential = function (options, credentialRequestCompleteCallba
 
   var loginStyle = OAuth._loginStyle('twitter', config, options);
 
-  // url to app, enters "step 1" as described in
+  // url to app, enters "step 1" as described in/
   // packages/accounts-oauth1-helper/oauth1_server.js
-  var loginPath = '_oauth/twitter/?requestTokenAndRedirect=true'
-        + '&state=' + OAuth._stateParam(loginStyle, credentialToken, options && options.redirectUrl);
+
+  console.log('token: ', credentialToken);
+  console.log('opt: ', options);
+  console.log('red: ', options.redirectUrl);
+  var loginPath = '_oauth/twitter/?requestTokenAndRedirect=true' + '&state=' + OAuth._stateParam(loginStyle, credentialToken, options && options.redirectUrl);
 
   if (Meteor.isCordova) {
     loginPath = loginPath + "&cordova=true";
@@ -41,11 +44,22 @@ TwitterSS.requestCredential = function (options, credentialRequestCompleteCallba
 
   var loginUrl = Meteor.absoluteUrl(loginPath);
 
-  OAuth.launchLogin({
+  var options = {
     loginService: "twitter",
     loginStyle: loginStyle,
     loginUrl: loginUrl,
     credentialRequestCompleteCallback: credentialRequestCompleteCallback,
     credentialToken: credentialToken
-  });
+  }
+  console.log('options: ', options);
+
+// loginService: "twitter"
+// loginStyle: "popup"
+// loginUrl: "http://localhost:3000/_oauth/twitter/?requestTokenAndRedirect=true&state=eyJsb2dpblN0eWxlIjoicG9wdXAiLCJjcmVkZW50aWFsVG9rZW4iOiJtd0pxWEJUNFJ0WXNkWGVONG1KVkQycWY1eVFybm82T2RiVmFWT0VQa21ZIiwiaXNDb3Jkb3ZhIjpmYWxzZX0="
+// credentialRequestCompleteCallback: (credentialTokenOrError)
+// credentialToken: "mwJqXBT4RtYsdXeN4mJVD2qf5yQrno6OdbVaVOEPkmY"
+
+// https://api.twitter.com/oauth/authenticate?oauth_token=yX4F9gAAAAAAkG43AAABUsMrrj4
+
+  OAuth.launchLogin(options);
 };
