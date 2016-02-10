@@ -184,7 +184,7 @@ var AppServiceList = React.createClass({
   },
   loginTwitter(options, callback) {
     Meteor.call('twitterGetToken', function(err, result) {
-      OAuth_SS.authorizeWindow(result)
+      OAuth_SS.authorizeWindow(result);
       // console.log('result: ', result);
     })
     // if (! callback && typeof options === "function") {
@@ -200,6 +200,9 @@ var AppServiceList = React.createClass({
       OAuth_SS.authorizeWindow(result)
       // console.log('result: ', result);
     })
+  },
+  testTwitterPost(){
+    Meteor.call('twitterPost', function(err, results){});
   },
   renderServiceList(service) {
     console.log('check2: ', this.props.activeAppList[service]);
@@ -237,6 +240,8 @@ var AppServiceList = React.createClass({
         <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
         <br /><br />
         <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
+        <br /><br />
+        <button className="btn" onClick={this.testTwitterPost}>Test Twitter Post</button>
         <br /><br />
       </div>
     )
