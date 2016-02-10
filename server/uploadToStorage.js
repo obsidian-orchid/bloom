@@ -1,6 +1,3 @@
-/**
- * Created by siobhan on 2016/02/06.
- */
 var cameraId = 0;
 Slingshot.fileRestrictions("myFileUploads", {
   allowedFileTypes: ["image/png", "image/jpeg", "image/gif"],
