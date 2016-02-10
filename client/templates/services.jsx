@@ -38,6 +38,11 @@ ServicesList = React.createClass({
                   console.log('error', err);
                 }
                 console.log('Facebook added');
+                
+                Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+                  console.log('service state: ', result);
+                });
+              
               });
             }
           });
@@ -79,7 +84,7 @@ ServicesList = React.createClass({
             }
             // mergedUsers is set if a merge occured
             if (mergedUserId) {
-              console.log(mergedUserId, 'merged with', Meteor.userId());
+              // console.log(mergedUserId, 'merged with', Meteor.userId());
               // Remove merged collection
               Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
                 if (err) {
@@ -106,14 +111,11 @@ ServicesList = React.createClass({
       }
     };
     services[service].auth();
-    Meteor.call('toggleServiceCommon', service, true, function(err, result) {
-      console.log('service state: ', result);
-    });
   },
   remove(service) {
     var id = Meteor.userId();
     Meteor.call('removeService', id, service, function(err, result) {
-      console.log('logged out of ', result)
+      console.log('logged out of ', service)
     });
     Meteor.call('toggleServiceCommon', service, false, function(err, result) {
       console.log('service state: ', result);
@@ -138,8 +140,8 @@ ServicesList = React.createClass({
   },
   render() {
     if (this.data.userLoading && this.data.servicesLoading) {
-      console.log('userServices: ', this.data.userServices[0]);
-      console.log('activeAppList: ', this.activeAppList());
+      // console.log('userServices: ', this.data.userServices[0]);
+      // console.log('activeAppList: ', this.activeAppList());
       return (
         <div>
           <p>Loading...</p>
@@ -159,31 +161,31 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   _DEV_renderServiceList(key) {
-    var service = this.props.services[key].name;
-    //return (
-    //  <div key={service.name}>
-    //    <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
-    //    <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
-    //    <br /><br />
-    //  </div>
-    //)
-
-    var serviceState = this.props.activeAppList[service];
-    //
-    if (serviceState && serviceState.state === true) {
-      return (
-        <div key={service}>
-          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
-          <br /><br />
-        </div>
-      )
-    }
+    var service = this.props.services[key]
     return (
-      <div key={service}>
-        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
-        <br /><br />
-      </div>
+     <div key={service.name}>
+       <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
+       <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
+       <br /><br />
+     </div>
     )
+  
+    // var serviceState = this.props.activeAppList[service];
+    //
+    // if (serviceState && serviceState.state === true) {
+    //   return (
+    //     <div key={service}>
+    //       <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+    //       <br /><br />
+    //     </div>
+    //   )
+    // }
+    // return (
+    //   <div key={service}>
+    //     <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
+    //     <br /><br />
+    //   </div>
+    // )
   },
   loginTwitter(options, callback) {
     Meteor.call('twitterGetToken', function(err, result) {

@@ -43,15 +43,17 @@ Home = React.createClass({
       var store = this.state.imagesPerService[key] || {};
       store[image._id] = image;
       this.state.imagesPerService[key] = store;
+      console.log('Image added to ' + key);
     }
-    console.log(this.state.imagesPerService);
+    // console.log(this.state.imagesPerService);
   },
   uploadImagePerService(){
     for(service in this.state.imagesPerService){
       for(image in this.state.imagesPerService[service]){
         postService = 'post_' + service;
         Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
-          console.log('Successful post to ' + service + ' : ' + data, err);
+          console.log('Successful post to facebook');
+          // console.log('Successful post to ' + service + ' : ' + data, err);
         });
       }
     }
