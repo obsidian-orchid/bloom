@@ -235,7 +235,7 @@ var AppServiceList = React.createClass({
   },
   loginTumblr(options, callback) {
     Meteor.call('tumblrGetToken', function(err, result) {
-      OAuth_SS.authorizeWindow(result)
+      OAuth_SS.authorizeWindow(result);
       // console.log('result: ', result);
     })
   },
