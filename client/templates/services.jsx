@@ -235,13 +235,15 @@ var AppServiceList = React.createClass({
         <p className="flow-text">MANAGE SERVICES</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <p>BACK TO <a href="/">UPLOADS</a></p>
-        // <br /><br />
-        // <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
-        // <br /><br />
-        // <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
-        // <br /><br />
-        // <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
-        // <br /><br />
+        <br /><br />
+        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
+        <br /><br />
+        <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
+        <br /><br />
+        <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
+        <br /><br />
+        <button className="btn" onClick={this.testTwitterPost}>Test Twitter</button>
+        <br /><br />
       </div>
     )
   }
