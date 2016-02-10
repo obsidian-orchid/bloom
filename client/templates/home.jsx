@@ -190,6 +190,8 @@ Home = React.createClass({
         var blob = new Blob(byteArrays, {type: contentType});
         return blob;
       }
+
+      var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(blob, function (error, downloadUrl) {
         if (error)
         {
@@ -239,11 +241,17 @@ Home = React.createClass({
     return (
       <div className="">
         <div className="row">
+          <div className="col s12">
+            <h5 className="">STEP 1: AUTHORIZE YOUR SERVICE</h5>
+            Follow this link to authorize the service you wish to use: <a href="/services">services</a>
+          </div>
+        </div>
+        <div className="row">
           <form id="upload" className="col s12">
-            <p className="flow-text">CLICK HERE TO UPLOAD</p>
-            <div className="row valign-wrapper">
-              <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
+            <h5>STEP 2: TAKE A PHOTO OR UPLOAD AN IMAGE FILE</h5>
+            <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
               < takePhoto />< libraryEvent />
+            <div className="row valign-wrapper">
               <div className="file-field input-field col m10 s8 valign">
                 <div className="btn">
                   <span>File</span>
@@ -258,22 +266,24 @@ Home = React.createClass({
             </div>
           </form>
         </div>
+        <h5 className="">STEP 3: CLICK THE ICON UNDER EACH IMAGE</h5>
         <div className="row">
           <div className="thumbs">
             {this.renderImages()}
           </div>
         </div>
 
-        <button className="btn waves-effect waves-light" onClick={ this.uploadImagePerService}>
-          UPLOAD<i className="mdi-content-send right"></i>
-        </button>
-        <button className="btn waves-effect waves-light" onClick={ this.removePerService}>
-          UNDO<i className="mdi-action-delete right"></i>
-        </button>
-        <p></p>
+
+        <h5 className="">STEP 4: POST IMAGES TO SERVICES</h5>
+        <div className="social-button btn waves-effect waves-light facebook" onClick={ this.uploadImagePerService}>
+          POST TO FACEBOOK<i className="mdi-content-send right"></i>
+        </div>
       </div>
 
 
+        //<div className="btn waves-effect waves-light" onClick={ this.removePerService}>
+        //  UNDO<i className="mdi-action-delete right"></i>
+        //</div>
       //ALBUM STUFF REMOVED FOR NOW
       //
       //  <div className ="row">
