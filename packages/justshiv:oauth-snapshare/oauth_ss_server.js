@@ -79,7 +79,7 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   UserServices.upsert({userId: Meteor.userId}, {$set: query});
 };
 
-OAuth_SS.prototype.post =  function(){
+OAuth_SS.prototype.post =  function(tweet){
   //console.log('twitter');
   var self = this;
   self.accessToken = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessToken;
@@ -97,7 +97,7 @@ OAuth_SS.prototype.post =  function(){
 
   var result = oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params);
   console.log('result: ', result);
-
+  return result;
 };
 
 function queryStringToJSON(str) {

@@ -161,31 +161,50 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   _DEV_renderServiceList(key) {
-    var service = this.props.services[key]
-    return (
-     <div key={service.name}>
-       <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
-       <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
-       <br /><br />
-     </div>
-    )
-  
-    // var serviceState = this.props.activeAppList[service];
-    //
-    // if (serviceState && serviceState.state === true) {
-    //   return (
-    //     <div key={service}>
-    //       <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
-    //       <br /><br />
-    //     </div>
-    //   )
-    // }
+    var service = this.props.services[key].name;
     // return (
-    //   <div key={service}>
-    //     <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
-    //     <br /><br />
-    //   </div>
+    //  <div key={service.name}>
+    //    <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
+    //    <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
+    //    <br /><br />
+    //  </div>
     // )
+  
+    var serviceState = this.props.activeAppList[service];
+    
+    if (serviceState && serviceState.state === true) {
+      return (
+        <div key={service}>
+          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+          <br /><br />
+        </div>
+      )
+    }
+    return (
+      <div key={service}>
+        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
+        <br /><br />
+      </div>
+    )
+  },
+  renderServiceList(service) {
+    //console.log('check2: ', this.props.activeAppList[service]);
+    var serviceState = this.props.activeAppList[service].state;
+
+    if (serviceState) {
+      return (
+        <div key={service}>
+          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+          <br /><br />
+        </div>
+      )
+    }
+    return (
+      <div key={service}>
+        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
+        <br /><br />
+      </div>
+    )
   },
   loginTwitter(options, callback) {
     Meteor.call('twitterGetToken', function(err, result) {
@@ -207,45 +226,22 @@ var AppServiceList = React.createClass({
     })
   },
   testTwitterPost(){
-    Meteor.call('twitterPost', function(err, results){});
-  },
-  renderServiceList(service) {
-    //console.log('check2: ', this.props.activeAppList[service]);
-    var serviceState = this.props.activeAppList[service].state;
-
-    if (serviceState) {
-      return (
-        <div key={service}>
-          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
-          <br /><br />
-        </div>
-      )
-    }
-    return (
-      <div key={service}>
-        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
-        <br /><br />
-      </div>
-    )
+    var tweet = 'hello world!'
+    Meteor.call('twitterPost', tweet, function(err, results){});
   },
   render: function () {
-    // console.log('services: ', this.props.services);
-    // console.log('active services: ', this.props.activeAppList);
-    //<p className="flow-text">MANAGE SERVICES</p>
-    //    {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
-    //    <br /><br />
-    //    <br /><br />
-    //    <br /><br />
-    //    <br /><br />
-    //    <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
-    //    <br /><br />
-    //    <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
-    //    <br /><br />
     return (
       <div>
         <p className="flow-text">MANAGE SERVICES</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <p>BACK TO <a href="/">UPLOADS</a></p>
+        // <br /><br />
+        // <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
+        // <br /><br />
+        // <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
+        // <br /><br />
+        // <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
+        // <br /><br />
       </div>
     )
   }
