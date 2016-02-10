@@ -7,7 +7,7 @@ ServicesList = React.createClass({
       userLoading: !userServicesData.ready(),
       servicesLoading: !servicesData.ready(),
       userServices: Meteor.users.find().fetch(),
-      services: Services.find().fetch()
+      services: Services.find({state: true}).fetch()
     }
   },
   getInitialState() {
@@ -148,7 +148,7 @@ ServicesList = React.createClass({
     }
     return (
       <div>
-        <AppServiceList activeAppList={this.activeAppList()} services={this.data.services} add={this.add} remove={this.remove}  imgurToken={this.imgurToken} />
+        <AppServiceList activeAppList={this.activeAppList()} services={this.data.services} add={this.add} remove={this.remove} />
       </div>
     )
   }
@@ -159,11 +159,28 @@ ServicesList = React.createClass({
  */
 var AppServiceList = React.createClass({
   _DEV_renderServiceList(key) {
-    var service = this.props.services[key];
+    var service = this.props.services[key].name;
+    //return (
+    //  <div key={service.name}>
+    //    <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
+    //    <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
+    //    <br /><br />
+    //  </div>
+    //)
+
+    var serviceState = this.props.activeAppList[service];
+    //
+    if (serviceState && serviceState.state === true) {
+      return (
+        <div key={service}>
+          <button className={"btn-large social-button " + service } onClick={this.props.remove.bind(null, service)}>Remove {service}</button>
+          <br /><br />
+        </div>
+      )
+    }
     return (
-      <div key={service.name}>
-        <button className={"btn-large social-button " + service.name } onClick={this.props.add.bind(null, service.name)}>Add {service.name}</button>
-        <button className={"btn-large social-button " + service.name } onClick={this.props.remove.bind(null, service.name)}>Remove {service.name}</button>
+      <div key={service}>
+        <button className={"btn-large social-button " + service } onClick={this.props.add.bind(null, service)}>Add {service}</button>
         <br /><br />
       </div>
     )
@@ -191,7 +208,7 @@ var AppServiceList = React.createClass({
     Meteor.call('twitterPost', function(err, results){});
   },
   renderServiceList(service) {
-    console.log('check2: ', this.props.activeAppList[service]);
+    //console.log('check2: ', this.props.activeAppList[service]);
     var serviceState = this.props.activeAppList[service].state;
 
     if (serviceState) {
@@ -212,22 +229,21 @@ var AppServiceList = React.createClass({
   render: function () {
     // console.log('services: ', this.props.services);
     // console.log('active services: ', this.props.activeAppList);
+    //<p className="flow-text">MANAGE SERVICES</p>
+    //    {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
+    //    <br /><br />
+    //    <br /><br />
+    //    <br /><br />
+    //    <br /><br />
+    //    <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
+    //    <br /><br />
+    //    <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
+    //    <br /><br />
     return (
       <div>
         <p className="flow-text">MANAGE SERVICES</p>
-        {Object.keys(this.props.activeAppList).map(this.renderServiceList)}
-        <br /><br />
-        <br /><br />
-        <p className="flow-text">DEV LINKS</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
-        <br /><br />
-        <br /><br />
-        <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
-        <br /><br />
-        <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
-        <br /><br />
-        <button className="btn" onClick={this.testTwitterPost}>Test Twitter Post</button>
-        <br /><br />
+        <p>BACK TO <a href="/">UPLOADS</a></p>
       </div>
     )
   }

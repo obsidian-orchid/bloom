@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+h2{
+  font-weight: bold;
+}
+
 .logo-img {
   max-height: 32px;
 }
@@ -145,32 +149,36 @@ footer {
   background-position: 15px center;
 }
 
-.imgur {
-  background-image: url('services/imgur.png');
-  background-color: #000000;
+.social-button:hover{
+  opacity: 0.9;
 }
 
-.pinterest {
+.imgur, .imgur:hover, .imgur:focus {
+  background-image: url('services/imgur.png');
+  background-color: #171717;
+}
+
+.pinterest, .pinterest:hover, .pinterest:focus {
   background-image:  url('services/pinterest.png');
   background-color: #bd081c;
 }
 
-.twitter {
+.twitter, .twitter:hover, .twitter:focus {
   background-image: url('services/twitter.png');
   background-color: #55acee;
 }
 
-.tumblr {
+.tumblr, .tumblr:hover, .tumblr:focus {
   background-image: url('services/tumblr.png');
   background-color: #35465c;
 }
 
-.facebook {
+.facebook, .facebook:hover, .facebook:focus {
   background-image: url('services/facebook.png');
   background-color: #3b5998;
 }
 
-.google {
+.google, .google:hover, .google:focus {
   background-image: url('services/google.png');
   background-color: #bebebe;
 }
