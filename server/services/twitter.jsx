@@ -39,7 +39,10 @@ Meteor.methods({
   //   return twitter.verifyService();
   // }
   twitterPost: function(tweet){
-    console.log('twitter');
     twitter.post(tweet);
+  },
+  twitterUpload: function(image, tweet){
+    console.log('image');
+    twitter.uploadImage(image, tweet)
   }
 });
