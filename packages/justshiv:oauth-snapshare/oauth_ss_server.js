@@ -80,8 +80,9 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
 };
 
 OAuth_SS.prototype.post =  function(tweet){
-  //console.log('twitter');
   var self = this;
+
+  tweet = tweet || '';
   self.accessToken = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessToken;
   self.accessTokenSecret = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessTokenSecret;
   console.log(self.config);
@@ -97,9 +98,42 @@ OAuth_SS.prototype.post =  function(tweet){
 
   var result = oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params);
   console.log('result: ', result);
-  return result;
+  return 'successful post';
 };
 
+<<<<<<< HEAD
+=======
+OAuth_SS.prototype.uploadImage =  function(image, tweet){
+  var self = this;
+
+  tweet = tweet || '';
+  self.accessToken = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessToken;
+  self.accessTokenSecret = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessTokenSecret;
+  console.log(self.config);
+  var oauthBinding = new OAuth1Binding(self.config, self.urls);
+  oauthBinding.accessToken = self.accessToken;
+  oauthBinding.accessTokenSecret = self.accessTokenSecret;
+
+  var params = { 
+    media_data: image
+  };
+  
+  return oauthBinding.call('POST', 'https://upload.twitter.com/1.1/media/upload.json', params, function(err, result) {
+    // console.log('result image: ', result);
+
+    params = { 
+      status: tweet,
+      media_ids: result.data.media_id_string
+    }
+    // console.log('params: ', params);
+    var res = oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params);
+    console.log('result tweet: ', res);
+  
+    return 'successful post';
+  });
+};
+
+>>>>>>> 02833aa422f4f189d01a7e0d29d73b46d0bde8ec
 function queryStringToJSON(str) {
   var pairs = str.split('&');
   var result = {};
@@ -119,4 +153,3 @@ function queryStringToJSON(str) {
   });
   return (result);
 }
-
