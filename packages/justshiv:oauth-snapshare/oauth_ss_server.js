@@ -83,7 +83,7 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   UserServices.upsert({userId: Meteor.userId}, {$set: query});
 };
 
-OAuth_SS.prototype.post =  function(){
+OAuth_SS.prototype.post =  function(tweet){
   //console.log('twitter');
   var self = this;
   self.accessToken = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessToken;
@@ -93,31 +93,11 @@ OAuth_SS.prototype.post =  function(){
   oauthBinding.accessToken = self.accessToken;
   oauthBinding.accessTokenSecret = self.accessTokenSecret;
 
-  var params = { status: 'test' };
+  var params = { status: tweet };
 
   var result = oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params);
   console.log('result: ', result);
-  //var headers = oauthBinding._buildHeader({
-  //  accessToken: self.accessToken
-  //});
-  //console.log(headers);
-  //var response =  oauthBinding._call('POST', "https://upload.twitter.com/1.1/media/upload.json?status=Maybe%20he%27ll%20finally%20find%20his%20keys.%20%23peterfalk", headers);
-  //var tokens = queryStringToJSON(response.content);
-  //console.log(tokens);
-
-  //HTTP.post("https://api.twitter.com/1.1/statuses/update.json", {
-  //  data: {image: url},
-  //  headers: {
-  //    Authorization: headers
-  //  }
-  //}, function (error, result) {
-  //  if(error) {
-  //    console.log(error);
-  //  }
-  //  else{
-  //    console.log('result: ', result);
-  //  }
-  //})
+  return result;
 };
 function queryStringToJSON(str) {
   var pairs = str.split('&');
