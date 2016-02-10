@@ -38,11 +38,11 @@ ServicesList = React.createClass({
                   console.log('error', err);
                 }
                 console.log('Facebook added');
-                
+
                 Meteor.call('toggleServiceCommon', service, true, function(err, result) {
                   console.log('service state: ', result);
                 });
-              
+
               });
             }
           });
@@ -57,6 +57,9 @@ ServicesList = React.createClass({
             else{
               console.log(result);
               window.open(result);
+              Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+                console.log('service state: ', result);
+              });
             }
           })
         }
@@ -64,6 +67,9 @@ ServicesList = React.createClass({
       Twitter:{
         auth: function(){
           Meteor.loginWithTwitter(function(err, result){
+            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+              console.log('service state: ', result);
+            });
 
           })
         }
@@ -86,12 +92,13 @@ ServicesList = React.createClass({
             if (mergedUserId) {
               // console.log(mergedUserId, 'merged with', Meteor.userId());
               // Remove merged collection
-              Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
-                if (err) {
-                  console.log('error', err);
-                }
-              });
+
             }
+            Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
+              if (err) {
+                console.log('error', err);
+              }
+            });
           })
         }
       },
@@ -99,6 +106,9 @@ ServicesList = React.createClass({
         auth: function() {
           Meteor.call('imgurAuthLink', function(err, result) {
             authorizeWindow(result);
+            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+              console.log('service state: ', result);
+            });
           });
         }
       },
@@ -106,6 +116,9 @@ ServicesList = React.createClass({
         auth: function() {
           Meteor.call('pinterestAuthLink', function(err, result){
             authorizeWindow(result);
+            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+              console.log('service state: ', result);
+            });
           });
         }
       }
@@ -169,9 +182,10 @@ var AppServiceList = React.createClass({
     //    <br /><br />
     //  </div>
     // )
-  
+    console.log(this.props.activeAppList);
+
     var serviceState = this.props.activeAppList[service];
-    
+
     if (serviceState && serviceState.state === true) {
       return (
         <div key={service}>
@@ -226,7 +240,7 @@ var AppServiceList = React.createClass({
     })
   },
   testTwitterPost(){
-    var tweet = 'hello world!'
+    var tweet = 'hello world!';
     Meteor.call('twitterPost', tweet, function(err, results){});
   },
   render: function () {
@@ -235,16 +249,11 @@ var AppServiceList = React.createClass({
         <p className="flow-text">MANAGE SERVICES</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <p>BACK TO <a href="/">UPLOADS</a></p>
-        <br /><br />
-        <button className="btn" onClick={this.props.imgurToken}>Set Imgur Token</button>
-        <br /><br />
-        <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
-        <br /><br />
-        <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
-        <br /><br />
-        <button className="btn" onClick={this.testTwitterPost}>Test Twitter</button>
-        <br /><br />
       </div>
+      // <button className="btn" onClick={this.loginTwitter}>Test Twitter</button>
+      // <br /><br />
+      // <button className="btn" onClick={this.loginTumblr}>Test Tumblr</button>
+      // <br /><br />
     )
   }
 });
