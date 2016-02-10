@@ -38,8 +38,8 @@ Meteor.methods({
   // verifyAuth: function() {
   //   return twitter.verifyService();
   // }
-  twitterPost: function(){
+  twitterPost: function(tweet){
     console.log('twitter');
-    twitter.post();
+    twitter.post(tweet);
   }
 });
