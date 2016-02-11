@@ -101,8 +101,6 @@ OAuth_SS.prototype.post =  function(tweet){
   return 'successful post';
 };
 
-<<<<<<< HEAD
-=======
 OAuth_SS.prototype.uploadImage =  function(image, tweet){
   var self = this;
 
@@ -124,7 +122,7 @@ OAuth_SS.prototype.uploadImage =  function(image, tweet){
     params = { 
       status: tweet,
       media_ids: result.data.media_id_string
-    }
+    };
     // console.log('params: ', params);
     var res = oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params);
     console.log('result tweet: ', res);
@@ -132,8 +130,6 @@ OAuth_SS.prototype.uploadImage =  function(image, tweet){
     return 'successful post';
   });
 };
-
->>>>>>> 02833aa422f4f189d01a7e0d29d73b46d0bde8ec
 function queryStringToJSON(str) {
   var pairs = str.split('&');
   var result = {};
