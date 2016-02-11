@@ -38,11 +38,9 @@ Meteor.methods({
   // verifyAuth: function() {
   //   return twitter.verifyService();
   // }
-  twitterPost: function(tweet){
-    twitter.post(tweet);
-  },
-  twitterUpload: function(image, tweet){
-    console.log('image');
-    twitter.uploadImage(image, tweet)
+  post_twitter: function(image, tweet){
+    console.log('Twitter post');
+    twitter.uploadImage(image, tweet);
+
   }
 });

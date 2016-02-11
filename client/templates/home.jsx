@@ -28,7 +28,9 @@ Home = React.createClass({
       imagesPerService: {
         'tumblr': {},
         'facebook': {},
-        'pinterest': {}
+        'pinterest': {},
+        'twitter': {},
+        'imgur': {}
       },
       cameraImages: {}
     }
@@ -51,6 +53,13 @@ Home = React.createClass({
     for(service in this.state.imagesPerService){
       for(image in this.state.imagesPerService[service]){
         postService = 'post_' + service;
+        //console.log(this.state.imagesPerService[service][image].imageurl);
+        if(service === 'twitter') {
+          var tweet = 'image post';
+          Meteor.call(postService, this.state.imagesPerService[service][image].b64data, tweet, function(err, results){
+
+          });
+        }
         Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
           console.log('Successful post to facebook');
           // console.log('Successful post to ' + service + ' : ' + data, err);
@@ -73,9 +82,16 @@ Home = React.createClass({
     event.preventDefault();
     var fileUpload = document.getElementById('input').files;
     for (var i = 0; i < fileUpload.length; i++) {
+      //console.log(fileUpload[i]);
+      var FR= new FileReader();
+      var b64data='';
+      FR.onload = function(e) {
+        b64data = e.target.result.slice(23);
+      };
+      FR.readAsDataURL( fileUpload[i] );
       var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(fileUpload[i], function (error, downloadUrl) {
-        console.log('file: ', downloadUrl);
+        //console.log('file: ', b64data);
         if (error)
         {
           console.error('Error uploading', error,  uploader.xhr.response);
@@ -84,6 +100,7 @@ Home = React.createClass({
         {
           imageDetails._collection.insert({
             imageurl: downloadUrl,
+            b64data: b64data,
             time: new Date()
           });
         }
@@ -166,7 +183,7 @@ Home = React.createClass({
       height: 350,
       quality: 75 }, function(err, data){
       if(err){
-        console.log('Error taking images', error);
+        console.log('Error taking images', err);
       }
       //console.log(data);
       Session.set('photo', data);
@@ -281,8 +298,6 @@ Home = React.createClass({
           POST TO FACEBOOK<i className="mdi-content-send right"></i>
         </div>
       </div>
-
-
         //<div className="btn waves-effect waves-light" onClick={ this.removePerService}>
         //  UNDO<i className="mdi-action-delete right"></i>
         //</div>
