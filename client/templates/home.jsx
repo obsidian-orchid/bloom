@@ -27,6 +27,23 @@ Home = React.createClass({
       }).fetch()
     }
   },
+  activeAppList() {
+    var services = this.data.services;
+    var userServices = this.data.userServices[0].services;
+    var list = [];
+
+    for(service in userServices){
+      if(userServices[service].state === true){
+        var newServ = {
+          'name': service,
+          'state': true
+        };
+        list.push(newServ);
+      }
+    }
+
+    return list;
+  },
   getInitialState: function() {
     return {
       selectedImages: {},
@@ -42,8 +59,9 @@ Home = React.createClass({
     }
   },
   renderImages(){
+    var currentServices = this.activeAppList();
     return this.data.images.map((image) => {
-      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} image={image} selectedImages={this.state.selectedImages} />
+      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} currentServices={currentServices} image={image} selectedImages={this.state.selectedImages} />
     });
   },
   addImageToService(image, services){
@@ -187,7 +205,6 @@ Home = React.createClass({
 
   },
   takePhoto(){
-
     console.log('Starting camera service');
     //console.log(this.state.cameraImages);
     //console.log(this.state);
