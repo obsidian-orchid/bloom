@@ -203,6 +203,17 @@ Splash = React.createClass({
             <div className="card image-container">
               <div className="card-content">
                 pictures
+                <div className="fixed-action-btn click-to-toggle" style={{position: "absolute", display:"inline-block"}}>
+                  <a className="btn-floating btn-large red">
+                    <i className="large mdi-content-add"></i>
+                  </a>
+                  <ul>
+                    <li><a className="btn-floating red">
+                    <i className="large mdi-image-camera-alt"></i></a></li>
+                    <li><a className="btn-floating yellow darken-1">
+                    <i className="large mdi-device-devices"></i></a></li>
+                  </ul>
+                </div>
                 <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
               < takePhoto />< libraryEvent />
               <div className="row valign-wrapper">

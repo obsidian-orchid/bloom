@@ -96,6 +96,7 @@ footer {
   text-shadow: 2px 2px 8px #FF0000;
 }
 .image-container {
+  text-align: center;
   width: 200px;
   margin-left: 5px;
   margin-right: 5px;
