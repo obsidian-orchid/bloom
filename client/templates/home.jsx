@@ -219,6 +219,7 @@ Home = React.createClass({
 
       var uploader = new Slingshot.Upload("myFileUploads");
       uploader.send(blob, function (error, downloadUrl) {
+        //console.log(b64Data);
         if (error)
         {
           console.error('Error uploading', uploader.xhr.response);
@@ -228,6 +229,7 @@ Home = React.createClass({
           console.log(downloadUrl);
           imageDetails._collection.insert({
             imageurl: downloadUrl,
+            b64data: b64Data,
             time: new Date()
           });
         }
