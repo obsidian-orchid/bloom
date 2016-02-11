@@ -18,13 +18,13 @@ var urls = {
   authorize: "https://api.twitter.com/oauth/authorize",
   accessToken: "https://api.twitter.com/oauth/access_token",
   authenticate: "https://api.twitter.com/oauth/authenticate?oauth_token="
-}
+};
 
 var config = {
   service: 'twitter',
   consumerKey: Meteor.settings.TwitterClientKey,
   secret: Meteor.settings.TwitterSecret
-}
+};
 
 var Twitter = new OAuth_SS(1, urls, config);
 
@@ -38,11 +38,16 @@ Meteor.methods({
   // verifyAuth: function() {
   //   return twitter.verifyService();
   // }
-  twitterPost: function(tweet){
-    Twitter.post(tweet);
-  },
-  twitterUpload: function(image, tweet){
-    console.log('image');
-    Twitter.uploadImage(image, tweet)
+  post_twitter: function(image, tweet) {
+    //console.log("gets here");
+    Twitter.uploadImage(image, tweet, function(err, resp){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('inside twitter: ' + resp);
+        console.log('success');
+      }
+    });
   }
 });

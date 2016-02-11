@@ -53,6 +53,7 @@ Meteor.methods({
       console.log("posting to imgur");
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
+      console.log(url);
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},
         headers: {
