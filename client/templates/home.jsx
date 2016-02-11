@@ -56,14 +56,16 @@ Home = React.createClass({
         //console.log(this.state.imagesPerService[service][image].imageurl);
         if(service === 'twitter') {
           var tweet = 'image post';
+          console.log(this.state.imagesPerService[service][image].imageurl);
           Meteor.call(postService, this.state.imagesPerService[service][image].b64data, tweet, function(err, results){
-
           });
         }
-        Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function(err, data) {
-          console.log('Successful post to facebook');
-          // console.log('Successful post to ' + service + ' : ' + data, err);
-        });
+        else {
+          Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function (err, data) {
+            console.log('Successful post to facebook');
+            // console.log('Successful post to ' + service + ' : ' + data, err);
+          });
+        }
       }
     }
   },
@@ -81,31 +83,36 @@ Home = React.createClass({
   uploadImage(event) {
     event.preventDefault();
     var fileUpload = document.getElementById('input').files;
-    for (var i = 0; i < fileUpload.length; i++) {
-      //console.log(fileUpload[i]);
-      var FR= new FileReader();
-      var b64data='';
-      FR.onload = function(e) {
-        b64data = e.target.result.slice(23);
-      };
-      FR.readAsDataURL( fileUpload[i] );
-      var uploader = new Slingshot.Upload("myFileUploads");
-      uploader.send(fileUpload[i], function (error, downloadUrl) {
-        //console.log('file: ', b64data);
-        if (error)
-        {
-          console.error('Error uploading', error,  uploader.xhr.response);
-        }
-        else
-        {
-          imageDetails._collection.insert({
-            imageurl: downloadUrl,
-            b64data: b64data,
-            time: new Date()
-          });
-        }
-      });
+
+    function uploadForPreview(file){
+      var reader = new FileReader();
+      reader.addEventListener('load', function(){
+        var b64data = this.result.slice(23);
+
+        var uploader = new Slingshot.Upload("myFileUploads");
+        uploader.send(file, function (error, downloadUrl) {
+          if (error) {
+            console.error('Error uploading', error, uploader.xhr.response);
+          }
+          else {
+            imageDetails._collection.insert({
+              imageurl: downloadUrl,
+              b64data: b64data,
+              time: new Date()
+            });
+          }
+        });
+        //console.log(file);
+        //console.log(b64data);
+      }, false);
+
+      reader.readAsDataURL(file);
     }
+
+    if(fileUpload){
+      [].forEach.call(fileUpload, uploadForPreview);
+    }
+
   },
   //postImage(images, services) {
   //  // console.log('images: ', images);
