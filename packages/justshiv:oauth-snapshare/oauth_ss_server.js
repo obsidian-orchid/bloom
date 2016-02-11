@@ -34,7 +34,7 @@ OAuth_SS.prototype.generateRequestToken = function() {
 
   self.requestToken = tokens.oauth_token;
   self.requestTokenSecret = tokens.oauth_token_secret;
-  
+
   return self.urls.authenticate + self.requestToken;
 };
 
@@ -71,9 +71,9 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   var query = {};
   query.userId = Meteor.userId();
   query.services = {};
-  query.services[self.config.service] = { 
-      accessToken: self.accessToken,
-      accessTokenSecret: self.accessTokenSecret
+  query.services[self.config.service] = {
+    accessToken: self.accessToken,
+    accessTokenSecret: self.accessTokenSecret
   };
   // http://localhost:3000/services/twitter?oauth_token=iNlFEQAAAAAAkG43AAABUscgLJQ&oauth_verifier=IzzapmlO5SSiKp7U0sRq2HYUrEaPIoXJ
   UserServices.upsert({userId: Meteor.userId}, {$set: query});
@@ -111,7 +111,7 @@ OAuth_SS.prototype.uploadImage =  function(image, tweet, cb){
   oauthBinding.accessToken = self.accessToken;
   oauthBinding.accessTokenSecret = self.accessTokenSecret;
 
-  var params = { 
+  var params = {
     media_data: image
   };
 
@@ -125,7 +125,7 @@ OAuth_SS.prototype.uploadImage =  function(image, tweet, cb){
         status: tweet,
         media_ids: result.data.media_id_string
       };
-       console.log('inside OAuth: ', params.media_ids);
+      console.log('inside OAuth: ', params.media_ids);
 
       return oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/update.json', params, function (err, response) {
         cb(err, response);

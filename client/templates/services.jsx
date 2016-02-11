@@ -38,11 +38,11 @@ ServicesList = React.createClass({
                   console.log('error', err);
                 }
                 console.log('Facebook added');
-
+                
                 Meteor.call('toggleServiceCommon', service, true, function(err, result) {
                   console.log('service state: ', result);
                 });
-
+              
               });
             }
           });
@@ -57,28 +57,22 @@ ServicesList = React.createClass({
             else{
               console.log(result);
               window.open(result);
-              Meteor.call('toggleServiceCommon', service, true, function(err, result) {
-                console.log('service state: ', result);
-              });
+                Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+                  console.log('service state: ', result);
+                });
             }
           })
         }
       },
       twitter:{
         auth: function(){
-          Meteor.call('twitterGetToken', function (err, result) {
-            if(err){
-              console.log(err);
-            }
-            else{
-              OAuth_SS.authorizeWindow(result);
-              Meteor.call('toggleServiceCommon', service, true, function(err, result) {
-                console.log('service state: ', result);
-              });
-            }
-          });
+          Meteor.call('twitterGetToken', function(err, result) {
+            OAuth_SS.authorizeWindow(result);
+            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+              console.log('service state: ', result);
+            });
+          })
         }
-
       },
       google : {
         auth: function() {
@@ -100,10 +94,10 @@ ServicesList = React.createClass({
 
             }
             Meteor.call('removeMergedCollection', mergedUserId, function(err, result) {
-              if (err) {
-                console.log('error', err);
-              }
-            });
+                if (err) {
+                  console.log('error', err);
+                }
+              });
           })
         }
       },
@@ -111,9 +105,9 @@ ServicesList = React.createClass({
         auth: function() {
           Meteor.call('imgurAuthLink', function(err, result) {
             authorizeWindow(result);
-            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
-              console.log('service state: ', result);
-            });
+                Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+                  console.log('service state: ', result);
+                });
           });
         }
       },
@@ -121,9 +115,9 @@ ServicesList = React.createClass({
         auth: function() {
           Meteor.call('pinterestAuthLink', function(err, result){
             authorizeWindow(result);
-            Meteor.call('toggleServiceCommon', service, true, function(err, result) {
-              console.log('service state: ', result);
-            });
+                Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+                  console.log('service state: ', result);
+                });
           });
         }
       }
@@ -188,7 +182,7 @@ var AppServiceList = React.createClass({
     //  </div>
     // )
     console.log(this.props.activeAppList);
-
+  
     var serviceState = this.props.activeAppList[service];
 
     if (serviceState && serviceState.state === true) {
@@ -228,8 +222,16 @@ var AppServiceList = React.createClass({
   loginTumblr(options, callback) {
     Meteor.call('tumblrGetToken', function(err, result) {
       OAuth_SS.authorizeWindow(result);
-      // console.log('result: ', result);
+      // Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+      //   console.log('service state: ', result);
+      // });
     })
+  },
+  testTwitter(){
+    var image = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAFeAdMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z'
+    var tweet = 'image post'
+
+    Meteor.call('twitterUpload', image, tweet, function(err, results){});
   },
   render: function () {
     return (
@@ -241,3 +243,8 @@ var AppServiceList = React.createClass({
     )
   }
 });
+// <br /><br />
+// <button className="btn" onClick={this.testTwitter}>Twitter Image</button>
+// <br /><br />
+// <button className="btn" onClick={this.loginTumblr}>Tumblr Auth</button>
+// <br /><br />

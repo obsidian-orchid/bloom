@@ -26,25 +26,21 @@ var config = {
   secret: Meteor.settings.TwitterSecret
 };
 
-var twitter = new OAuth_SS(1, urls, config);
+var Twitter = new OAuth_SS(1, urls, config);
 
 Meteor.methods({
   twitterGetToken: function() {
-    return twitter.generateRequestToken();
+    return Twitter.generateRequestToken();
   },
   twitterAuthToken: function(params) {
-    twitter.generateAccessToken(params);
+    Twitter.generateAccessToken(params);
   },//,
   // verifyAuth: function() {
   //   return twitter.verifyService();
   // }
   post_twitter: function(image, tweet) {
-    //var imageCache = [];
-    //var eachImage = {'imageb64': image, 'tweet': tweet};
-    //imageCache.push(eachImage);
-    //console.log(imageCache);
-    console.log("gets here");
-    twitter.uploadImage(image, tweet, function(err, resp){
+    //console.log("gets here");
+    Twitter.uploadImage(image, tweet, function(err, resp){
       if(err){
         console.log(err);
       }
@@ -53,29 +49,5 @@ Meteor.methods({
         console.log('success');
       }
     });
-    //for (var i = 0; i < imageCache.length; i++) {
-    //  twitter.uploadImage(image, tweet, function (err, response) {
-    //    if(response === true){
-    //
-    //    }
-    //  });
-    //}
-    //function handlingImageAsync(imageList, n){
-    //  if(n === 0){
-    //    return;
-    //  }
-    //  else{
-    //    twitter.uploadImage(imageList[0].imageb64, imageList[0].tweet, function(err, response){
-    //      if(err){
-    //        console.log(err);
-    //      }
-    //      else{
-    //        handlingImageAsync(imageList, n--);
-    //      }
-    //    });
-    //  }
-    //
-    //}
-    //handlingImageAsync(imageCache, imageCache.length);
   }
 });
