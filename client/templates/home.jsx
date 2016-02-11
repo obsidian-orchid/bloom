@@ -183,7 +183,7 @@ Home = React.createClass({
       height: 350,
       quality: 75 }, function(err, data){
       if(err){
-        console.log('Error taking images', error);
+        console.log('Error taking images', err);
       }
       //console.log(data);
       Session.set('photo', data);
