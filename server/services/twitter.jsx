@@ -26,21 +26,23 @@ var config = {
   secret: Meteor.settings.TwitterSecret
 }
 
-var twitter = new OAuth_SS(1, urls, config);
+var Twitter = new OAuth_SS(1, urls, config);
 
 Meteor.methods({
   twitterGetToken: function() {
-    return twitter.generateRequestToken();
+    return Twitter.generateRequestToken();
   },
   twitterAuthToken: function(params) {
-    twitter.generateAccessToken(params);
+    Twitter.generateAccessToken(params);
   },//,
   // verifyAuth: function() {
   //   return twitter.verifyService();
   // }
-  post_twitter: function(image, tweet){
-    console.log('Twitter post');
-    twitter.uploadImage(image, tweet);
-
+  twitterPost: function(tweet){
+    Twitter.post(tweet);
+  },
+  twitterUpload: function(image, tweet){
+    console.log('image');
+    Twitter.uploadImage(image, tweet)
   }
 });
