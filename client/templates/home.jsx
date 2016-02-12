@@ -1,3 +1,9 @@
+// Seed or update userservices collection
+Meteor.startup(function () {
+  var userId = Meteor.userId();
+  Meteor.call('initializeService', userId);
+});
+
 imageDetails = new Mongo.Collection('imageDetails');
 
 //For camera

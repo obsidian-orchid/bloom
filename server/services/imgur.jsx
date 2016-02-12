@@ -15,9 +15,10 @@ Meteor.methods({
         }
         else{
           console.log('result: ', result.data);
-          query = {};
-          query['services.imgur.accessToken'] = result.data.access_token;
-          Meteor.users.update(Meteor.userId(), {$set: query});
+          var params = { 
+            accessToken: result.data.access_token
+          }
+          Meteor.serverCommon.addCommonService('imgur', params);
         }
       });
     },

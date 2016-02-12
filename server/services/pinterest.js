@@ -19,17 +19,22 @@ Meteor.methods({
         }
         else{
           console.log('result: ', result.data);
-          query = {};
-          query['services.pinterest.accessToken'] = result.data.access_token;
-          Meteor.users.update(Meteor.userId(), {$set: query});
+          var params = { 
+            accessToken: result.data.access_token
+          }
+          Meteor.serverCommon.addCommonService('pinterest', params);
         }
       });
     },
     pinterestAuthLink: function() {
       return "https://api.pinterest.com/oauth/?response_type=code" +
-      "&redirect_uri=https://snapshare.meteor.com/services/pinterest" +
+      "&redirect_uri=https://localhost:3000/services/pinterest" +
       "&client_id=" + Meteor.settings.PinterestClientId +
       "&scope=read_public,write_public";
+      // return "https://api.pinterest.com/oauth/?response_type=code" +
+      // "&redirect_uri=https://snapshare.meteor.com/services/pinterest" +
+      // "&client_id=" + Meteor.settings.PinterestClientId +
+      // "&scope=read_public,write_public";
     },
     post_pinterest: function(url) {
       console.log("posting to pinterest");
