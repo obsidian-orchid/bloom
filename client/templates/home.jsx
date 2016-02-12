@@ -27,43 +27,86 @@ Home = React.createClass({
       }).fetch()
     }
   },
+  activeAppList() {
+    var services = this.data.services;
+    var userServices = this.data.userServices[0].services;
+    var list = [];
+
+    for(service in userServices){
+      if(userServices[service].state === true){
+        var newServ = {
+          'name': service,
+          'state': true
+        };
+        list.push(newServ);
+      }
+    }
+
+    return list;
+  },
   getInitialState: function() {
     return {
       selectedImages: {},
       selectedServices: {},
       imagesPerService: {
-        'tumblr': {},
-        'facebook': {},
-        'pinterest': {},
-        'twitter': {},
-        'imgur': {}
+        //'tumblr': {},
+        //'facebook': {},
+        //'pinterest': {},
+        //'twitter': {},
+        //'imgur': {}
       },
       cameraImages: {}
     }
   },
   renderImages(){
+    var currentServices = this.activeAppList();
     return this.data.images.map((image) => {
-      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} image={image} selectedImages={this.state.selectedImages} />
+      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} currentServices={currentServices} image={image} selectedImages={this.state.selectedImages} />
     });
   },
-  addImageToService(image, services){
-    for (key in services){
-      var store = this.state.imagesPerService[key] || {};
-      store[image._id] = image;
-      this.state.imagesPerService[key] = store;
-      console.log('Image added to ' + key);
+  addImageToService(image, service, active){
+    //console.log(service, active);
+    var store = this.state.imagesPerService;
+    store[service] = store[service] || {};
+    if(active){
+      store[service][image._id] = image;
     }
-    // console.log(this.state.imagesPerService);
+    else{
+      delete store[service][image._id];
+    }
+    this.setState({
+      imagesPerService : store
+    }, function(){
+      console.log(this.state.imagesPerService);
+    });
+
+    //for (key in services){
+    //  var store = this.state.imagesPerService[key] || {};
+    //  store[image._id] = image;
+    //  this.state.imagesPerService[key] = store;
+    //  console.log('Image added to ' + key);
+    //}
+
   },
   uploadImagePerService(){
     for(service in this.state.imagesPerService){
       for(image in this.state.imagesPerService[service]){
         postService = 'post_' + service;
         //console.log(this.state.imagesPerService[service][image].imageurl);
-        if(service === 'twitter') {
-          var tweet = 'image post';
+        if(service === 'twitter' || service === 'pinterest') {
+          var tweet = 'Posting from SnapShare';
           console.log(this.state.imagesPerService[service][image].imageurl);
           Meteor.call(postService, this.state.imagesPerService[service][image].b64data, tweet, function(err, results){
+          });
+        }
+        else if(service === 'imgur'){
+          console.log(this.state.imagesPerService[service][image].imageurl);
+          Meteor.call(postService, this.state.imagesPerService[service][image].b64data, function(err, results){
+          });
+        }
+        else if(service === 'facebook'){
+          console.log(this.state.imagesPerService[service][image].imageurl);
+          Meteor.call(postService,this.state.imagesPerService[service][image].imageurl, function(err, results){
           });
         }
         else {
@@ -74,6 +117,19 @@ Home = React.createClass({
         }
       }
     }
+  },
+
+// Convert a data URI to blob
+  dataURItoBlob(dataURI) {
+      var byteString = atob(dataURI);
+      //var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+      return new Blob([ia], {
+          type: 'image/png'
+      });
   },
   removePerService(images, services){
     for(service in this.state.imagesPerService){
@@ -93,7 +149,8 @@ Home = React.createClass({
     function uploadForPreview(file){
       var reader = new FileReader();
       reader.addEventListener('load', function(){
-        var b64data = this.result.slice(23);
+        //var b64data = this.result.slice(23);
+        var b64data = this.result.split(',')[1];
 
         var uploader = new Slingshot.Upload("myFileUploads");
         uploader.send(file, function (error, downloadUrl) {
@@ -187,7 +244,6 @@ Home = React.createClass({
 
   },
   takePhoto(){
-
     console.log('Starting camera service');
     //console.log(this.state.cameraImages);
     //console.log(this.state);
