@@ -51,10 +51,10 @@ Meteor.methods({
       })
     },
     post_imgur: function(url) {
-      console.log("posting to imgur");
+      console.log("posting to imgur");// + url);
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
-      console.log(url);
+      //console.log(url);
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},
         headers: {
@@ -65,7 +65,7 @@ Meteor.methods({
           console.log(error);
         }
         else{
-          console.log('result: ', result);
+          //console.log('result: ', result);
           imageId = result.data.data.id;
           link = result.data.data.link;
           //console.log(imageId);

@@ -27,9 +27,9 @@ Facebook.prototype.getUserData = function() {
 
 Meteor.methods({
   facebookAdd: function() {
-    var params = { 
+    var params = {
       accessToken: Meteor.user().services.facebook.accessToken
-    }
+    };
     Meteor.serverCommon.addCommonService('facebook', params);
   },
   post_facebook: function(url) {
