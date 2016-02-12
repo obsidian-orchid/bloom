@@ -44,10 +44,27 @@ Meteor.methods({
       if(err){
         console.log(err);
       }
-      else{
+      else {
         console.log('inside twitter: ' + resp);
-        console.log('success');
+        //console.log(resp.data.id);
+        Images.insert({
+          url: image,
+          imageId: resp.data.id,
+          link: resp.data.text
+        })
       }
     });
+  },
+  delete_twitter: function(image){
+    var imageId = Images.findOne({ url: image }).imageId;
+    console.log(imageId);
+    Twitter.deleteImage(imageId, function(err, resp){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('successfully deleted Image');
+      }
+    })
   }
 });

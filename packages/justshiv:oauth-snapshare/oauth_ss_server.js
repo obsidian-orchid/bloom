@@ -133,6 +133,25 @@ OAuth_SS.prototype.uploadImage =  function(image, tweet, cb){
     }
   });
 };
+OAuth_SS.prototype.deleteImage = function(imageId, cb){
+  var self = this;
+  self.accessToken = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessToken;
+  self.accessTokenSecret = UserServices.findOne({userId: Meteor.userId()}).services.twitter.accessTokenSecret;
+  //console.log(self.config);
+  var oauthBinding = new OAuth1Binding(self.config, self.urls);
+  oauthBinding.accessToken = self.accessToken;
+  oauthBinding.accessTokenSecret = self.accessTokenSecret;
+
+  return oauthBinding.call('POST', 'https://api.twitter.com/1.1/statuses/destroy/'+imageId+'.json', function(err, result) {
+    // console.log('result image: ', result);
+    if(err){
+      console.log(err);
+    }
+    else {
+        cb(err, result);
+      }
+  });
+};
 
 function queryStringToJSON(str) {
   var pairs = str.split('&');
