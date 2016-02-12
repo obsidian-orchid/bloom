@@ -27,6 +27,7 @@ Home = React.createClass({
       }).fetch()
     }
   },
+
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -320,6 +321,65 @@ Home = React.createClass({
       alert('Cordova only feature');
     }
   },
+
+  drawTour(){
+    window.localStorage = false;
+    var tour = new Tour({
+      steps: [
+        {
+          element: "#demo",
+          title: "This starts Snapshare Demo Tour",
+          content: "Would you like to continue?",
+          placement: "left"
+
+        },
+        {
+          element: "#step-enable",
+          title: "Enable Services",
+          content: "Go here and enable all the social media sites that you prefer"
+        },
+        {
+          element: "#step-authenticate",
+          title: "Enable Services",
+          content: "Go here and enable all the social media sites that you prefer",
+          placement:"right"
+        },
+        {
+          element: "#step-remove",
+          title: "Disable Services",
+          content: "Click here if you would like to have a service removed"
+
+        },
+        {
+          element: "#step-upload",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-select-service",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-unselect-service",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-post",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-undo",
+          title: "Undo Photo Upload",
+          content: ""
+        }
+      ]});
+    tour.init();
+    tour.restart();
+  },
+
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
@@ -333,7 +393,7 @@ Home = React.createClass({
         <div className="row">
           <div className="col s12">
             <h5 className="">STEP 1: AUTHORIZE YOUR SERVICE</h5>
-            Follow this link to authorize the service you wish to use: <a href="/services">services</a>
+            Follow this link to authorize the service you wish to use: <a id="step-enable" href="/services">services</a>
           </div>
         </div>
         <div className="row">
@@ -363,11 +423,11 @@ Home = React.createClass({
           </div>
         </div>
 
-
         <h5 className="">STEP 4: POST IMAGES TO SERVICES</h5>
-        <div className="social-button btn waves-effect waves-light facebook" onClick={ this.uploadImagePerService}>
+        <div id = "next" className="social-button btn waves-effect waves-light facebook" onClick={ this.uploadImagePerService}>
           POST TO FACEBOOK<i className="mdi-content-send right"></i>
         </div>
+        <button id="demo" className="btn" onClick={this.drawTour}>Start Demo</button>
       </div>
         //<div className="btn waves-effect waves-light" onClick={ this.removePerService}>
         //  UNDO<i className="mdi-action-delete right"></i>
