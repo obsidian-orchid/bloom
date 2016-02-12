@@ -31,20 +31,20 @@ Meteor.methods({
       "&redirect_uri=https://localhost:3000/services/pinterest" +
       "&client_id=" + Meteor.settings.PinterestClientId +
       "&scope=read_public,write_public";
-      // return "https://api.pinterest.com/oauth/?response_type=code" +
-      // "&redirect_uri=https://snapshare.meteor.com/services/pinterest" +
-      // "&client_id=" + Meteor.settings.PinterestClientId +
-      // "&scope=read_public,write_public";
+      //return "https://api.pinterest.com/oauth/?response_type=code" +
+      //"&redirect_uri=https://snapshare.meteor.com/services/pinterest" +
+      //"&client_id=" + Meteor.settings.PinterestClientId +
+      //"&scope=read_public,write_public";
     },
-    post_pinterest: function(url) {
+    post_pinterest: function(url, note) {
       console.log("posting to pinterest");
       var imageId, link;
       var access_token = Meteor.user().services.pinterest.accessToken;
       HTTP.post("https://api.pinterest.com/v1/pins/", {
         data: {
           board: "obsidiano/snapshare",
-          note: "Shared with SnapShare",
-          image_url: url
+          note: note,
+          image_base64: url
         },
         headers: {
           Authorization: "Bearer " + access_token
@@ -54,7 +54,7 @@ Meteor.methods({
           console.log(error);
         }
         else{
-          console.log('result: ', result);
+          //console.log('result: ', result);
           imageId = result.data.data.id;
           link = result.data.data.url;
           //console.log(imageId);

@@ -22,19 +22,20 @@ Image = React.createClass({
       selectedServices: {}
     }
   },
-  handleServiceSelect(service){
-    var slot = this.state.selectedServices[service.name];
-
-    //removing services we don't enable
-    if(slot){
-      delete this.state.selectedServices[service.name];
-    }
-    else{
-      this.state.selectedServices[service.name] = true;
-    }
+  handleServiceSelect(service, active){
+    //var slot = this.state.selectedServices[service.name];
+    //
+    ////removing services we don't enable
+    //if(slot){
+    //  delete this.state.selectedServices[service.name];
+    //}
+    //else{
+    //  this.state.selectedServices[service.name] = true;
+    //}
 
     //passing which service is selected for which image to parent
-    this.props.onChange(this.state.selectedServices);
+    this.props.onChange(service.name, active);
+    //this.props.onChange(this.state.selectedServices);
   },
   //rendering services that are available
   renderServices(){
@@ -81,8 +82,10 @@ ImageServices = React.createClass({
   toggleSelect(){
     this.setState({
       showActive: !this.state.showActive
+    }, function(){
+      this.props.onClick(this.state.showActive);
     });
-    this.props.onClick();
+
   }
 
 });

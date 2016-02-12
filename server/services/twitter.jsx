@@ -39,14 +39,14 @@ Meteor.methods({
   //   return twitter.verifyService();
   // }
   post_twitter: function(image, tweet) {
-    //console.log("gets here");
+    console.log("posting to twitter");
     Twitter.uploadImage(image, tweet, function(err, resp){
       if(err){
         console.log(err);
       }
       else{
-        console.log('inside twitter: ' + resp);
-        console.log('success');
+        //console.log('inside twitter: ' + resp);
+        //console.log('success');
       }
     });
   }
