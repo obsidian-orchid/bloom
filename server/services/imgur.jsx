@@ -15,7 +15,10 @@ Meteor.methods({
         }
         else{
           console.log('result: ', result.data);
-          var params = { 
+          query = {};
+          query['services.imgur.accessToken'] = result.data.access_token;
+          Meteor.users.update(Meteor.userId(), {$set: query});
+          var params = {
             accessToken: result.data.access_token
           }
           Meteor.serverCommon.addCommonService('imgur', params);
@@ -54,6 +57,8 @@ Meteor.methods({
       console.log("posting to imgur");// + url);
       var imageId, link;
       var access_token = Meteor.user().services.imgur.accessToken;
+      console.log(access_token);
+      console.log(UserServices);
       //console.log(url);
       HTTP.post("https://api.imgur.com/3/image", {
         data: {image: url},

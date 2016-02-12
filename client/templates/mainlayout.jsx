@@ -1,4 +1,8 @@
 //Our main template inside of which we display all other templates
+Meteor.startup(function(){
+  $.getScript("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/js/bootstrap-tour-standalone.js")
+});
+
 MainLayout = React.createClass({
 
   //Required to import react data
@@ -15,13 +19,18 @@ MainLayout = React.createClass({
   //attribute of the [Materialize](http://materializecss.com/) `sideNav` element
   //and append to the generated header
   componentDidMount() {
+    $('head').append('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/css/bootstrap-tour-standalone.css">');
     $(".button-collapse").sideNav({
       closeOnClick: true //closes when we click things
     });
     $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">');
     $('head').append('<link rel="shortcut icon" type="image/png" href="favicon.png">');
-    $('head').append('<link rel="shortcut icon" type="image/png" href="favicon.png">');
+    $.getScript("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/js/bootstrap-tour-standalone.js", function(){
+
+    });
   },
+
+
 
   //render method to create whole page
   //note the reactive logic to determine whether to show the "Sign In" or "Sign Out"
@@ -63,7 +72,7 @@ MainLayout = React.createClass({
           <div className="footer-copyright">
             <div className="container">
             © 2016 SNAPSHARE
-            <a className="grey-text text-lighten-4 right" href="">Support</a>
+              <a id="demo" className="grey-text text-lighten-4 right" href="">Support</a>
             </div>
           </div>
         </footer>
@@ -79,3 +88,5 @@ MainLayout = React.createClass({
     FlowRouter.go('/signin');
   }
 });
+
+

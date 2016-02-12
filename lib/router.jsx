@@ -1,3 +1,4 @@
+
 //explanation: https://github.com/kadirahq/meteor-react-layout
 var insecure = FlowRouter.group({});
 
