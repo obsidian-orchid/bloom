@@ -9,7 +9,7 @@ Meteor.startup(function(){
     {name: 'imgur', state: true, album: []},
     {name: 'twitter', state: true, album: []},
     {name: 'pinterest', state: true, album: []},
-    {name: 'tumblr', state: true, album: []}
+    {name: 'tumblr', state: false, album: []}
   ];
 
   for(key in supportedServices){

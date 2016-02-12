@@ -50,18 +50,30 @@ ServicesList = React.createClass({
       },
       tumblr: {
         auth: function(){
-          Meteor.call('LogToTumblr', function(err, result){
+          //Meteor.call('LogToTumblr', function(err, result){
+          //  if(err){
+          //    console.log('Merging with Tumblr failed', err);
+          //  }
+          //  else{
+          //    console.log(result);
+          //    window.open(result);
+          //    Meteor.call('toggleServiceCommon', service, true, function(err, result) {
+          //      console.log('service state: ', result);
+          //    });
+          //  }
+          //})
+
+          Meteor.call('tumblrGetToken', function (err, result) {
             if(err){
-              console.log('Merging with Tumblr failed', err);
+              console.log(err);
             }
             else{
-              console.log(result);
-              window.open(result);
+              OAuth_SS.authorizeWindow(result);
               Meteor.call('toggleServiceCommon', service, true, function(err, result) {
                 console.log('service state: ', result);
               });
             }
-          })
+          });
         }
       },
       twitter:{
@@ -255,12 +267,6 @@ var AppServiceList = React.createClass({
         <p className="flow-text">MANAGE SERVICES</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <p>BACK TO <a href="/">UPLOADS</a></p>
-        <br /><br />
-        <button className="btn" onClick={this.testQuery}>Test Query</button>
-        <br /><br />
-        <br /><br />
-        <button className="btn" onClick={this.testQuery2}>Test Query2</button>
-        <br /><br />
       </div>
     )
   }

@@ -188,10 +188,36 @@ footer {
   background-image: url('services/google.png');
   background-color: #bebebe;
 }
+.spinner-layer.spinner-orange-only{
+  border-color: #ff9800;
+}
 
-
-/*button{*/
-  /*padding: 5px 6px 5px 30px;*/
-  /*background: url('services/imgur.png') no-repeat 5px center;*/
-  /*background-size: 20px;*/
-/*}*/
+/*CHANGING INPUT FIELD COLORS*/
+ /* label color */
+   .input-field label {
+     /*color: #000;*/
+   }
+   /* label focus color */
+   .input-field input[type]:focus + label {
+     color: #ff9800;
+   }
+   /* label underline focus color */
+   .input-field input[type]:focus {
+     border-bottom: 1px solid #ff9800;
+     box-shadow: 0 1px 0 0 #ff9800;
+   }
+   /* valid color */
+   .input-field input[type].valid {
+     border-bottom: 1px solid #4caf50;
+     box-shadow: 0 1px 0 0 #4caf50;
+   }
+   /* invalid color */
+   .input-field input[type].invalid {
+     border-bottom: 1px solid #e53935;
+     box-shadow: 0 1px 0 0 #e53935;
+   }
+   /* icon prefix focus color */
+   .input-field .prefix.active {
+     /*color: #ff9800;*/
+     color: black;
+   }

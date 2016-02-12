@@ -44,15 +44,19 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
 
   var oauthBinding = new OAuth1Binding(self.config, self.urls);
   var headers = oauthBinding._buildHeader({
+    oauth_secret_key: self.config.secret,
     oauth_token: params.oauth_token,
     oauth_verifier: params.oauth_verifier
-  });
-  // console.log('oaAT: ', oauthBinding);
-  // console.log('hdrAT: ', headers);
 
-  var response = oauthBinding._call('POST', self.urls.accessToken, headers);
+  });
+   console.log('oaAT: ', oauthBinding);
+   console.log('hdrAT: ', headers);
+
+  var response = oauthBinding._call('POST', self.urls.accessToken, headers, function(err, data){
+    console.log(this, err, data);
+  });
   var tokens = queryStringToJSON(response.content);
-  // console.log('tokens: ', tokens);
+   //console.log('response: ', response);
 
   if (! tokens.oauth_token || ! tokens.oauth_token_secret) {
     var error = "Error: missing oauth token or secret";

@@ -320,59 +320,81 @@ Home = React.createClass({
       alert('Cordova only feature');
     }
   },
+  renderServices(){
+    return this.activeAppList().map((service) =>{
+      return <p key={service.name}>{service.name} </p>
+    })
+  },
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
-        <div>
+        <div style={{textAlign: 'center'}}>
           <p>Loading...</p>
+            <div className="preloader-wrapper big active">
+              <div className="spinner-layer spinner-orange-only">
+                <div className="circle-clipper left">
+                  <div className="circle"></div>
+                </div><div className="gap-patch">
+                  <div className="circle"></div>
+                </div><div className="circle-clipper right">
+                  <div className="circle"></div>
+                </div>
+              </div>
+            </div>
         </div>
       )
     }
     return (
       <div className="">
         <div className="row">
-          <div className="col s12">
-            <h5 className="">STEP 1: AUTHORIZE YOUR SERVICE</h5>
-            Follow this link to authorize the service you wish to use: <a href="/services">services</a>
+          <div className="card">
+            <div className="card-content">
+              Active services: {this.renderServices()}
+            </div>
           </div>
         </div>
-        <div className="row">
-          <form id="upload" className="col s12">
-            <h5>STEP 2: TAKE A PHOTO OR UPLOAD AN IMAGE FILE</h5>
-            <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
-              < takePhoto />< libraryEvent />
-            <div className="row valign-wrapper">
-              <div className="file-field input-field col m10 s8 valign">
-                <div className="btn">
-                  <span>File</span>
-                  <input id="input" type="file" multiple onChange={this.uploadImage}/>
+        <div className="row thumbs">
+            <div className="card image-container">
+              <div className="card-content">
+                pictures
+                <div className="fixed-action-btn click-to-toggle" style={{position: "absolute", display:"inline-block"}}>
+                  <a className="btn-floating btn-large red">
+                    <i className="large mdi-content-add"></i>
+                  </a>
+                  <ul>
+                    <li><a className="btn-floating red">
+                    <i className="large mdi-image-camera-alt"></i></a></li>
+                    <li><a className="btn-floating yellow darken-1">
+                    <i className="large mdi-device-devices"></i></a></li>
+                  </ul>
                 </div>
-                <div className="file-path-wrapper">
-                  <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
+                <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
+              < takePhoto />< libraryEvent />
+              <div className="row valign-wrapper">
+                <div className="file-field input-field col m10 s8 valign">
+                  <div className="btn">
+                    <span>File</span>
+                    <input id="input" type="file" multiple onChange={this.uploadImage}/>
+                  </div>
+                  <div className="file-path-wrapper">
+                    <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
+                  </div>
+                </div>
+                <div className="col m2 s4 valign">
                 </div>
               </div>
-              <div className="col m2 s4 valign">
               </div>
             </div>
-          </form>
-        </div>
-        <h5 className="">STEP 3: CLICK THE ICON UNDER EACH IMAGE</h5>
-        <div className="row">
-          <div className="thumbs">
-            {this.renderImages()}
-          </div>
-        </div>
 
-
-        <h5 className="">STEP 4: POST IMAGES TO SERVICES</h5>
-        <div className="social-button btn waves-effect waves-light facebook" onClick={ this.uploadImagePerService}>
-          POST TO FACEBOOK<i className="mdi-content-send right"></i>
+              {this.renderImages()}
         </div>
       </div>
-        //<div className="btn waves-effect waves-light" onClick={ this.removePerService}>
+    )
+  }
+});//<div className="btn waves-effect waves-light" onClick={ this.removePerService}>
         //  UNDO<i className="mdi-action-delete right"></i>
         //</div>
-      //ALBUM STUFF REMOVED FOR NOW
+//ALBUM STUFF REMOVED FOR NOW
       //
       //  <div className ="row">
       //    <div className="col s12">
@@ -383,11 +405,6 @@ Home = React.createClass({
       //    <button className="btn waves-effect waves-light" onClick={ this.createAlbum.bind(null, this.state.selectedServices) }>Create New Album
       //      <i className="mdi-av-queue right"></i></button>
       //  </div>
-
-
-    );
-  }
-});
 
 /*Albums available for posting images*/
 AlbumsAvailable = React.createClass({
