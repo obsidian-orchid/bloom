@@ -14,6 +14,12 @@ Meteor.methods({
           console.log(error);
         }
         else{
+          //working code
+          query = {};
+          query['services.imgur.accessToken'] = result.data.access_token;
+          Meteor.users.update(Meteor.userId(), {$set: query});
+          //working code
+
           console.log('result: ', result.data);
           var params = { 
             accessToken: result.data.access_token

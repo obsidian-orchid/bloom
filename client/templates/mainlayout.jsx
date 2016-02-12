@@ -18,6 +18,7 @@ MainLayout = React.createClass({
     $(".button-collapse").sideNav({
       closeOnClick: true //closes when we click things
     });
+
     $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">');
     $('head').append('<link rel="shortcut icon" type="image/png" href="favicon.png">');
     $('head').append('<link rel="shortcut icon" type="image/png" href="favicon.png">');

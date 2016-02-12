@@ -61,7 +61,7 @@ Home = React.createClass({
   renderImages(){
     var currentServices = this.activeAppList();
     return this.data.images.map((image) => {
-      return <Image onChange={this.addImageToService.bind(null, image)} key={image._id} currentServices={currentServices} image={image} selectedImages={this.state.selectedImages} />
+      return <Image onFocus={this.deleteImage.bind(null, image)} onChange={this.addImageToService.bind(null, image)} key={image._id} currentServices={currentServices} image={image} selectedImages={this.state.selectedImages} />
     });
   },
   addImageToService(image, service, active){
@@ -91,32 +91,36 @@ Home = React.createClass({
   uploadImagePerService(){
     for(service in this.state.imagesPerService){
       for(image in this.state.imagesPerService[service]){
-        postService = 'post_' + service;
-        //console.log(this.state.imagesPerService[service][image].imageurl);
-        if(service === 'twitter' || service === 'pinterest') {
-          var tweet = 'Posting from SnapShare';
-          console.log(this.state.imagesPerService[service][image].imageurl);
-          Meteor.call(postService, this.state.imagesPerService[service][image].b64data, tweet, function(err, results){
-          });
-        }
-        else if(service === 'imgur'){
-          console.log(this.state.imagesPerService[service][image].imageurl);
-          Meteor.call(postService, this.state.imagesPerService[service][image].b64data, function(err, results){
-          });
-        }
-        else if(service === 'facebook'){
-          console.log(this.state.imagesPerService[service][image].imageurl);
-          Meteor.call(postService,this.state.imagesPerService[service][image].imageurl, function(err, results){
-          });
-        }
-        else {
-          Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function (err, data) {
-            console.log('Successful post to facebook');
-            // console.log('Successful post to ' + service + ' : ' + data, err);
-          });
+        if(imageDetails.find(this.state.imagesPerService[service][image]._id).fetch().length !== 0) {
+          postService = 'post_' + service;
+          //console.log(this.state.imagesPerService[service][image].imageurl);
+          if (service === 'twitter' || service === 'pinterest') {
+            var tweet = 'Posting from SnapShare';
+            console.log(this.state.imagesPerService[service][image].imageurl);
+            Meteor.call(postService, this.state.imagesPerService[service][image].b64data, tweet, function (err, results) {
+            });
+          }
+          else if (service === 'imgur') {
+            console.log(this.state.imagesPerService[service][image].imageurl);
+            Meteor.call(postService, this.state.imagesPerService[service][image].b64data, function (err, results) {
+            });
+          }
+          else if (service === 'facebook') {
+            console.log(this.state.imagesPerService[service][image].imageurl);
+            Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function (err, results) {
+            });
+          }
+          else {
+            Meteor.call(postService, this.state.imagesPerService[service][image].imageurl, function (err, data) {
+              console.log('Successful post to facebook');
+              // console.log('Successful post to ' + service + ' : ' + data, err);
+            });
+          }
         }
       }
     }
+//imageDetails.find().count()
+    Materialize.toast('Successfully posted your images!', 4000);
   },
 
 // Convert a data URI to blob
@@ -322,8 +326,22 @@ Home = React.createClass({
   },
   renderServices(){
     return this.activeAppList().map((service) =>{
-      return <p key={service.name}>{service.name} </p>
+      return <div key={service.name} className={'service-icon ' + service.name}></div>
+            //<div onClick={this.toggleSelect} className={this.state.showActive ? "service-icon " + this.props.serviceName : "service-icon inactive " + this.props.serviceName}></div>
+
     })
+  },
+  deleteImage(id){
+    console.log(id);
+    Materialize.toast('Successfully removed your image!', 4000);
+    imageDetails._collection.remove(id);
+  },
+  drawModal(){
+    $('#modal1').openModal();
+    //return (
+    //
+    //);
+
   },
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
@@ -349,44 +367,52 @@ Home = React.createClass({
         <div className="row">
           <div className="card">
             <div className="card-content">
-              Active services: {this.renderServices()}
+              <h5>Active services</h5>
+              {this.renderServices()}
+              <a style={{float:'right'}} className="btn orange" href='/services'>Manage Services</a>
             </div>
           </div>
         </div>
         <div className="row thumbs">
-            <div className="card image-container">
-              <div className="card-content">
-                pictures
-                <div className="fixed-action-btn click-to-toggle" style={{position: "absolute", display:"inline-block"}}>
-                  <a className="btn-floating btn-large red">
+            <div className="card image-container ">
+              <div className="card-content" style={{paddingTop: '60px'}}>
+
+                <div className="fixed-action-btn click-to-toggle" style={{position: "relative", display:"inline-block", right: '0', bottom: '0'}}>
+                  <a className="waves-effect waves-light modal-trigger btn-floating btn-large orange" href="#modal1" onClick={this.drawModal}>
                     <i className="large mdi-content-add"></i>
                   </a>
-                  <ul>
-                    <li><a className="btn-floating red">
-                    <i className="large mdi-image-camera-alt"></i></a></li>
-                    <li><a className="btn-floating yellow darken-1">
-                    <i className="large mdi-device-devices"></i></a></li>
-                  </ul>
                 </div>
-                <input type="button" className="btn capture" value="Take Photo" onClick={this.takePhoto} />
-              < takePhoto />< libraryEvent />
-              <div className="row valign-wrapper">
-                <div className="file-field input-field col m10 s8 valign">
-                  <div className="btn">
-                    <span>File</span>
-                    <input id="input" type="file" multiple onChange={this.uploadImage}/>
+                <h5>Upload Images</h5>
+
+                <div id="modal1" className="modal" style={{width: '60%'}}>
+                  <div className="modal-content">
+                    <h4>Upload Method</h4>
+                    <div className="row" style={{marginTop: '20px'}}>
+                      <div className="col s6">
+                        <a href="#!" onClick={this.takePhoto} value="Camera" className="btn capture orange modal-action modal-close waves-effect waves-light">
+                          <i className="material-icons left large mdi-image-camera-alt"></i>
+                          Camera
+                        </a>
+                        < takePhoto />< libraryEvent />
+                      </div>
+                      <div className="file-field col s6">
+                        <div className="btn orange  modal-action modal-close waves-effect waves-light">
+                          <i className="material-icons left large mdi-device-devices"></i>
+                          <span>Library</span>
+                          <input id="input" type="file" multiple onChange={this.uploadImage}/>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="file-path-wrapper">
-                    <input className="file-path validate" type="text" placeholder="Upload one or more files"/>
-                  </div>
                 </div>
-                <div className="col m2 s4 valign">
-                </div>
-              </div>
               </div>
             </div>
 
               {this.renderImages()}
+        </div>
+
+        <div className="btn waves-effect waves-light orange" onClick={ this.uploadImagePerService}>
+          POST TO Services<i className="mdi-content-send right"></i>
         </div>
       </div>
     )
