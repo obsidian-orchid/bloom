@@ -39,15 +39,32 @@ Meteor.methods({
   //   return twitter.verifyService();
   // }
   post_twitter: function(image, tweet) {
-    console.log("posting to twitter");
+    //console.log("gets here");
     Twitter.uploadImage(image, tweet, function(err, resp){
       if(err){
         console.log(err);
       }
-      else{
-        //console.log('inside twitter: ' + resp);
-        //console.log('success');
+      else {
+        console.log('inside twitter: ' + resp);
+        //console.log(resp.data.id);
+        Images.insert({
+          url: image,
+          imageId: resp.data.id,
+          link: resp.data.text
+        })
       }
     });
+  },
+  delete_twitter: function(image){
+    var imageId = Images.findOne({ url: image }).imageId;
+    console.log(imageId);
+    Twitter.deleteImage(imageId, function(err, resp){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('successfully deleted Image');
+      }
+    })
   }
 });
