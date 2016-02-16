@@ -79,22 +79,31 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   }
   // Meteor.serverCommon.addCommonService('twitter', params);
 
-  var userId = Meteor.userId(); 
-  var userServ = UserServices.findOne({'userId': userId});
-  var serviceObj = userServ.services;
+  //var userId = Meteor.userId();
+  //var userServ = UserServices.findOne({'userId': userId});
+  //var serviceObj = userServ.services;
+  //
+  //serviceObj[self.config.service] = params;
+  //serviceObj[self.config.service].state = true;
+  //
+  //UserServices.update(
+  //  {'userId': userId},
+  //  {
+  //    $set: {'services': serviceObj}
+  //  },
+  //  {
+  //    upsert: true
+  //  }
+  //);
+  var query = {};
+  query.userId = Meteor.userId();
+  query.services = {};
+  query.services[self.config.service] = {
+   accessToken: self.accessToken,
+   accessTokenSecret: self.accessTokenSecret
+  };
 
-  serviceObj[self.config.service] = params;
-  serviceObj[self.config.service].state = true;
-  
-  UserServices.update(
-    {'userId': userId}, 
-    {
-      $set: {'services': serviceObj}
-    },
-    {
-      upsert: true
-    }
-  );
+  UserServices.upsert({userId: Meteor.userId}, {$set: query});
 };
 
 OAuth_SS.prototype.post =  function(tweet){

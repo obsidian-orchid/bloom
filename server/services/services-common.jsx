@@ -7,8 +7,8 @@ Meteor.startup(function(){
     {name: 'facebook', state: true, album: []},
     {name: 'google', state: false, album: []},
     {name: 'imgur', state: true, album: []},
-    {name: 'twitter', state: true, album: []},
-    {name: 'pinterest', state: true, album: []},
+    {name: 'twitter', state: false, album: []},
+    {name: 'pinterest', state: false, album: []},
     {name: 'tumblr', state: false, album: []}
   ];
 
