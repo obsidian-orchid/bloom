@@ -35,7 +35,7 @@ Meteor.methods({
   post_facebook: function(url) {
     FBGraph.setAccessToken(Meteor.user().services.facebook.accessToken);
     var fbUserId = Meteor.user().services.facebook.id;
-
+    console.log(url);
     var wallPost = {
       url: url
     };
@@ -50,3 +50,4 @@ Meteor.methods({
     });
   }
 });
+

@@ -43,8 +43,6 @@ sanjo:jasmine
 
 meteorhacks:npm
 npm-container
-force-ssl
-tarang:ssl
 mdg:camera
 
 http

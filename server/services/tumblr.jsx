@@ -7,7 +7,7 @@
 var urls = {
   requestToken: "https://www.tumblr.com/oauth/request_token",
   authorize: "https://api.tumblr.com/oauth/authorize",
-  accessToken: "https://www.tumblr.com/oauth/access_token",
+  accessToken: "https://www.tumblr.com/oauth/access_token?",
   authenticate: "https://www.tumblr.com/oauth/authorize?oauth_token="
 };
 
@@ -25,6 +25,7 @@ Meteor.methods({
     return Tumblr.generateRequestToken();
   },
   tumblrAuthToken: function(params) {
+    console.log(params);
     Tumblr.generateAccessToken(params);
   },//,
   // verifyAuth: function() {

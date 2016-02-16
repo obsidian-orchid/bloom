@@ -2,6 +2,7 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  background-color: #eceff1;
 }
 
 h2{
@@ -188,10 +189,93 @@ footer {
   background-image: url('services/google.png');
   background-color: #bebebe;
 }
+.spinner-layer.spinner-orange-only{
+  border-color: #ff9800;
+}
 
+/*CHANGING INPUT FIELD COLORS*/
+ /* label color */
+   .input-field label {
+     /*color: #000;*/
+   }
+   /* label focus color */
+   .input-field input[type]:focus + label {
+     color: #ff9800;
+   }
+   /* label underline focus color */
+   .input-field input[type]:focus {
+     border-bottom: 1px solid #ff9800;
+     box-shadow: 0 1px 0 0 #ff9800;
+   }
+   /* valid color */
+   .input-field input[type].valid {
+     border-bottom: 1px solid #4caf50;
+     box-shadow: 0 1px 0 0 #4caf50;
+   }
+   /* invalid color */
+   .input-field input[type].invalid {
+     border-bottom: 1px solid #e53935;
+     box-shadow: 0 1px 0 0 #e53935;
+   }
+   /* icon prefix focus color */
+   .input-field .prefix.active {
+     /*color: #ff9800;*/
+     color: black;
+   }
 
-/*button{*/
-  /*padding: 5px 6px 5px 30px;*/
-  /*background: url('services/imgur.png') no-repeat 5px center;*/
-  /*background-size: 20px;*/
-/*}*/
+   footer.page-footer{
+     margin-top: 0px;
+   }
+
+   .btn, .btn-large {
+    height: 3rem;
+    line-height: 3rem;
+   }
+
+   .file-field .btn, .file-field .btn-large{
+     float: none;
+   }
+
+   /*.fixed-action-btn {*/
+     /*right: 0;*/
+     /*bottom: 0;*/
+   /*}*/
+
+.camera-popup{
+  border-radius: 2px;
+  width: 400px;
+  margin-left: -200px;
+}
+
+.camera-popup .photo-preview {
+  margin-top: 12px;
+  width: 280px;
+  margin-bottom: 18px;
+  /*height: 240px;*/
+}
+
+.camera-popup button {
+  background-color: #ff9800;
+    height: 3rem;
+    line-height: 3rem;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    outline: 0;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.camera-popup button:active {
+    background-color: #E68300;
+    border: none;
+}
+
+button.button.cancel, button.button.new-photo {
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: #343434;
+    cursor: pointer;
+}

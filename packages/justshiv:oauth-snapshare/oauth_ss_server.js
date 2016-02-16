@@ -44,15 +44,19 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
 
   var oauthBinding = new OAuth1Binding(self.config, self.urls);
   var headers = oauthBinding._buildHeader({
+    oauth_secret_key: self.config.secret,
     oauth_token: params.oauth_token,
     oauth_verifier: params.oauth_verifier
-  });
-  // console.log('oaAT: ', oauthBinding);
-  // console.log('hdrAT: ', headers);
 
-  var response = oauthBinding._call('POST', self.urls.accessToken, headers);
+  });
+   console.log('oaAT: ', oauthBinding);
+   console.log('hdrAT: ', headers);
+
+  var response = oauthBinding._call('POST', self.urls.accessToken, headers, function(err, data){
+    console.log(this, err, data);
+  });
   var tokens = queryStringToJSON(response.content);
-  // console.log('tokens: ', tokens);
+   //console.log('response: ', response);
 
   if (! tokens.oauth_token || ! tokens.oauth_token_secret) {
     var error = "Error: missing oauth token or secret";
@@ -75,22 +79,31 @@ OAuth_SS.prototype.generateAccessToken = function(params) {
   }
   // Meteor.serverCommon.addCommonService('twitter', params);
 
-  var userId = Meteor.userId(); 
-  var userServ = UserServices.findOne({'userId': userId});
-  var serviceObj = userServ.services;
+  //var userId = Meteor.userId();
+  //var userServ = UserServices.findOne({'userId': userId});
+  //var serviceObj = userServ.services;
+  //
+  //serviceObj[self.config.service] = params;
+  //serviceObj[self.config.service].state = true;
+  //
+  //UserServices.update(
+  //  {'userId': userId},
+  //  {
+  //    $set: {'services': serviceObj}
+  //  },
+  //  {
+  //    upsert: true
+  //  }
+  //);
+  var query = {};
+  query.userId = Meteor.userId();
+  query.services = {};
+  query.services[self.config.service] = {
+   accessToken: self.accessToken,
+   accessTokenSecret: self.accessTokenSecret
+  };
 
-  serviceObj[self.config.service] = params;
-  serviceObj[self.config.service].state = true;
-  
-  UserServices.update(
-    {'userId': userId}, 
-    {
-      $set: {'services': serviceObj}
-    },
-    {
-      upsert: true
-    }
-  );
+  UserServices.upsert({userId: Meteor.userId}, {$set: query});
 };
 
 OAuth_SS.prototype.post =  function(tweet){
