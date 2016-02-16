@@ -76,24 +76,25 @@ Meteor.methods({
      })
    },
 
- //PlayersList.find({ name: "David" }).fetch();
-   delete_imgur: function(url){
-     var access_token = Meteor.user().services.imgur.accessToken;
-     //console.log(url);
-     var imageId = Images.findOne({ url: url }).imageId;
-     //console.log(imageId);
-     HTTP.del("https://api.imgur.com/3/image/"+imageId,{
-       headers: {
-         Authorization: "Bearer " + access_token
-       }
-     }, function (error, result) {
-       if(error) {
-         console.log(error);
-       }
-       else {
-         //console.log(result);
-         Images.remove({imageId: imageId});
-       }
-     })
-   }
+  //PlayersList.find({ name: "David" }).fetch();
+    delete_imgur: function(url){
+      var access_token = Meteor.user().services.imgur.accessToken;
+      //console.log(url);
+      var imageId = Images.findOne({ url: url }).imageId;
+      //console.log(imageId);
+      HTTP.del("https://api.imgur.com/3/image/"+imageId,{
+        headers: {
+          Authorization: "Bearer " + access_token
+        }
+      }, function (error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else {
+          //console.log(result);
+          Images.remove({imageId: imageId});
+        }
+      })
+    }
 });
+

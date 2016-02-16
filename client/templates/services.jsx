@@ -264,7 +264,7 @@ var AppServiceList = React.createClass({
   render: function () {
     return (
       <div>
-        <p className="flow-text">MANAGE SERVICES</p>
+        <p id="step-authenticate" className="flow-text">MANAGE SERVICES</p>
         {Object.keys(this.props.services).map(this._DEV_renderServiceList)}
         <p>BACK TO <a href="/">UPLOADS</a></p>
       </div>

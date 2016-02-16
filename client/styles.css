@@ -92,10 +92,10 @@ footer {
   border: 3px solid #00c853;
 }
 
-.chosen {
-  /*border: 3px solid #00c853;*/
-  text-shadow: 2px 2px 8px #FF0000;
-}
+/*.chosen {*/
+  /*!*border: 3px solid #00c853;*!*/
+  /*text-shadow: 2px 2px 8px #FF0000;*/
+/*}*/
 .image-container {
   text-align: center;
   width: 200px;

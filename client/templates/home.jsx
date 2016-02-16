@@ -27,6 +27,7 @@ Home = React.createClass({
       }).fetch()
     }
   },
+
   activeAppList() {
     var services = this.data.services;
     var userServices = this.data.userServices[0].services;
@@ -343,6 +344,65 @@ Home = React.createClass({
     //);
 
   },
+
+  drawTour(){
+    window.localStorage = false;
+    var tour = new Tour({
+      steps: [
+        {
+          element: "#demo",
+          title: "This starts Snapshare Demo Tour",
+          content: "Would you like to continue?",
+          placement: "left"
+
+        },
+        {
+          element: "#step-enable",
+          title: "Enable Services",
+          content: "Go here and enable all the social media sites that you prefer"
+        },
+        {
+          element: "#step-authenticate",
+          title: "Enable Services",
+          content: "Go here and enable all the social media sites that you prefer",
+          placement:"right"
+        },
+        {
+          element: "#step-remove",
+          title: "Disable Services",
+          content: "Click here if you would like to have a service removed"
+
+        },
+        {
+          element: "#step-upload",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-select-service",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-unselect-service",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-post",
+          title: "Start Photo Upload",
+          content: ""
+        },
+        {
+          element: "#step-undo",
+          title: "Undo Photo Upload",
+          content: ""
+        }
+      ]});
+    tour.init();
+    tour.restart();
+  },
+
   render(){
     if (this.data.userLoading && this.data.servicesLoading) {
       return (
@@ -414,6 +474,7 @@ Home = React.createClass({
         <div className="btn waves-effect waves-light orange" onClick={ this.uploadImagePerService}>
           POST TO Services<i className="mdi-content-send right"></i>
         </div>
+        <button id="demo" className="btn" onClick={this.drawTour}>Start Demo</button>
       </div>
     )
   }
